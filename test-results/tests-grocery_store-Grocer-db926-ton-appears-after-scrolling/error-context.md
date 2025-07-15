@@ -1,0 +1,145 @@
+# Page snapshot
+
+```yaml
+- navigation:
+  - link "Grocery Store":
+    - /url: /
+    - img
+    - text: Grocery Store
+  - link "Home":
+    - /url: /
+  - link "Products":
+    - /url: /products
+  - link "Reviews":
+    - /url: /review
+  - link "Contact":
+    - /url: /contact
+  - link "About Us":
+    - /url: /aboutus
+  - link:
+    - /url: /favorite
+    - img
+  - link "Login":
+    - /url: /login
+  - link "Sign Up":
+    - /url: /register
+- heading "Fresh Groceries Delivered" [level=1]
+- paragraph: Premium quality groceries delivered fresh to your doorstep. From farm to table, we ensure the best for your family.
+- button "Shop Groceries"
+- heading "Explore Our Groceries" [level=2]
+- paragraph: From fresh fruits and vegetables to daily essentials, we offer a wide range of premium grocery items sourced from the finest farms and suppliers.
+- button "View All Products"
+- img "Explore Our Groceries"
+- heading "Contact Us for Bulk Orders" [level=2]
+- paragraph: Need groceries for your business or special events? Contact us for custom orders and bulk pricing.
+- button "Get in Touch"
+- img "Contact Us for Bulk Orders"
+- heading "Fresh Grocery Products" [level=2]
+- paragraph: "Demo Mode: Showing sample grocery products"
+- paragraph: Connect your backend to see real products
+- img "Fresh Whole Milk"
+- text: 100% Organic
+- heading "Fresh Whole Milk" [level=3]
+- paragraph: Pure, fresh whole milk sourced from local farms. Rich in calcium and essential nutrients.
+- img
+- text: Sold by Grocery Store
+- img
+- text: Rs.45
+- link "View Product":
+  - /url: /products/1
+- img "Organic Greek Yogurt"
+- text: 100% Organic
+- heading "Organic Greek Yogurt" [level=3]
+- paragraph: Creamy organic Greek yogurt made with traditional methods. High in protein and probiotics.
+- img
+- text: Sold by Grocery Store
+- img
+- text: Rs.65
+- link "View Product":
+  - /url: /products/2
+- img "Aged Cheddar Cheese"
+- text: 100% Organic
+- heading "Aged Cheddar Cheese" [level=3]
+- paragraph: Premium aged cheddar cheese with rich, sharp flavor. Perfect for cooking and snacking.
+- img
+- text: Sold by Grocery Store
+- img
+- text: Rs.120
+- link "View Product":
+  - /url: /products/3
+- img "Fresh Butter"
+- text: 100% Organic
+- heading "Fresh Butter" [level=3]
+- paragraph: Pure, unsalted butter made from fresh cream. Ideal for baking and cooking.
+- img
+- text: Sold by Grocery Store
+- img
+- text: Rs.85
+- link "View Product":
+  - /url: /products/4
+- img "Homemade Paneer"
+- text: 100% Organic
+- heading "Homemade Paneer" [level=3]
+- paragraph: Fresh homemade paneer, perfect for Indian cuisine. High in protein and calcium.
+- img
+- text: Sold by Grocery Store
+- img
+- text: Rs.95
+- link "View Product":
+  - /url: /products/5
+- img "Fresh Cream"
+- text: 100% Organic
+- heading "Fresh Cream" [level=3]
+- paragraph: Rich, fresh cream perfect for desserts and coffee. Sourced from premium dairy farms.
+- img
+- text: Sold by Grocery Store
+- img
+- text: Rs.55
+- link "View Product":
+  - /url: /products/6
+- contentinfo:
+  - heading "Grocery Store" [level=3]
+  - paragraph: Fresh groceries delivered to your doorstep. Quality you can trust.
+  - heading "Quick Links" [level=3]
+  - list:
+    - listitem:
+      - link "Home":
+        - /url: /
+    - listitem:
+      - link "Products":
+        - /url: /products
+    - listitem:
+      - link "Reviews":
+        - /url: /review
+    - listitem:
+      - link "Contact":
+        - /url: /contact
+  - heading "Legal" [level=3]
+  - list:
+    - listitem:
+      - link "FAQ":
+        - /url: /faq
+    - listitem:
+      - link "Terms & Conditions":
+        - /url: /terms
+    - listitem:
+      - link "Privacy Policy":
+        - /url: /privacy
+    - listitem:
+      - link "About Us":
+        - /url: /aboutus
+  - heading "Follow Us" [level=3]
+  - link:
+    - /url: "#"
+    - img
+  - link:
+    - /url: "#"
+    - img
+  - link:
+    - /url: "#"
+    - img
+  - link:
+    - /url: "#"
+    - img
+  - text: © 2025 Grocery Store. All rights reserved.
+```

@@ -24,6 +24,7 @@
     "tailwindcss": "^4.0.6"
   },
   "devDependencies": {
+    "@playwright/test": "^1.54.1",
     "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.20",
     "eslint": "^9.17.0",

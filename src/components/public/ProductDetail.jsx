@@ -4,6 +4,7 @@ import { FaHeart, FaTag, FaInfoCircle, FaCalendarCheck, FaShoppingCart } from "r
 import { useNavigate, useParams } from "react-router-dom";
 import Footer from "../common/customer/Footer";
 import Navbar from "../common/customer/Navbar";
+import { placeholderProducts } from "./demoProducts";
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -20,7 +21,14 @@ const ProductDetail = () => {
         const res = await axios.get(`/api/v1/products/${id}`);
         setProductData(res.data);
       } catch (err) {
-        setError("Failed to load product details.");
+        // Fallback to demo product if backend fails
+        const demoProduct = placeholderProducts.find(p => p._id === id);
+        if (demoProduct) {
+          setProductData(demoProduct);
+          setError("");
+        } else {
+          setError("Failed to load product details.");
+        }
       } finally {
         setLoading(false);
       }
@@ -77,7 +85,6 @@ const ProductDetail = () => {
 
               {/* Right Side - Info & Actions */}
               <div>
-                <h2 className="text-4xl font-bold text-gray-900 dairy-heading">{productData.name}</h2>
                 
                 <div className="mt-8 space-y-4">
                   <p className="flex items-center text-gray-800 text-2xl">
