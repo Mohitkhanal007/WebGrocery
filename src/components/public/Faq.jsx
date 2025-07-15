@@ -5,9 +5,9 @@ import { FaLeaf, FaTruck, FaClock, FaShieldAlt } from "react-icons/fa";
 
 const faqData = [
   {
-    question: "How fresh are your dairy products?",
+    question: "How fresh are your grocery products?",
     answer:
-      "All our dairy products are sourced fresh from local farms and delivered within 24 hours of production. We maintain strict quality control to ensure maximum freshness.",
+      "All our groceries are sourced fresh from local farms and trusted suppliers, delivered within 24 hours of procurement. We maintain strict quality control to ensure maximum freshness.",
   },
   {
     question: "What are your delivery timings?",
@@ -17,7 +17,7 @@ const faqData = [
   {
     question: "Do you offer bulk orders for businesses?",
     answer:
-      "Yes, we provide special pricing and delivery schedules for bulk orders. Contact our business team for custom quotes and arrangements.",
+      "Yes, we provide special pricing and delivery schedules for bulk grocery orders. Contact our business team for custom quotes and arrangements.",
   },
   {
     question: "What payment methods do you accept?",
@@ -32,17 +32,12 @@ const faqData = [
   {
     question: "How do you ensure product quality?",
     answer:
-      "We work with certified farms and conduct regular quality checks. All products undergo rigorous testing for safety and freshness before delivery.",
+      "We work with certified suppliers and conduct regular quality checks. All products undergo rigorous testing for safety and freshness before delivery.",
   },
   {
     question: "Do you deliver on weekends?",
     answer:
       "Yes, we deliver 7 days a week. Weekend delivery timings are slightly different - Saturday (7:00 AM - 6:00 PM) and Sunday (8:00 AM - 4:00 PM).",
-  },
-  {
-    question: "What if I'm not satisfied with the product quality?",
-    answer:
-      "We offer a 100% satisfaction guarantee. If you're not satisfied with any product, we'll replace it or provide a full refund within 24 hours.",
   },
 ];
 
@@ -59,7 +54,7 @@ const Faq = () => {
       <div className="container mx-auto px-6 py-20">
         <h2 className="text-4xl font-bold text-blue-800 mb-6 text-center">Frequently Asked Questions</h2>
         <p className="text-lg text-gray-600 text-center mb-12">
-          Find answers to common questions about our dairy products and services
+          Find answers to common questions about our grocery products and services
         </p>
 
         {/* Quick Info Cards */}

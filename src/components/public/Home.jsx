@@ -13,7 +13,7 @@ const Home = () => {
   const [error, setError] = useState(null);
   const productsRef = useRef(null);
 
-  // Placeholder dairy products data
+  // Placeholder grocery products data
   const placeholderProducts = [
     {
       _id: "1",
@@ -68,7 +68,7 @@ const Home = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Fetch dairy products
+  // Fetch grocery products
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -79,7 +79,7 @@ const Home = () => {
       } catch (err) {
         console.log("Backend not available, using placeholder data");
         setProducts(placeholderProducts);
-        setError("Demo Mode: Showing sample dairy products");
+        setError("Demo Mode: Showing sample grocery products");
       } finally {
         setLoading(false);
       }
@@ -103,21 +103,21 @@ const Home = () => {
 
       {/* Products Section */}
       <div ref={productsRef} className="container mx-auto py-10">
-        <h2 className="text-3xl font-bold text-blue-800 text-center mb-6">
-          Fresh Dairy Products
+        <h2 className="text-3xl font-bold text-black text-center mb-6">
+          Fresh Grocery Products
         </h2>
         
         {error && (
-          <div className="text-center mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-            <p className="text-blue-800 font-medium">{error}</p>
-            <p className="text-blue-600 text-sm mt-1">Connect your backend to see real products</p>
+          <div className="text-center mb-6 p-4 bg-gray-50 border border-gray-200 rounded-lg">
+            <p className="text-black font-medium">{error.replace(/dairy/gi, 'grocery')}</p>
+            <p className="text-gray-600 text-sm mt-1">Connect your backend to see real products</p>
           </div>
         )}
 
         {loading ? (
           <div className="text-center py-12">
-            <div className="dairy-spinner mx-auto mb-4"></div>
-            <p className="text-gray-600">Loading fresh dairy products...</p>
+            <div className="grocery-spinner mx-auto mb-4"></div>
+            <p className="text-gray-600">Loading fresh grocery products...</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

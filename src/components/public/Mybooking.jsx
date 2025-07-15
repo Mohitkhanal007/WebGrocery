@@ -8,21 +8,21 @@ const MyOrders = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Placeholder data for dairy orders
+  // Placeholder data for grocery orders
   const placeholderOrders = [
     {
       _id: "order1",
-      product: { name: "Fresh Whole Milk", imageUrl: "https://images.unsplash.com/photo-1550583724-b2692b85b150?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" },
+      product: { name: "Fresh Apples", imageUrl: "https://images.unsplash.com/photo-1567306226416-28f0efdc88ce?auto=format&fit=crop&w=400&q=80" },
       date: new Date().toISOString(),
-      totalPrice: 45,
-      quantity: 1,
+      totalPrice: 120,
+      quantity: 2,
       status: "Confirmed",
     },
     {
       _id: "order2",
-      product: { name: "Aged Cheddar Cheese", imageUrl: "https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2073&q=80" },
-      date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(), // 2 days ago
-      totalPrice: 120,
+      product: { name: "Whole Wheat Bread", imageUrl: "https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=400&q=80" },
+      date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+      totalPrice: 50,
       quantity: 1,
       status: "Delivered",
     },
@@ -71,7 +71,7 @@ const MyOrders = () => {
           My Orders
         </h1>
         <p className="text-lg text-center text-gray-600 mb-12">
-          Track your recent dairy orders and their status.
+          Track your recent grocery orders and their status.
         </p>
 
         {error && (

@@ -8,30 +8,29 @@ const AboutUs = () => {
     <>
       <Navbar />
       <div className="container mx-auto px-6 py-20">
-        <h1 className="text-4xl font-bold text-center text-blue-800 mb-6">About Dairy Go</h1>
+        <h1 className="text-4xl font-bold text-center text-purple-800 mb-6">About Grocery Store</h1>
         <p className="text-lg text-center text-gray-600 mb-12">
-          Your trusted partner for fresh, high-quality dairy products delivered right to your doorstep.
+          Your trusted partner for fresh, high-quality groceries delivered right to your doorstep.
         </p>
 
         <div className="flex flex-col md:flex-row items-center gap-12">
           <div className="md:w-1/2">
             <img 
-              src="https://images.unsplash.com/photo-1550583724-b2692b85b150?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" 
-              alt="Fresh Dairy Products"
+              src="https://images.unsplash.com/photo-1464306076886-debca5e8a6b0?auto=format&fit=crop&w=800&q=80" 
+              alt="Fresh Groceries"
               className="w-full h-auto rounded-lg shadow-lg"
             />
           </div>
           <div className="md:w-1/2">
-            <h2 className="text-3xl font-bold text-blue-800 mb-4">Our Mission</h2>
+            <h2 className="text-3xl font-bold text-purple-800 mb-4">Our Mission</h2>
             <p className="text-gray-700 leading-relaxed mb-6">
-              We are committed to delivering the freshest, highest-quality dairy products 
-              from local farms to your family. Our mission is to ensure that every household 
-              has access to pure, natural dairy products that promote health and wellness.
+              We are committed to delivering the freshest, highest-quality groceries from local farms and trusted suppliers to your family. Our mission is to ensure that every household has access to pure, natural, and healthy food products that promote wellness and convenience.
             </p>
-            <h3 className="text-2xl font-bold text-blue-800 mb-3">Why Choose Dairy Go?</h3>
+            <h3 className="text-2xl font-bold text-purple-800 mb-3">Why Choose Grocery Store?</h3>
             <ul className="list-disc list-inside space-y-2 text-gray-700">
-              <li>✅ Fresh products sourced from local farms</li>
+              <li>✅ Fresh products sourced from local farms and trusted suppliers</li>
               <li>✅ Daily delivery to ensure maximum freshness</li>
+              <li>✅ Wide variety of grocery essentials</li>
               <li>✅ Commitment to quality and food safety</li>
               <li>✅ 24/7 customer support and flexible ordering</li>
             </ul>

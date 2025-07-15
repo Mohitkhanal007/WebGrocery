@@ -11,20 +11,20 @@ const Dashboard = () => {
   ];
 
   const categoryData = [
-    { name: 'Milk', value: 400 }, { name: 'Cheese', value: 300 },
-    { name: 'Yogurt', value: 200 }, { name: 'Butter', value: 100 },
+    { name: 'Fruits', value: 400 }, { name: 'Vegetables', value: 300 },
+    { name: 'Bakery', value: 200 }, { name: 'Eggs', value: 100 },
   ];
 
   const lowStockProducts = [
-    { id: 1, name: "Organic Greek Yogurt", stock: 8 },
-    { id: 2, name: "Fresh Butter", stock: 5 },
-    { id: 3, name: "Himalayan Pink Salt Lassi", stock: 12 },
+    { id: 1, name: "Fresh Apples", stock: 8 },
+    { id: 2, name: "Whole Wheat Bread", stock: 5 },
+    { id: 3, name: "Organic Bananas", stock: 12 },
   ];
 
   const recentOrders = [
-    { id: "ORD-001", customer: "Ram Kumar", product: "Fresh Whole Milk", date: "2024-08-15", status: "Confirmed", amount: "Rs. 450" },
-    { id: "ORD-002", customer: "Sunita Devi", product: "Organic Greek Yogurt", date: "2024-08-14", status: "Pending", amount: "Rs. 150" },
-    { id: "ORD-003", customer: "Amit Singh", product: "Aged Cheddar Cheese", date: "2024-08-13", status: "Canceled", amount: "Rs. 500" },
+    { id: "ORD-001", customer: "Ram Kumar", product: "Fresh Apples", date: "2024-08-15", status: "Confirmed", amount: "Rs. 240" },
+    { id: "ORD-002", customer: "Sunita Devi", product: "Whole Wheat Bread", date: "2024-08-14", status: "Pending", amount: "Rs. 50" },
+    { id: "ORD-003", customer: "Amit Singh", product: "Organic Bananas", date: "2024-08-13", status: "Canceled", amount: "Rs. 160" },
   ];
 
   const getStatusPill = (status) => {

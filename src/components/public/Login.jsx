@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import React, { useState } from "react";
-import { FaApple, FaFacebook, FaGoogle, FaLeaf } from "react-icons/fa";
+import { FaApple, FaFacebook, FaGoogle, FaLeaf, FaShoppingBasket } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
@@ -66,17 +66,17 @@ const Login = () => {
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="absolute top-5 left-5">
         <Link to="/" className="flex items-center">
-          <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center mr-2">
-            <FaLeaf className="text-white text-lg" />
+          <div className="w-10 h-10 bg-purple-700 rounded-full flex items-center justify-center mr-2">
+            <FaShoppingBasket className="text-white text-lg" />
           </div>
-          <span className="text-xl font-bold text-blue-800">Dairy Go</span>
+          <span className="text-xl font-bold text-purple-800">Grocery Store</span>
         </Link>
       </div>
       <div className="relative flex w-full max-w-4xl bg-white shadow-lg rounded-lg overflow-hidden">
         <div className="hidden md:block w-1/2">
           <img
-            src="https://images.unsplash.com/photo-1550583724-b2692b85b150?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
-            alt="Fresh Dairy Products"
+            src="https://images.unsplash.com/photo-1464306076886-debca5e8a6b0?auto=format&fit=crop&w=800&q=80"
+            alt="Fresh Grocery Products"
             className="object-cover w-full h-full"
           />
         </div>

@@ -1,5 +1,30 @@
 @import "tailwindcss";
 
+/* Purple theme variables */
+:root {
+  --primary-color: #800080;
+  --secondary-color: #a259d9;
+  --accent-color: #d1b3ff;
+  --background-color: #f8f6fa;
+  --text-color: #2d0036;
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+/* Example usage for buttons and links */
+button, .btn {
+  background-color: var(--primary-color);
+  color: #fff;
+  border: none;
+}
+
+button:hover, .btn:hover {
+  background-color: var(--secondary-color);
+}
+
 /* Dairy Go Custom Styles */
 
 /* Custom Color Palette */

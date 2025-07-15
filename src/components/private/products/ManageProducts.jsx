@@ -28,9 +28,9 @@ const ManageProducts = () => {
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-md overflow-x-auto">
-      <h2 className="text-3xl font-bold text-blue-800 mb-4">Manage Dairy Products</h2>
+      <h2 className="text-3xl font-bold text-purple-800 mb-4">Manage Grocery Products</h2>
       
-      {error && <p className="text-blue-600 bg-blue-50 p-3 rounded-lg mb-4">{error}</p>}
+      {error && <p className="text-purple-600 bg-purple-50 p-3 rounded-lg mb-4">{error}</p>}
       {message && <p className="text-green-600 bg-green-50 p-3 rounded-lg mb-4">{message}</p>}
 
       {loading ? (

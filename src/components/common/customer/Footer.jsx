@@ -8,9 +8,9 @@ const Footer = () => {
       <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-8">
         {/* About Section */}
         <div>
-          <h3 className="text-xl font-bold mb-4">Dairy Go</h3>
+          <h3 className="text-xl font-bold mb-4">Grocery Store</h3>
           <p className="text-gray-400">
-            Fresh dairy products delivered to your doorstep. Quality you can trust.
+            Fresh groceries delivered to your doorstep. Quality you can trust.
           </p>
         </div>
 
@@ -18,10 +18,10 @@ const Footer = () => {
         <div>
           <h3 className="text-xl font-bold mb-4">Quick Links</h3>
           <ul className="space-y-2">
-            <li><Link to="/" className="hover:text-blue-400">Home</Link></li>
-            <li><Link to="/products" className="hover:text-blue-400">Products</Link></li>
-            <li><Link to="/review" className="hover:text-blue-400">Reviews</Link></li>
-            <li><Link to="/contact" className="hover:text-blue-400">Contact</Link></li>
+            <li><Link to="/" className="text-black hover:text-blue-400 bg-none">Home</Link></li>
+            <li><Link to="/products" className="text-black hover:text-blue-400 bg-none">Products</Link></li>
+            <li><Link to="/review" className="text-black hover:text-blue-400 bg-none">Reviews</Link></li>
+            <li><Link to="/contact" className="text-black hover:text-blue-400 bg-none">Contact</Link></li>
           </ul>
         </div>
 
@@ -48,7 +48,7 @@ const Footer = () => {
         </div>
       </div>
       <div className="text-center text-gray-500 mt-8">
-        &copy; {new Date().getFullYear()} Dairy Go. All rights reserved.
+        &copy; {new Date().getFullYear()} Grocery Store. All rights reserved.
       </div>
     </footer>
   );

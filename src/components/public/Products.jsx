@@ -9,17 +9,17 @@ const Products = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  // Placeholder dairy products data
+  // Placeholder grocery products data
   const placeholderProducts = [
-    { _id: "1", title: "Fresh Whole Milk", description: "Pure, fresh whole milk sourced from local farms.", price: 45, image: null },
-    { _id: "2", title: "Organic Greek Yogurt", description: "Creamy organic Greek yogurt made with traditional methods.", price: 65, image: null },
-    { _id: "3", title: "Aged Cheddar Cheese", description: "Premium aged cheddar cheese with a rich, sharp flavor.", price: 120, image: null },
-    { _id: "4", title: "Fresh Butter", description: "Pure, unsalted butter made from fresh cream.", price: 85, image: null },
-    { _id: "5", title: "Homemade Paneer", description: "Fresh homemade paneer, perfect for Indian cuisine.", price: 95, image: null },
-    { _id: "6", title: "Fresh Cream", description: "Rich, fresh cream perfect for desserts and coffee.", price: 55, image: null },
-    { _id: "7", title: "Skimmed Milk", description: "Low-fat skimmed milk for a healthy lifestyle.", price: 40, image: null },
-    { _id: "8", title: "Probiotic Buttermilk", description: "Refreshing probiotic buttermilk, great for digestion.", price: 30, image: null },
-    { _id: "9", title: "Mozzarella Cheese", description: "Fresh mozzarella cheese, perfect for pizzas and salads.", price: 110, image: null }
+    { _id: "1", title: "Fresh Apples", description: "Crisp, juicy apples perfect for snacking.", price: 120, image: "https://images.unsplash.com/photo-1567306226416-28f0efdc88ce?auto=format&fit=crop&w=400&q=80" },
+    { _id: "2", title: "Organic Bananas", description: "Sweet organic bananas, rich in potassium.", price: 80, image: "https://images.unsplash.com/photo-1574226516831-e1dff420e8f8?auto=format&fit=crop&w=400&q=80" },
+    { _id: "3", title: "Fresh Tomatoes", description: "Vine-ripened tomatoes, great for salads.", price: 60, image: "https://images.unsplash.com/photo-1502741338009-cac2772e18bc?auto=format&fit=crop&w=400&q=80" },
+    { _id: "4", title: "Whole Wheat Bread", description: "Soft, healthy whole wheat bread loaf.", price: 50, image: "https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=400&q=80" },
+    { _id: "5", title: "Fresh Spinach", description: "Leafy green spinach, packed with nutrients.", price: 40, image: "https://images.unsplash.com/photo-1464306076886-debca5e8a6b0?auto=format&fit=crop&w=400&q=80" },
+    { _id: "6", title: "Brown Eggs (12 pack)", description: "Farm-fresh brown eggs, dozen pack.", price: 150, image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=400&q=80" },
+    { _id: "7", title: "Potatoes (1kg)", description: "Fresh potatoes, perfect for any meal.", price: 35, image: "https://images.unsplash.com/photo-1506089676908-3592f7389d4d?auto=format&fit=crop&w=400&q=80" },
+    { _id: "8", title: "Carrots (500g)", description: "Crunchy carrots, great for snacking and cooking.", price: 30, image: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80" },
+    { _id: "9", title: "Fresh Oranges", description: "Juicy oranges, full of vitamin C.", price: 100, image: "https://images.unsplash.com/photo-1502741338009-cac2772e18bc?auto=format&fit=crop&w=400&q=80" }
   ];
 
   useEffect(() => {
@@ -45,11 +45,11 @@ const Products = () => {
     <>
       <Navbar />
       <div className="container mx-auto px-6 py-20">
-        <h1 className="text-4xl font-bold text-center text-blue-800 mb-6 dairy-heading">
-          Our Fresh Dairy Products
+        <h1 className="text-4xl font-bold text-center text-purple-800 mb-6 grocery-heading">
+          Our Grocery Products
         </h1>
-        <p className="text-lg text-center text-gray-600 mb-12 max-w-2xl mx-auto dairy-text">
-          Browse our wide selection of high-quality dairy products, sourced directly from local farms and delivered fresh to you.
+        <p className="text-lg text-center text-gray-600 mb-12 max-w-2xl mx-auto grocery-text">
+          Browse our wide selection of fresh, high-quality grocery items, delivered straight to your door.
         </p>
 
         {error && (
@@ -62,7 +62,7 @@ const Products = () => {
         {loading ? (
           <div className="text-center py-12">
             <div className="dairy-spinner mx-auto mb-4"></div>
-            <p className="text-gray-600">Loading fresh dairy products...</p>
+            <p className="text-gray-600">Loading fresh grocery products...</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
