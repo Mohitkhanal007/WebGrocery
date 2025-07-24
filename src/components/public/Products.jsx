@@ -1,7 +1,8 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import Navbar from "../common/customer/Navbar";
 import Footer from "../common/customer/Footer";
 import ProductCard from "../common/customer/ProductCard";
+import Spinner from "../common/customer/Spinner";
 import { placeholderProducts } from "./demoProducts";
 
 const categoryOptions = [
@@ -21,6 +22,8 @@ const Products = () => {
   const [sort, setSort] = useState("default");
   const [priceRange, setPriceRange] = useState([0, 200]);
   const [showScroll, setShowScroll] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   React.useEffect(() => {
     const handleScroll = () => {
@@ -29,6 +32,12 @@ const Products = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Simulate loading for demo
+  useEffect(() => {
+    setLoading(true);
+    setTimeout(() => setLoading(false), 800);
+  }, [search, category, sort, priceRange]);
 
   // Filter and sort products
   const filteredProducts = useMemo(() => {
@@ -104,15 +113,19 @@ const Products = () => {
           <p className="text-blue-800 font-medium">Demo Mode: Showing sample grocery products</p>
           <p className="text-blue-600 text-sm mt-1">Connect your backend to see real products</p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredProducts.length > 0 ? (
-            filteredProducts.map(product => (
+        {loading ? (
+          <div className="py-20"><Spinner size={60} /></div>
+        ) : error ? (
+          <div className="col-span-3 text-center text-red-600">{error}</div>
+        ) : filteredProducts.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredProducts.map(product => (
               <ProductCard key={product._id} packageData={product} />
-            ))
-          ) : (
-            <div className="col-span-3 text-center text-gray-600">No products found.</div>
-          )}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <div className="col-span-3 text-center text-gray-600">No products found.</div>
+        )}
         <div style={{ height: '3000px' }}></div>
       </div>
       <button
