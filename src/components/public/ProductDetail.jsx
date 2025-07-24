@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Footer from "../common/customer/Footer";
 import Navbar from "../common/customer/Navbar";
 import { placeholderProducts } from "./demoProducts";
+import { useCart } from "../common/customer/CartContext";
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -14,6 +15,7 @@ const ProductDetail = () => {
   const [error, setError] = useState("");
   const [isFavorite, setIsFavorite] = useState(false);
   const token = localStorage.getItem("token");
+  const { addToCart } = useCart();
 
   useEffect(() => {
     const fetchProductDetails = async () => {
@@ -104,13 +106,19 @@ const ProductDetail = () => {
                 </div>
 
                 {/* Order & Wishlist Section */}
-                <div className="mt-10 flex justify-between items-center">
+                <div className="mt-10 flex flex-col gap-4">
+                  <button
+                    onClick={() => addToCart(productData)}
+                    className="dairy-btn bg-green-600 text-white py-4 px-10 text-xl rounded-lg shadow-lg hover:bg-green-700 transition duration-300 flex items-center"
+                  >
+                    <FaShoppingCart className="mr-3" />
+                    Add to Cart
+                  </button>
                   {/* Wishlist Button */}
                   <button className="flex items-center text-lg font-semibold text-gray-800 transition duration-300 hover:text-red-600">
                     <FaHeart className="mr-2 text-2xl text-gray-400" />
                     Add to Wishlist
                   </button>
-
                   {/* Order Button */}
                   <button
                     onClick={() => navigate(`/checkout/${productData._id}`)}

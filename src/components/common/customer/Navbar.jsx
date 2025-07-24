@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { FaBars, FaHeart, FaTimes, FaShoppingBasket } from "react-icons/fa";
+import { FaBars, FaHeart, FaTimes, FaShoppingBasket, FaShoppingCart } from "react-icons/fa";
 import { Link, useLocation } from "react-router-dom";
+import { useCart } from "./CartContext";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [user, setUser] = useState(null);
   const location = useLocation();
+  const { cart } = useCart();
 
   useEffect(() => {
     // Get token from local storage
@@ -42,7 +44,7 @@ const Navbar = () => {
         </Link>
 
         {/* Navigation Links */}
-        <div className="hidden md:flex space-x-6">
+        <div className="hidden md:flex space-x-6 items-center">
           <Link to="/" className="bg-transparent text-black hover:text-purple-700 transition duration-300">Home</Link>
           <Link to="/products" className="bg-transparent text-black hover:text-purple-700 transition duration-300">Products</Link>
           <Link to="/review" className="bg-transparent text-black hover:text-purple-700 transition duration-300">Reviews</Link>
@@ -51,6 +53,15 @@ const Navbar = () => {
           )}
           <Link to="/contact" className="bg-transparent text-black hover:text-purple-700 transition duration-300">Contact</Link>
           <Link to="/aboutus" className="bg-transparent text-black hover:text-purple-700 transition duration-300">About Us</Link>
+          {/* Cart Icon */}
+          <Link to="/cart" className="relative ml-4">
+            <FaShoppingCart className="text-2xl text-purple-700 hover:text-purple-900 transition duration-300" />
+            {cart.length > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full px-1.5 py-0.5 font-bold">
+                {cart.reduce((sum, item) => sum + item.quantity, 0)}
+              </span>
+            )}
+          </Link>
         </div>
 
         {/* Right Section */}

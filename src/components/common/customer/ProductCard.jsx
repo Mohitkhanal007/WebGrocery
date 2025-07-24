@@ -1,9 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { FaTag, FaStar, FaStore } from "react-icons/fa";
+import { useCart } from "./CartContext";
 
 const ProductCard = ({ packageData }) => {
   const { _id, title, description, price, image } = packageData;
+  const { addToCart } = useCart();
 
   // Use a default grocery product image if none is provided
   const imageUrl = image 
@@ -32,9 +34,17 @@ const ProductCard = ({ packageData }) => {
             <FaTag className="text-purple-600 mr-2" />
             <span className="text-purple-800 font-bold text-xl">Rs.{price}</span>
           </div>
-          <Link to={`/products/${_id}`} className="dairy-btn bg-blue-800 text-white px-5 py-2 rounded-lg text-sm font-semibold hover:bg-blue-700 transition duration-300">
-            View Product
-          </Link>
+          <div className="flex flex-col gap-2">
+            <Link to={`/products/${_id}`} className="dairy-btn bg-blue-800 text-white px-5 py-2 rounded-lg text-sm font-semibold hover:bg-blue-700 transition duration-300">
+              View Product
+            </Link>
+            <button
+              onClick={() => addToCart(packageData)}
+              className="dairy-btn bg-green-600 text-white px-5 py-2 rounded-lg text-sm font-semibold hover:bg-green-700 transition duration-300 mt-2"
+            >
+              Add to Cart
+            </button>
+          </div>
         </div>
       </div>
     </div>

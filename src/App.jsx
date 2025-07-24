@@ -20,6 +20,7 @@ const Mybooking = lazy(() => import("./components/public/Mybooking"));
 const EditProfile = lazy(() => import("./components/public/Editprofile"));
 const ProductDetail = lazy(() => import("./components/public/ProductDetail"));
 const Products = lazy(() => import("./components/public/Products"));
+const CartPage = lazy(() => import("./components/common/customer/CartPage"));
 
 const Dashboard = lazy(() => import("./components/private/dashboard/Dashboard"));
 const AddProduct = lazy(() => import("./components/private/products/AddProduct"));
@@ -98,6 +99,10 @@ function App() {
     {
       path: "/products/:id",
       element: <Suspense><ProductDetail /></Suspense>,
+    },
+    {
+      path: "/cart",
+      element: <Suspense><CartPage /></Suspense>,
     },
 
     // Admin routes wrapped in a layout

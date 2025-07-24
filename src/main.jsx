@@ -3,6 +3,7 @@ import React, { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App.jsx";
 import "./styles.css"; // Ensure Tailwind is loaded
+import { CartProvider } from "./components/common/customer/CartContext";
 
 // ✅ Correct QueryClient setup
 const queryClient = new QueryClient({
@@ -19,8 +20,10 @@ const queryClient = new QueryClient({
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <App />
-    </QueryClientProvider>
+    <CartProvider>
+      <QueryClientProvider client={queryClient}>
+        <App />
+      </QueryClientProvider>
+    </CartProvider>
   </StrictMode>
 );
