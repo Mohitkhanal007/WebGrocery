@@ -53,7 +53,7 @@ const Sidebar = () => {
           <button onClick={() => toggleMenu("products")} className="flex items-center justify-between w-full p-2 rounded-lg hover:bg-gray-700">
             <div className="flex items-center gap-3">
               <Package size={20} />
-              {!isCollapsed && <span>Dairy Products</span>}
+              {!isCollapsed && <span>Product Catalog</span>}
             </div>
             {!isCollapsed && (openMenus.products ? <ChevronDown size={18} /> : <ChevronRight size={18} />)}
           </button>
