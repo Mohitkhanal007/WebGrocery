@@ -1,153 +1,115 @@
-import React from "react";
-import { FaBoxOpen, FaClipboardList, FaDollarSign, FaExclamationTriangle, FaUserPlus, FaUsers } from 'react-icons/fa';
-import { Area, AreaChart, CartesianGrid, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts';
+
+const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#ff8042", "#0088FE"];
 
 const Dashboard = () => {
-  // Mock Data for charts and tables
-  const revenueData = [
-    { month: 'Jan', revenue: 4000 }, { month: 'Feb', revenue: 3000 },
-    { month: 'Mar', revenue: 5000 }, { month: 'Apr', revenue: 4500 },
-    { month: 'May', revenue: 6000 }, { month: 'Jun', revenue: 5500 },
-  ];
+  const [analytics, setAnalytics] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  const categoryData = [
-    { name: 'Fruits', value: 400 }, { name: 'Vegetables', value: 300 },
-    { name: 'Bakery', value: 200 }, { name: 'Eggs', value: 100 },
-  ];
+  useEffect(() => {
+    const fetchAnalytics = async () => {
+      try {
+        const res = await axios.get("http://localhost:3001/api/v1/orders/analytics");
+        setAnalytics(res.data);
+        setError("");
+      } catch (err) {
+        setError("Failed to fetch analytics");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchAnalytics();
+  }, []);
 
-  const lowStockProducts = [
-    { id: 1, name: "Fresh Apples", stock: 8 },
-    { id: 2, name: "Whole Wheat Bread", stock: 5 },
-    { id: 3, name: "Organic Bananas", stock: 12 },
-  ];
-
-  const recentOrders = [
-    { id: "ORD-001", customer: "Ram Kumar", product: "Fresh Apples", date: "2024-08-15", status: "Confirmed", amount: "Rs. 240" },
-    { id: "ORD-002", customer: "Sunita Devi", product: "Whole Wheat Bread", date: "2024-08-14", status: "Pending", amount: "Rs. 50" },
-    { id: "ORD-003", customer: "Amit Singh", product: "Organic Bananas", date: "2024-08-13", status: "Canceled", amount: "Rs. 160" },
-  ];
-
-  const getStatusPill = (status) => {
-    switch (status.toLowerCase()) {
-      case "confirmed": return "bg-green-100 text-green-800";
-      case "pending": return "bg-yellow-100 text-yellow-800";
-      case "canceled": return "bg-red-100 text-red-800";
-      default: return "bg-gray-100 text-gray-800";
-    }
-  };
+  if (loading) return <div className="p-8">Loading analytics...</div>;
+  if (error) return <div className="p-8 text-red-600">{error}</div>;
 
   return (
-    <div className="p-4 md:p-6 lg:p-8 bg-gray-100 min-h-screen">
-      {/* Page Title */}
-      <h1 className="text-3xl font-bold text-gray-800 mb-8">Admin Dashboard</h1>
-
-      {/* Stats Overview */}
+    <div className="p-8 bg-gray-100 min-h-screen">
+      <h1 className="text-3xl font-bold text-gray-800 mb-8">Admin Analytics Dashboard</h1>
+      {/* Summary Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <StatCard title="Total Revenue" value="Rs. 1,45,000" icon={<FaDollarSign size={24} />} color="text-green-500" />
-        <StatCard title="Total Orders" value="3,450" icon={<FaClipboardList size={24} />} color="text-blue-500" />
-        <StatCard title="Total Products" value="58" icon={<FaBoxOpen size={24} />} color="text-purple-500" />
-        <StatCard title="New Customers" value="12" icon={<FaUserPlus size={24} />} color="text-yellow-500" />
+        <div className="bg-white p-6 rounded-lg shadow text-center">
+          <div className="text-lg font-semibold text-gray-600 mb-2">Total Sales</div>
+          <div className="text-2xl font-bold text-green-600">Rs. {analytics.totalSales}</div>
+        </div>
+        <div className="bg-white p-6 rounded-lg shadow text-center">
+          <div className="text-lg font-semibold text-gray-600 mb-2">Top Product</div>
+          <div className="text-xl font-bold text-purple-700">{analytics.topProducts?.[0]?.title || "-"}</div>
+          <div className="text-sm text-gray-500">Sold: {analytics.topProducts?.[0]?.totalSold || 0}</div>
+        </div>
+        <div className="bg-white p-6 rounded-lg shadow text-center">
+          <div className="text-lg font-semibold text-gray-600 mb-2">Total Users</div>
+          <div className="text-2xl font-bold text-blue-600">{analytics.userGrowth?.reduce((sum, u) => sum + u.count, 0) || 0}</div>
+        </div>
+        <div className="bg-white p-6 rounded-lg shadow text-center">
+          <div className="text-lg font-semibold text-gray-600 mb-2">Total Orders</div>
+          <div className="text-2xl font-bold text-orange-600">{analytics.orderStatusCounts?.reduce((sum, o) => sum + o.count, 0) || 0}</div>
+        </div>
       </div>
-
       {/* Charts Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 mb-8">
-        {/* Revenue Chart */}
-        <div className="lg:col-span-3 bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
-          <h3 className="text-xl font-semibold mb-4 text-gray-800">Monthly Revenue</h3>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+        {/* User Growth Chart */}
+        <div className="bg-white p-6 rounded-lg shadow-md">
+          <h3 className="text-xl font-semibold mb-4 text-gray-800">User Growth (per month)</h3>
           <ResponsiveContainer width="100%" height={300}>
-            <AreaChart data={revenueData}>
+            <AreaChart data={analytics.userGrowth} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
               <defs>
-                <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
+                <linearGradient id="colorUsers" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8}/>
                   <stop offset="95%" stopColor="#8884d8" stopOpacity={0}/>
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} />
-              <XAxis dataKey="month" tick={{ fill: '#6B7280' }} />
+              <XAxis dataKey="_id" tick={{ fill: '#6B7280' }} />
               <YAxis tick={{ fill: '#6B7280' }} />
+              <CartesianGrid strokeDasharray="3 3" vertical={false} />
               <Tooltip contentStyle={{ backgroundColor: '#fff', border: '1px solid #ddd' }} />
-              <Area type="monotone" dataKey="revenue" stroke="#8884d8" fillOpacity={1} fill="url(#colorRevenue)" />
+              <Area type="monotone" dataKey="count" stroke="#8884d8" fillOpacity={1} fill="url(#colorUsers)" />
             </AreaChart>
           </ResponsiveContainer>
         </div>
-
-        {/* Category Distribution Chart */}
-        <div className="lg:col-span-2 bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
-          <h3 className="text-xl font-semibold mb-4 text-gray-800">Product Categories</h3>
+        {/* Order Status Pie Chart */}
+        <div className="bg-white p-6 rounded-lg shadow-md">
+          <h3 className="text-xl font-semibold mb-4 text-gray-800">Order Status Distribution</h3>
           <ResponsiveContainer width="100%" height={300}>
             <PieChart>
-              <Pie data={categoryData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={100} fill="#8884d8" label />
+              <Pie
+                data={analytics.orderStatusCounts}
+                dataKey="count"
+                nameKey="_id"
+                cx="50%"
+                cy="50%"
+                outerRadius={100}
+                fill="#8884d8"
+                label
+              >
+                {analytics.orderStatusCounts?.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                ))}
+              </Pie>
+              <Legend />
               <Tooltip />
             </PieChart>
           </ResponsiveContainer>
         </div>
       </div>
-
-      {/* Tables Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Recent Orders */}
-        <div className="lg:col-span-2 bg-white shadow-md rounded-lg p-6">
-          <h3 className="text-xl font-semibold mb-4 text-gray-800">Recent Orders</h3>
-          <div className="overflow-x-auto">
-            <table className="w-full text-left">
-              <thead>
-                <tr className="bg-gray-50 border-b">
-                  <th className="py-3 px-4 text-sm font-semibold text-gray-600">ORDER ID</th>
-                  <th className="py-3 px-4 text-sm font-semibold text-gray-600">CUSTOMER</th>
-                  <th className="py-3 px-4 text-sm font-semibold text-gray-600">AMOUNT</th>
-                  <th className="py-3 px-4 text-sm font-semibold text-gray-600">STATUS</th>
-                </tr>
-              </thead>
-              <tbody>
-                {recentOrders.map((order) => (
-                  <tr key={order.id} className="border-b hover:bg-gray-50">
-                    <td className="py-3 px-4 text-sm font-medium text-gray-700">{order.id}</td>
-                    <td className="py-3 px-4 text-sm text-gray-600">{order.customer}</td>
-                    <td className="py-3 px-4 text-sm text-gray-600">{order.amount}</td>
-                    <td className="py-3 px-4">
-                      <span className={`px-3 py-1 text-xs font-semibold rounded-full ${getStatusPill(order.status)}`}>
-                        {order.status}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        {/* Low Stock Alerts */}
-        <div className="bg-white shadow-md rounded-lg p-6">
-          <h3 className="text-xl font-semibold mb-4 text-gray-800 flex items-center">
-            <FaExclamationTriangle className="mr-3 text-red-500" /> Low Stock Alerts
-          </h3>
-          <ul className="space-y-4">
-            {lowStockProducts.map((product) => (
-              <li key={product.id} className="flex items-center justify-between p-2 rounded-lg hover:bg-red-50">
-                <div>
-                  <p className="font-semibold text-gray-800">{product.name}</p>
-                </div>
-                <span className="text-sm font-bold text-red-600">{product.stock} left</span>
-              </li>
-            ))}
-          </ul>
-        </div>
+      {/* Top Products List */}
+      <div className="bg-white p-6 rounded-lg shadow-md">
+        <h3 className="text-xl font-semibold mb-4 text-gray-800">Top 5 Products</h3>
+        <ul className="divide-y divide-gray-200">
+          {analytics.topProducts?.map((prod, idx) => (
+            <li key={prod._id} className="py-2 flex justify-between items-center">
+              <span className="font-medium">{idx + 1}. {prod.title}</span>
+              <span className="text-gray-600">Sold: {prod.totalSold}</span>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );
 };
-
-// StatCard Component
-const StatCard = ({ title, value, icon, color }) => (
-  <div className="bg-white p-6 rounded-lg shadow-md flex items-center justify-between hover:shadow-xl hover:scale-105 transition-all">
-    <div>
-      <p className="text-sm font-medium text-gray-500">{title}</p>
-      <p className="text-3xl font-bold text-gray-800">{value}</p>
-    </div>
-    <div className={`p-4 rounded-full bg-gray-100 ${color}`}>
-      {icon}
-    </div>
-  </div>
-);
 
 export default Dashboard;
