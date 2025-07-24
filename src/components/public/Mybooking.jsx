@@ -2,11 +2,13 @@ import React, { useState, useEffect } from "react";
 import Footer from "../common/customer/Footer";
 import Navbar from "../common/customer/Navbar";
 import axios from "axios";
+import { toast } from 'react-toastify';
 
 const MyOrders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [prevOrders, setPrevOrders] = useState([]);
 
   // Placeholder data for grocery orders
   const placeholderOrders = [
@@ -40,6 +42,16 @@ const MyOrders = () => {
         // Fetch orders from backend
         const response = await axios.get(`http://localhost:3001/api/v1/orders/user/${userId}`);
         if (response.data && response.data.success) {
+          // Show toast if any order status changed
+          if (prevOrders.length > 0) {
+            response.data.orders.forEach(order => {
+              const prev = prevOrders.find(o => o._id === order._id);
+              if (prev && prev.status !== order.status) {
+                toast.info(`Order ${order._id} status updated: ${order.status}`);
+              }
+            });
+          }
+          setPrevOrders(response.data.orders);
           setOrders(response.data.orders);
           setError("");
         } else {
@@ -56,7 +68,10 @@ const MyOrders = () => {
     };
 
     fetchOrders();
-  }, []);
+    // Poll for status updates every 30 seconds
+    const interval = setInterval(fetchOrders, 30000);
+    return () => clearInterval(interval);
+  }, [prevOrders]);
 
   const getStatusColor = (status) => {
     switch (status.toLowerCase()) {
