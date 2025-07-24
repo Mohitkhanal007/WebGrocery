@@ -5,19 +5,19 @@ const PendingOrders = () => {
   const pendingOrders = [
     { 
       id: 1, 
-      user: "John Doe", 
+      user: "Dipak GC", 
       product: "Fresh Milk (1L)", 
       orderDate: "2025-06-21", 
     },
     { 
       id: 2, 
-      user: "Jane Smith", 
+      user: "Rohit Khanal", 
       product: "Cheddar Cheese (250g)", 
       orderDate: "2025-06-20", 
     },
     { 
       id: 3, 
-      user: "Michael Lee", 
+      user: "Samman Adhikari", 
       product: "Natural Yogurt (500g)", 
       orderDate: "2025-06-20", 
     },

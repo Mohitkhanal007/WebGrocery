@@ -5,21 +5,21 @@ const ConfirmedOrders = () => {
   const confirmedOrders = [
     { 
       id: 1, 
-      user: "Ram Kumar", 
+      user: "Rohit Khanal", 
       product: "Organic Butter (200g)", 
       orderDate: "2025-06-18", 
       status: "Confirmed", 
     },
     { 
       id: 2, 
-      user: "Smith khanal", 
+      user: "Samman Adhikari", 
       product: "Goat Cheese (150g)", 
       orderDate: "2025-06-17", 
       status: "Confirmed", 
     },
     { 
       id: 3, 
-      user: "Mikasha niroula", 
+      user: "Nirjala Bhattarai", 
       product: "Cream Cheese (200g)", 
       orderDate: "2025-06-16", 
       status: "Confirmed", 

@@ -4,9 +4,9 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 const Users = () => {
   // Mock Data (Replace with actual API fetch)
   const users = [
-    { id: 1, name: "John Doe", email: "john.doe@example.com", role: "Admin", status: "Active" },
-    { id: 2, name: "Jane Smith", email: "jane.smith@example.com", role: "User", status: "Inactive" },
-    { id: 3, name: "Michael Lee", email: "michael.lee@example.com", role: "User", status: "Active" },
+    { id: 1, name: "Rohit Khanal", email: "rohit.khanal@example.com", role: "Admin", status: "Active" },
+    { id: 2, name: "Samman Adhikari", email: "samman.adhikari@example.com", role: "User", status: "Inactive" },
+    { id: 3, name: "Nirjala Bhattarai", email: "nirjala.bhattarai@example.com", role: "User", status: "Active" },
   ];
 
   return (

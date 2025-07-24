@@ -3,8 +3,8 @@ import React, { useState } from "react";
 const Profile = () => {
   // Mock user data (Replace with actual API fetch)
   const user = {
-    name: "John Doe",
-    email: "john.doe@example.com",
+    name: "Dipak GC",
+    email: "dipak.gc@example.com",
     phone: "+1234567890",
     address: "123 Main Street, Anytown, USA",
     profilePic: "https://via.placeholder.com/150", // Current profile picture URL

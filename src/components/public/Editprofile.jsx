@@ -5,8 +5,8 @@ import Navbar from "../../components/common/customer/Navbar";
 const EditProfile = () => {
   // Dummy user data
   const [user, setUser] = useState({
-    name: "John Doe",
-    email: "johndoe@example.com",
+    name: "Dipak GC",
+    email: "dipakgc@example.com",
     phone: "+977 9812345678",
     address: "Kathmandu, Nepal",
     profilePic: "https://via.placeholder.com/100", // Replace with actual image

@@ -4,9 +4,9 @@ import { FaCheck, FaTrash } from "react-icons/fa";
 const Reviews = () => {
   // Mock Data (Replace with actual API fetch)
   const reviews = [
-    { id: 1, user: "Ram Kumar", package: "Paris Getaway", rating: 5, review: "Amazing experience, loved the trip!", status: "Approved" },
-    { id: 2, user: "Smith khanal", package: "Bali Retreat", rating: 4, review: "Beautiful destination, but the hotel could be better.", status: "Pending" },
-    { id: 3, user: "Mikasha niroula", package: "Thailand Adventure", rating: 3, review: "Good trip, but the schedule was too packed.", status: "Approved" },
+    { id: 1, user: "Rohit Khanal", package: "Paris Getaway", rating: 5, review: "Amazing experience, loved the trip!", status: "Approved" },
+    { id: 2, user: "Samman Adhikari", package: "Bali Retreat", rating: 4, review: "Beautiful destination, but the hotel could be better.", status: "Pending" },
+    { id: 3, user: "Nirjala Bhattarai", package: "Thailand Adventure", rating: 3, review: "Good trip, but the schedule was too packed.", status: "Approved" },
   ];
 
   return (
