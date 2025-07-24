@@ -1,4 +1,6 @@
 const Order = require("../models/Order");
+const Customer = require("../models/Customer");
+const Product = require("../models/Product");
 
 // Create a new order
 exports.createOrder = async (req, res) => {
@@ -43,5 +45,40 @@ exports.updateOrderStatus = async (req, res) => {
     res.json({ success: true, order });
   } catch (err) {
     res.status(500).json({ success: false, message: "Failed to update order status", error: err.message });
+  }
+};
+
+// Analytics endpoint
+exports.getAnalytics = async (req, res) => {
+  try {
+    // Total sales
+    const totalSales = await Order.aggregate([
+      { $group: { _id: null, total: { $sum: "$total" } } }
+    ]);
+    // Top products
+    const topProducts = await Order.aggregate([
+      { $unwind: "$items" },
+      { $group: { _id: "$items.productId", title: { $first: "$items.title" }, totalSold: { $sum: "$items.quantity" } } },
+      { $sort: { totalSold: -1 } },
+      { $limit: 5 }
+    ]);
+    // User growth (users per month)
+    const userGrowth = await Customer.aggregate([
+      { $group: { _id: { $dateToString: { format: "%Y-%m", date: "$createdAt" } }, count: { $sum: 1 } } },
+      { $sort: { _id: 1 } }
+    ]);
+    // Order counts by status
+    const orderStatusCounts = await Order.aggregate([
+      { $group: { _id: "$status", count: { $sum: 1 } } }
+    ]);
+    res.json({
+      success: true,
+      totalSales: totalSales[0]?.total || 0,
+      topProducts,
+      userGrowth,
+      orderStatusCounts
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: "Failed to fetch analytics", error: err.message });
   }
 }; 
