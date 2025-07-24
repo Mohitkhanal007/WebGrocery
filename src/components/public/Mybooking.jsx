@@ -3,6 +3,7 @@ import Footer from "../common/customer/Footer";
 import Navbar from "../common/customer/Navbar";
 import axios from "axios";
 import { toast } from 'react-toastify';
+import { Link } from "react-router-dom";
 
 const MyOrders = () => {
   const [orders, setOrders] = useState([]);
@@ -129,6 +130,7 @@ const MyOrders = () => {
                   {order.address && (
                     <p className="text-gray-600 mt-2">Delivery: {order.address.street}, {order.address.city}, {order.address.state}, {order.address.zip}, {order.address.country}</p>
                   )}
+                  <Link to={`/orders/${order._id}`} className="inline-block mt-2 bg-blue-700 text-white px-4 py-2 rounded hover:bg-blue-800 transition">View Details</Link>
                 </div>
               </div>
             ))
