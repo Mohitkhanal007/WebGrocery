@@ -8,4 +8,7 @@ router.post("/", OrderController.createOrder);
 // Get all orders for a user
 router.get("/user/:userId", OrderController.getUserOrders);
 
+// Update order status (admin)
+router.put('/:orderId/status', OrderController.updateOrderStatus);
+
 module.exports = router; 
