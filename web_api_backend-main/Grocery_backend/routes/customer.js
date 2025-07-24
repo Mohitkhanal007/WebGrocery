@@ -21,5 +21,9 @@ router.get("/getAllCustomers", protect, authorize("admin"), getCustomers);
 router.get("/getCustomer/:id", protect, authorize("admin", "customer"), getCustomer);
 router.put("/updateCustomer/:id", protect, authorize("admin", "customer"), upload.single("profilePicture"), updateCustomer);
 router.post("/uploadImage", protect, authorize("admin", "customer"), upload.single("profilePicture"), uploadImage);
+router.post("/address", customerController.addAddress);
+router.get("/addresses/:userId", customerController.getAddresses);
+router.put("/address", customerController.updateAddress);
+router.delete("/address", customerController.deleteAddress);
 
 module.exports = router;

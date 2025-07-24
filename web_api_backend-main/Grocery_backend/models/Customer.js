@@ -35,6 +35,15 @@ const customerSchema = new mongoose.Schema({
         default: null,
         trim: true,
     },
+    addresses: [
+        {
+            street: String,
+            city: String,
+            state: String,
+            zip: String,
+            country: String
+        }
+    ],
     role: {
         type: String,
         enum: ["customer", "admin"], // Define roles

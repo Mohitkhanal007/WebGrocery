@@ -168,6 +168,62 @@ exports.uploadImage = asyncHandler(async (req, res, next) => {
     });
 });
 
+// Add a new address
+exports.addAddress = async (req, res) => {
+  try {
+    const { userId, address } = req.body;
+    const customer = await Customer.findById(userId);
+    if (!customer) return res.status(404).json({ success: false, message: "User not found" });
+    customer.addresses.push(address);
+    await customer.save();
+    res.json({ success: true, addresses: customer.addresses });
+  } catch (err) {
+    res.status(500).json({ success: false, message: "Failed to add address", error: err.message });
+  }
+};
+
+// Get all addresses for a user
+exports.getAddresses = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const customer = await Customer.findById(userId);
+    if (!customer) return res.status(404).json({ success: false, message: "User not found" });
+    res.json({ success: true, addresses: customer.addresses });
+  } catch (err) {
+    res.status(500).json({ success: false, message: "Failed to fetch addresses", error: err.message });
+  }
+};
+
+// Update an address
+exports.updateAddress = async (req, res) => {
+  try {
+    const { userId, addressId, address } = req.body;
+    const customer = await Customer.findById(userId);
+    if (!customer) return res.status(404).json({ success: false, message: "User not found" });
+    const addr = customer.addresses.id(addressId);
+    if (!addr) return res.status(404).json({ success: false, message: "Address not found" });
+    Object.assign(addr, address);
+    await customer.save();
+    res.json({ success: true, addresses: customer.addresses });
+  } catch (err) {
+    res.status(500).json({ success: false, message: "Failed to update address", error: err.message });
+  }
+};
+
+// Delete an address
+exports.deleteAddress = async (req, res) => {
+  try {
+    const { userId, addressId } = req.body;
+    const customer = await Customer.findById(userId);
+    if (!customer) return res.status(404).json({ success: false, message: "User not found" });
+    customer.addresses.id(addressId).remove();
+    await customer.save();
+    res.json({ success: true, addresses: customer.addresses });
+  } catch (err) {
+    res.status(500).json({ success: false, message: "Failed to delete address", error: err.message });
+  }
+};
+
 // Get token from model, create cookie, and send response
 const sendTokenResponse = (customer, statusCode, res) => {
     const token = customer.getSignedJwtToken();
