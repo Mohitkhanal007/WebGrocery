@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useCart } from "./CartContext";
 import { Link, useNavigate } from "react-router-dom";
 import KhaltiCheckout from "khalti-checkout-web";
+import axios from "axios";
 
 const CartCheckout = () => {
   const { cart, clearCart } = useCart();
@@ -33,10 +34,31 @@ const CartCheckout = () => {
       productName: "Grocery Cart Order",
       productUrl: window.location.href,
       eventHandler: {
-        onSuccess(payload) {
-          setProcessing(false);
-          setSuccess(true);
-          clearCart();
+        async onSuccess(payload) {
+          try {
+            // Save order to backend
+            const userId = localStorage.getItem("userId");
+            await axios.post("http://localhost:3001/api/v1/orders", {
+              userId,
+              items: cart.map(item => ({
+                productId: item._id,
+                title: item.title,
+                price: item.price,
+                quantity: item.quantity,
+                image: item.image
+              })),
+              address: formData,
+              total,
+              paymentMethod: "khalti",
+              paymentId: payload.idx
+            });
+            setProcessing(false);
+            setSuccess(true);
+            clearCart();
+          } catch (err) {
+            setProcessing(false);
+            setError("Order saving failed, but payment was successful.");
+          }
         },
         onError(error) {
           setProcessing(false);

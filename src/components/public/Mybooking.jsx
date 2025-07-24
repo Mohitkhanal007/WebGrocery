@@ -37,10 +37,15 @@ const MyOrders = () => {
           setLoading(false);
           return;
         }
-        // In a real app, you would fetch orders from your backend:
-        // const response = await axios.get(`/api/v1/orders/user/${userId}`, ...);
-        // setOrders(response.data);
-        throw new Error("Backend not connected"); // Simulate backend error
+        // Fetch orders from backend
+        const response = await axios.get(`http://localhost:3001/api/v1/orders/user/${userId}`);
+        if (response.data && response.data.success) {
+          setOrders(response.data.orders);
+          setError("");
+        } else {
+          setOrders([]);
+          setError("No orders found.");
+        }
       } catch (err) {
         console.log("Backend not available, using placeholder data for my orders page");
         setOrders(placeholderOrders);
@@ -90,21 +95,25 @@ const MyOrders = () => {
                 className="w-full max-w-4xl p-6 bg-white shadow-lg rounded-lg flex items-start space-x-6 border border-gray-100"
               >
                 <img
-                  src={order.product.imageUrl || "https://via.placeholder.com/150"}
-                  alt={order.product.name}
+                  src={order.items?.[0]?.image || order.product?.imageUrl || "https://via.placeholder.com/150"}
+                  alt={order.items?.[0]?.title || order.product?.name}
                   className="w-32 h-32 object-cover rounded-lg"
                 />
                 <div className="flex-grow">
                   <h2 className="text-2xl font-semibold text-blue-800">
-                    {order.product.name}
+                    {order.items?.[0]?.title || order.product?.name}
+                    {order.items && order.items.length > 1 && (
+                      <span className="text-base text-gray-500 ml-2">+{order.items.length - 1} more</span>
+                    )}
                   </h2>
                   <p className="text-gray-600">Order ID: {order._id}</p>
-                  <p className="text-gray-600">Date: {new Date(order.date).toLocaleDateString()}</p>
-                  <p className="text-gray-600">Amount: Rs.{order.totalPrice.toLocaleString()}</p>
-                  <p className="text-gray-600">Quantity: {order.quantity}</p>
-                  <p className={`text-xl font-bold ${getStatusColor(order.status)}`}>
-                    Status: {order.status}
-                  </p>
+                  <p className="text-gray-600">Date: {new Date(order.createdAt).toLocaleDateString()}</p>
+                  <p className="text-gray-600">Amount: Rs.{order.total?.toLocaleString() || order.totalPrice?.toLocaleString()}</p>
+                  <p className="text-gray-600">Quantity: {order.items ? order.items.reduce((sum, i) => sum + i.quantity, 0) : order.quantity}</p>
+                  <p className={`text-xl font-bold ${getStatusColor(order.status || order.status)}`}>Status: {order.status || order.status}</p>
+                  {order.address && (
+                    <p className="text-gray-600 mt-2">Delivery: {order.address.street}, {order.address.city}, {order.address.state}, {order.address.zip}, {order.address.country}</p>
+                  )}
                 </div>
               </div>
             ))
