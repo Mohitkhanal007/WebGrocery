@@ -6,6 +6,48 @@ import Navbar from "../common/customer/Navbar";
 const Myprofile = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [addresses, setAddresses] = useState(() => {
+    const stored = localStorage.getItem("addresses");
+    return stored ? JSON.parse(stored) : [];
+  });
+  const [addressForm, setAddressForm] = useState({
+    street: "",
+    city: "",
+    state: "",
+    zip: "",
+    country: ""
+  });
+  const [editingIndex, setEditingIndex] = useState(null);
+
+  // Save addresses to localStorage
+  useEffect(() => {
+    localStorage.setItem("addresses", JSON.stringify(addresses));
+  }, [addresses]);
+
+  const handleAddressChange = (e) => {
+    setAddressForm({ ...addressForm, [e.target.name]: e.target.value });
+  };
+
+  const handleAddOrUpdateAddress = (e) => {
+    e.preventDefault();
+    if (editingIndex !== null) {
+      setAddresses(addresses.map((addr, idx) => idx === editingIndex ? addressForm : addr));
+      setEditingIndex(null);
+    } else {
+      setAddresses([...addresses, addressForm]);
+    }
+    setAddressForm({ street: "", city: "", state: "", zip: "", country: "" });
+  };
+
+  const handleEditAddress = (idx) => {
+    setAddressForm(addresses[idx]);
+    setEditingIndex(idx);
+  };
+
+  const handleDeleteAddress = (idx) => {
+    setAddresses(addresses.filter((_, i) => i !== idx));
+    if (editingIndex === idx) setEditingIndex(null);
+  };
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -36,7 +78,7 @@ const Myprofile = () => {
   return (
     <>
       <Navbar />
-      <div className="container mx-auto px-6 py-25 flex flex-col items-center">
+      <div className="container mx-auto px-6 py-20">
         <h1 className="text-4xl font-bold text-gray-800 mb-6">Your Profile</h1>
 
         {loading ? (
@@ -81,6 +123,28 @@ const Myprofile = () => {
         ) : (
           <p className="text-gray-800 text-lg">Failed to load profile.</p>
         )}
+        <div className="mt-12">
+          <h2 className="text-2xl font-bold mb-4 text-purple-800">Address Book</h2>
+          <form onSubmit={handleAddOrUpdateAddress} className="mb-6 grid grid-cols-1 md:grid-cols-5 gap-4">
+            <input name="street" value={addressForm.street} onChange={handleAddressChange} placeholder="Street" className="p-2 border rounded" required />
+            <input name="city" value={addressForm.city} onChange={handleAddressChange} placeholder="City" className="p-2 border rounded" required />
+            <input name="state" value={addressForm.state} onChange={handleAddressChange} placeholder="State" className="p-2 border rounded" required />
+            <input name="zip" value={addressForm.zip} onChange={handleAddressChange} placeholder="ZIP" className="p-2 border rounded" required />
+            <input name="country" value={addressForm.country} onChange={handleAddressChange} placeholder="Country" className="p-2 border rounded" required />
+            <button type="submit" className="bg-purple-700 text-white px-4 py-2 rounded col-span-1 md:col-span-5 mt-2">{editingIndex !== null ? "Update Address" : "Add Address"}</button>
+          </form>
+          <ul className="space-y-3">
+            {addresses.map((addr, idx) => (
+              <li key={idx} className="flex flex-col md:flex-row md:items-center justify-between bg-gray-50 p-4 rounded shadow">
+                <span>{addr.street}, {addr.city}, {addr.state}, {addr.zip}, {addr.country}</span>
+                <div className="flex gap-2 mt-2 md:mt-0">
+                  <button onClick={() => handleEditAddress(idx)} className="bg-blue-600 text-white px-3 py-1 rounded">Edit</button>
+                  <button onClick={() => handleDeleteAddress(idx)} className="bg-red-600 text-white px-3 py-1 rounded">Delete</button>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
       <Footer />
     </>
