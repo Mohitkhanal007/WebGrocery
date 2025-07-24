@@ -3,6 +3,7 @@ import { useCart } from "./CartContext";
 import { Link, useNavigate } from "react-router-dom";
 import KhaltiCheckout from "khalti-checkout-web";
 import axios from "axios";
+import { toast } from 'react-toastify';
 
 const CartCheckout = () => {
   const { cart, clearCart } = useCart();
@@ -55,6 +56,7 @@ const CartCheckout = () => {
             setProcessing(false);
             setSuccess(true);
             clearCart();
+            toast.success('Order placed successfully!');
           } catch (err) {
             setProcessing(false);
             setError("Order saving failed, but payment was successful.");
