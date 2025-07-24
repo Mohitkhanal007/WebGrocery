@@ -28,13 +28,49 @@ const Myprofile = () => {
     setAddressForm({ ...addressForm, [e.target.name]: e.target.value });
   };
 
-  const handleAddOrUpdateAddress = (e) => {
+  useEffect(() => {
+    const userId = localStorage.getItem("userId");
+    if (userId) {
+      // Fetch addresses from backend
+      axios.get(`http://localhost:3001/api/v1/customer/addresses/${userId}`)
+        .then(res => {
+          if (res.data && res.data.success) setAddresses(res.data.addresses);
+        })
+        .catch(() => {});
+    }
+  }, []);
+
+  const handleAddOrUpdateAddress = async (e) => {
     e.preventDefault();
-    if (editingIndex !== null) {
-      setAddresses(addresses.map((addr, idx) => idx === editingIndex ? addressForm : addr));
+    const userId = localStorage.getItem("userId");
+    if (userId) {
+      if (editingIndex !== null) {
+        // Update address via API
+        const addressId = addresses[editingIndex]._id;
+        await axios.put("http://localhost:3001/api/v1/customer/address", {
+          userId,
+          addressId,
+          address: addressForm
+        });
+      } else {
+        // Add address via API
+        await axios.post("http://localhost:3001/api/v1/customer/address", {
+          userId,
+          address: addressForm
+        });
+      }
+      // Refresh addresses
+      const res = await axios.get(`http://localhost:3001/api/v1/customer/addresses/${userId}`);
+      setAddresses(res.data.addresses);
       setEditingIndex(null);
     } else {
-      setAddresses([...addresses, addressForm]);
+      // Fallback to localStorage
+      if (editingIndex !== null) {
+        setAddresses(addresses.map((addr, idx) => idx === editingIndex ? addressForm : addr));
+        setEditingIndex(null);
+      } else {
+        setAddresses([...addresses, addressForm]);
+      }
     }
     setAddressForm({ street: "", city: "", state: "", zip: "", country: "" });
   };
@@ -44,9 +80,19 @@ const Myprofile = () => {
     setEditingIndex(idx);
   };
 
-  const handleDeleteAddress = (idx) => {
-    setAddresses(addresses.filter((_, i) => i !== idx));
-    if (editingIndex === idx) setEditingIndex(null);
+  const handleDeleteAddress = async (idx) => {
+    const userId = localStorage.getItem("userId");
+    if (userId && addresses[idx]._id) {
+      await axios.delete("http://localhost:3001/api/v1/customer/address", {
+        data: { userId, addressId: addresses[idx]._id }
+      });
+      const res = await axios.get(`http://localhost:3001/api/v1/customer/addresses/${userId}`);
+      setAddresses(res.data.addresses);
+      setEditingIndex(null);
+    } else {
+      setAddresses(addresses.filter((_, i) => i !== idx));
+      if (editingIndex === idx) setEditingIndex(null);
+    }
   };
 
   useEffect(() => {
