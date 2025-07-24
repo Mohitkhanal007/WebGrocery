@@ -37,7 +37,7 @@ const Sidebar = () => {
     <div className={`h-screen ${isCollapsed ? "w-20" : "w-64"} bg-gray-900 text-white flex flex-col p-4 transition-all duration-300`}>
       
       <div className="flex items-center justify-between mb-6">
-        {!isCollapsed && <h2 className="text-xl font-bold">Dairy Go Admin</h2>}
+        {!isCollapsed && <h2 className="text-xl font-bold">Grocery Store Admin</h2>}
         <button onClick={toggleSidebar} className="p-1 rounded-full hover:bg-gray-700">
           {isCollapsed ? <Menu size={24} /> : <ChevronLeft size={24} />}
         </button>
