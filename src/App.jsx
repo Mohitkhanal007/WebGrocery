@@ -21,6 +21,7 @@ const EditProfile = lazy(() => import("./components/public/Editprofile"));
 const ProductDetail = lazy(() => import("./components/public/ProductDetail"));
 const Products = lazy(() => import("./components/public/Products"));
 const CartPage = lazy(() => import("./components/common/customer/CartPage"));
+const CartCheckout = lazy(() => import("./components/common/customer/CartCheckout"));
 
 const Dashboard = lazy(() => import("./components/private/dashboard/Dashboard"));
 const AddProduct = lazy(() => import("./components/private/products/AddProduct"));
@@ -51,6 +52,10 @@ function App() {
     {
       path: "/checkout/:id",
       element: <Suspense><Checkout /></Suspense>,
+    },
+    {
+      path: "/checkout/cart",
+      element: <Suspense><CartCheckout /></Suspense>,
     },
     {
       path: "/faq",
