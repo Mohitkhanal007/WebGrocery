@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useCart } from "./CartContext";
 import { Link, useNavigate } from "react-router-dom";
+import KhaltiCheckout from "khalti-checkout-web";
 
 const CartCheckout = () => {
   const { cart, clearCart } = useCart();
@@ -22,16 +23,33 @@ const CartCheckout = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleCheckout = async (e) => {
+  const handleKhaltiPayment = (e) => {
     e.preventDefault();
     setProcessing(true);
     setError("");
-    // Simulate payment and order placement
-    setTimeout(() => {
-      setProcessing(false);
-      setSuccess(true);
-      clearCart();
-    }, 1500);
+    const config = {
+      publicKey: "test_public_key_dc74e0fd57cb46cd93832aee0a390234",
+      productIdentity: "cart-checkout",
+      productName: "Grocery Cart Order",
+      productUrl: window.location.href,
+      eventHandler: {
+        onSuccess(payload) {
+          setProcessing(false);
+          setSuccess(true);
+          clearCart();
+        },
+        onError(error) {
+          setProcessing(false);
+          setError("Payment failed. Please try again.");
+        },
+        onClose() {
+          setProcessing(false);
+        },
+      },
+      paymentPreference: ["KHALTI"],
+    };
+    const checkout = new KhaltiCheckout(config);
+    checkout.show({ amount: total * 100 }); // Khalti expects paisa
   };
 
   if (cart.length === 0 && !success) {
@@ -74,7 +92,7 @@ const CartCheckout = () => {
           <div className="text-xl font-bold mt-6">Total: Rs.{total}</div>
         </div>
         {/* Checkout Form */}
-        <form className="bg-white shadow-lg rounded-lg p-6" onSubmit={handleCheckout}>
+        <form className="bg-white shadow-lg rounded-lg p-6" onSubmit={handleKhaltiPayment}>
           <h3 className="text-2xl font-bold mb-4">Shipping Details</h3>
           <div className="mb-4">
             <label className="block text-gray-800 font-semibold mb-2">Full Name</label>
@@ -101,7 +119,7 @@ const CartCheckout = () => {
           </div>
           {error && <div className="text-red-600 mb-4">{error}</div>}
           <button type="submit" disabled={processing} className="w-full bg-green-700 text-white py-3 rounded-lg text-lg font-semibold hover:bg-green-800 transition duration-300">
-            {processing ? "Processing..." : "Place Order"}
+            {processing ? "Processing..." : "Pay with Khalti"}
           </button>
         </form>
       </div>

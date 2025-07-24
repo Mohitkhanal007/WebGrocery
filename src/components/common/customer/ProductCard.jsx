@@ -35,9 +35,9 @@ const ProductCard = ({ packageData }) => {
             <span className="text-purple-800 font-bold text-xl">Rs.{price}</span>
           </div>
           <div className="flex flex-col gap-2">
-            <Link to={`/products/${_id}`} className="dairy-btn bg-blue-800 text-white px-5 py-2 rounded-lg text-sm font-semibold hover:bg-blue-700 transition duration-300">
-              View Product
-            </Link>
+          <Link to={`/products/${_id}`} className="dairy-btn bg-blue-800 text-white px-5 py-2 rounded-lg text-sm font-semibold hover:bg-blue-700 transition duration-300">
+            View Product
+          </Link>
             <button
               onClick={() => addToCart(packageData)}
               className="dairy-btn bg-green-600 text-white px-5 py-2 rounded-lg text-sm font-semibold hover:bg-green-700 transition duration-300 mt-2"
