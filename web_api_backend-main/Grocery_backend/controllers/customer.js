@@ -12,32 +12,212 @@ exports.getCustomers = asyncHandler(async (req, res, next) => {
         return res.status(403).json({ message: "Access denied. Admins only." });
     }
 
-    const customers = await Customer.find({});
+    const { page = 1, limit = 10, search, status, role } = req.query;
+    
+    let query = {};
+    
+    // Search by name or email
+    if (search) {
+        query.$or = [
+            { fname: { $regex: search, $options: 'i' } },
+            { lname: { $regex: search, $options: 'i' } },
+            { email: { $regex: search, $options: 'i' } }
+        ];
+    }
+    
+    // Filter by status (active/inactive)
+    if (status) {
+        query.status = status;
+    }
+    
+    // Filter by role
+    if (role) {
+        query.role = role;
+    }
+    
+    const customers = await Customer.find(query)
+        .select('-password')
+        .sort({ createdAt: -1 })
+        .limit(limit * 1)
+        .skip((page - 1) * limit);
+        
+    const total = await Customer.countDocuments(query);
+    
     res.status(200).json({
         success: true,
         count: customers.length,
+        total,
+        totalPages: Math.ceil(total / limit),
+        currentPage: parseInt(page),
         data: customers,
     });
 });
 
-// @desc    Get single customer (Only Admin or the Customer Himself)
+// @desc    Get single customer by ID (Admin Only)
 // @route   GET /api/v1/customers/:id
-// @access  Private (Admin or User)
-exports.getCustomer = asyncHandler(async (req, res, next) => {
-    const customer = await Customer.findById(req.params.id);
+// @access  Private (Admin)
+exports.getCustomerById = asyncHandler(async (req, res, next) => {
+    if (req.user.role !== "admin") {
+        return res.status(403).json({ message: "Access denied. Admins only." });
+    }
+
+    const customer = await Customer.findById(req.params.id).select('-password');
 
     if (!customer) {
         return res.status(404).json({ message: `Customer not found with id ${req.params.id}` });
     }
 
-    // Allow access only if admin or the customer himself
-    if (req.user.role !== "admin" && req.user.id !== customer.id) {
-        return res.status(403).json({ message: "Access denied." });
-    }
-
     res.status(200).json({
         success: true,
         data: customer,
+    });
+});
+
+// @desc    Update customer profile and status (Admin Only)
+// @route   PUT /api/v1/customers/:id
+// @access  Private (Admin)
+exports.updateCustomerProfile = asyncHandler(async (req, res, next) => {
+    if (req.user.role !== "admin") {
+        return res.status(403).json({ message: "Access denied. Admins only." });
+    }
+
+    let customer = await Customer.findById(req.params.id);
+    
+    if (!customer) {
+        return res.status(404).json({ message: `Customer not found with id ${req.params.id}` });
+    }
+
+    const { fname, lname, phone, email, role, status } = req.body;
+    let image = customer.image;
+
+    // Check if a new image is uploaded
+    if (req.file) {
+        if (customer.image) {
+            const imagePath = path.join(__dirname, "../public/uploads", customer.image);
+            if (fs.existsSync(imagePath)) {
+                fs.unlinkSync(imagePath);
+            }
+        }
+        image = req.file.filename;
+    }
+
+    const updatedData = { fname, lname, phone, email, image, role, status };
+
+    customer = await Customer.findByIdAndUpdate(req.params.id, updatedData, {
+        new: true,
+        runValidators: true,
+    }).select('-password');
+
+    res.status(200).json({
+        success: true,
+        message: "Customer updated successfully",
+        data: customer,
+    });
+});
+
+// @desc    Deactivate customer (Admin Only)
+// @route   PUT /api/v1/customers/:id/deactivate
+// @access  Private (Admin)
+exports.deactivateCustomer = asyncHandler(async (req, res, next) => {
+    if (req.user.role !== "admin") {
+        return res.status(403).json({ message: "Access denied. Admins only." });
+    }
+
+    const customer = await Customer.findById(req.params.id);
+
+    if (!customer) {
+        return res.status(404).json({ message: "Customer not found" });
+    }
+
+    // Set status to inactive instead of deleting
+    customer.status = 'inactive';
+    await customer.save();
+
+    res.status(200).json({ 
+        success: true, 
+        message: "Customer deactivated successfully",
+        data: customer
+    });
+});
+
+// @desc    Activate customer (Admin Only)
+// @route   PUT /api/v1/customers/:id/activate
+// @access  Private (Admin)
+exports.activateCustomer = asyncHandler(async (req, res, next) => {
+    if (req.user.role !== "admin") {
+        return res.status(403).json({ message: "Access denied. Admins only." });
+    }
+
+    const customer = await Customer.findById(req.params.id);
+
+    if (!customer) {
+        return res.status(404).json({ message: "Customer not found" });
+    }
+
+    // Set status to active
+    customer.status = 'active';
+    await customer.save();
+
+    res.status(200).json({ 
+        success: true, 
+        message: "Customer activated successfully",
+        data: customer
+    });
+});
+
+// @desc    Get customer statistics
+// @route   GET /api/v1/customers/stats
+// @access  Private (Admin)
+exports.getCustomerStats = asyncHandler(async (req, res, next) => {
+    if (req.user.role !== "admin") {
+        return res.status(403).json({ message: "Access denied. Admins only." });
+    }
+
+    const stats = await Customer.aggregate([
+        {
+            $group: {
+                _id: null,
+                totalCustomers: { $sum: 1 },
+                activeCustomers: {
+                    $sum: { $cond: [{ $eq: ["$status", "active"] }, 1, 0] }
+                },
+                inactiveCustomers: {
+                    $sum: { $cond: [{ $eq: ["$status", "inactive"] }, 1, 0] }
+                }
+            }
+        }
+    ]);
+
+    const roleStats = await Customer.aggregate([
+        {
+            $group: {
+                _id: "$role",
+                count: { $sum: 1 }
+            }
+        }
+    ]);
+
+    const monthlyStats = await Customer.aggregate([
+        {
+            $group: {
+                _id: {
+                    year: { $year: "$createdAt" },
+                    month: { $month: "$createdAt" }
+                },
+                count: { $sum: 1 }
+            }
+        },
+        { $sort: { "_id.year": -1, "_id.month": -1 } },
+        { $limit: 12 }
+    ]);
+
+    res.status(200).json({
+        success: true,
+        data: {
+            overview: stats[0] || { totalCustomers: 0, activeCustomers: 0, inactiveCustomers: 0 },
+            byRole: roleStats,
+            monthlyGrowth: monthlyStats
+        }
     });
 });
 
