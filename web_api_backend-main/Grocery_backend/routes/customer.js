@@ -11,6 +11,7 @@ const {
     uploadImage,
     updateCustomer
 } = require("../controllers/customer");
+const customerController = require("../controllers/customer");
 
 // Routes
 router.post("/register", upload.single("profilePicture"), register);

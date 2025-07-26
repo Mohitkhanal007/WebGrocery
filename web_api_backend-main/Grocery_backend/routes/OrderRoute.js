@@ -14,4 +14,12 @@ router.put('/:orderId/status', OrderController.updateOrderStatus);
 // Analytics endpoint
 router.get('/analytics', OrderController.getAnalytics);
 
+// Filter/search orders
+router.get('/filter/search', OrderController.filterOrders);
+// Get order by ID
+router.get('/:id', OrderController.getOrderById);
+
+// Get all orders (admin) - keep this last
+router.get('/', OrderController.getAllOrders);
+
 module.exports = router; 

@@ -81,4 +81,44 @@ exports.getAnalytics = async (req, res) => {
   } catch (err) {
     res.status(500).json({ success: false, message: "Failed to fetch analytics", error: err.message });
   }
+};
+
+// Get all orders (admin)
+exports.getAllOrders = async (req, res) => {
+  try {
+    const orders = await Order.find().sort({ createdAt: -1 });
+    res.json({ success: true, orders });
+  } catch (err) {
+    res.status(500).json({ success: false, message: "Failed to fetch all orders", error: err.message });
+  }
+};
+
+// Get order by ID
+exports.getOrderById = async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id);
+    if (!order) return res.status(404).json({ success: false, message: "Order not found" });
+    res.json({ success: true, order });
+  } catch (err) {
+    res.status(500).json({ success: false, message: "Failed to fetch order", error: err.message });
+  }
+};
+
+// Filter/search orders (by status, user, date)
+exports.filterOrders = async (req, res) => {
+  try {
+    const { status, userId, startDate, endDate } = req.query;
+    let filter = {};
+    if (status) filter.status = status;
+    if (userId) filter.userId = userId;
+    if (startDate || endDate) {
+      filter.createdAt = {};
+      if (startDate) filter.createdAt.$gte = new Date(startDate);
+      if (endDate) filter.createdAt.$lte = new Date(endDate);
+    }
+    const orders = await Order.find(filter).sort({ createdAt: -1 });
+    res.json({ success: true, orders });
+  } catch (err) {
+    res.status(500).json({ success: false, message: "Failed to filter orders", error: err.message });
+  }
 }; 
