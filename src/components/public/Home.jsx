@@ -73,7 +73,7 @@ const Home = () => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        const response = await axios.get("http://localhost:3000/api/v1/package");
+        const response = await axios.get("/api/v1/products");
         setProducts(response.data);
         setError(null);
       } catch (err) {

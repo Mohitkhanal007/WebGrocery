@@ -52,9 +52,13 @@ const ManageProducts = () => {
               products.map((product) => (
                 <tr key={product._id} className="border-b hover:bg-gray-50">
                   <td className="p-3">
-                    <img src={product.image} alt={product.name} className="w-16 h-16 object-cover rounded-md" />
+                    <img 
+                      src={product.image ? (product.image.startsWith('http') ? product.image : `http://localhost:3001/public/uploads/${product.image}`) : "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=400&q=80"} 
+                      alt={product.name || product.title} 
+                      className="w-16 h-16 object-cover rounded-md" 
+                    />
                   </td>
-                  <td className="p-3 text-gray-800 font-medium">{product.name}</td>
+                  <td className="p-3 text-gray-800 font-medium">{product.name || product.title}</td>
                   <td className="p-3 text-gray-600">{product.category}</td>
                   <td className="p-3 text-gray-600">{product.price}</td>
                   <td className="p-3 text-gray-600">{product.stockQuantity}</td>

@@ -12,7 +12,7 @@ const productSchema = new mongoose.Schema(
     price: { type: Number, required: true },
     stockQuantity: { type: Number, required: true, default: 0 },
     unit: { type: String, required: true, enum: ["kg", "liter", "piece", "pack"] },
-    image: { type: String, required: true },
+    image: { type: String, required: false },
     expiryDate: { type: Date, required: true },
     brand: { type: String, required: true },
     isOrganic: { type: Boolean, default: false },

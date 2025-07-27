@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect } from "react";
+import axios from "axios";
 import Navbar from "../common/customer/Navbar";
 import Footer from "../common/customer/Footer";
 import ProductCard from "../common/customer/ProductCard";
@@ -7,7 +8,7 @@ import { placeholderProducts } from "./demoProducts";
 
 const categoryOptions = [
   "All",
-  ...Array.from(new Set(placeholderProducts.map(p => p.category || "Other")))
+  "Milk", "Cheese", "Yogurt", "Butter", "Cream", "Ice Cream", "Other"
 ];
 const sortOptions = [
   { value: "default", label: "Default" },
@@ -24,6 +25,7 @@ const Products = () => {
   const [showScroll, setShowScroll] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [products, setProducts] = useState([]);
 
   React.useEffect(() => {
     const handleScroll = () => {
@@ -33,24 +35,42 @@ const Products = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Simulate loading for demo
+  // Fetch products from backend
   useEffect(() => {
-    setLoading(true);
-    setTimeout(() => setLoading(false), 800);
-  }, [search, category, sort, priceRange]);
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get("/api/v1/products");
+        setProducts(response.data);
+        setError("");
+      } catch (err) {
+        console.log("Backend not available, using placeholder data");
+        setProducts(placeholderProducts);
+        setError("Demo Mode: Showing sample products");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
 
   // Filter and sort products
   const filteredProducts = useMemo(() => {
-    let products = placeholderProducts.filter(p =>
-      (!search || p.title.toLowerCase().includes(search.toLowerCase()) || p.description.toLowerCase().includes(search.toLowerCase())) &&
-      (category === "All" || (p.category || "Other") === category) &&
-      p.price >= priceRange[0] && p.price <= priceRange[1]
-    );
-    if (sort === "priceLow") products = products.sort((a, b) => a.price - b.price);
-    if (sort === "priceHigh") products = products.sort((a, b) => b.price - a.price);
-    if (sort === "newest") products = products.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
-    return products;
-  }, [search, category, sort, priceRange]);
+    let filtered = products.filter(p => {
+      const displayName = p.name || p.title || "";
+      const description = p.description || "";
+      return (
+        (!search || displayName.toLowerCase().includes(search.toLowerCase()) || description.toLowerCase().includes(search.toLowerCase())) &&
+        (category === "All" || (p.category || "Other") === category) &&
+        p.price >= priceRange[0] && p.price <= priceRange[1]
+      );
+    });
+    if (sort === "priceLow") filtered = filtered.sort((a, b) => a.price - b.price);
+    if (sort === "priceHigh") filtered = filtered.sort((a, b) => b.price - a.price);
+    if (sort === "newest") filtered = filtered.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+    return filtered;
+  }, [products, search, category, sort, priceRange]);
 
   return (
     <>

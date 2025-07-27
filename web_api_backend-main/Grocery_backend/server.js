@@ -24,12 +24,12 @@ connectDB();
 
 // Route files
 const auth = require("./routes/customer");
-
 const product = require("./routes/ProductRoute");
 const wishlist = require("./routes/WishlistRoute");
 const khaltiRoutes = require("./routes/KhaltiRoute");
 const booking = require("./routes/BookingRoute");
 const orderRoute = require("./routes/OrderRoute");
+const paymentRoute = require("./routes/PaymentRoute");
 
 // Body parser
 app.use(express.json());
@@ -71,6 +71,7 @@ app.use("/api/v1/wishlist", wishlist);
 app.use("/api/khalti", khaltiRoutes);
 app.use("/api/v1/bookings", booking);
 app.use("/api/v1/orders", orderRoute);
+app.use("/api/v1/payments", paymentRoute);
 
 
 const PORT = process.env.PORT || 5000;
