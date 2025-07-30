@@ -1,11 +1,14 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import Modal from "react-modal";
 
 const ManageProducts = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [editingProduct, setEditingProduct] = useState(null);
+  const [editForm, setEditForm] = useState({});
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -24,6 +27,29 @@ const ManageProducts = () => {
 
   const handleDelete = (id) => {
     alert("Delete functionality is not available in Demo Mode.");
+  };
+
+  const handleEdit = (product) => {
+    setEditingProduct(product);
+    setEditForm({ ...product });
+  };
+
+  const handleEditChange = (e) => {
+    const { name, value } = e.target;
+    setEditForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleEditSave = async () => {
+    try {
+      await axios.put(`/api/v1/products/${editingProduct._id}`, editForm);
+      setMessage("Product updated successfully!");
+      setEditingProduct(null);
+      // Refresh products
+      const res = await axios.get("/api/v1/products");
+      setProducts(res.data || []);
+    } catch (err) {
+      setError("Failed to update product.");
+    }
   };
 
   return (
@@ -63,7 +89,7 @@ const ManageProducts = () => {
                   <td className="p-3 text-gray-600">{product.price}</td>
                   <td className="p-3 text-gray-600">{product.stockQuantity}</td>
                   <td className="p-3">
-                    <button onClick={() => alert('Edit not available in Demo Mode')} className="bg-blue-500 text-white px-4 py-2 rounded-lg mr-2 hover:bg-blue-600">
+                    <button onClick={() => handleEdit(product)} className="bg-blue-500 text-white px-4 py-2 rounded-lg mr-2 hover:bg-blue-600">
                       Edit
                     </button>
                     <button onClick={() => handleDelete(product._id)} className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">
@@ -80,6 +106,25 @@ const ManageProducts = () => {
           </tbody>
         </table>
       )}
+      <Modal
+        isOpen={!!editingProduct}
+        onRequestClose={() => setEditingProduct(null)}
+        contentLabel="Edit Product"
+        ariaHideApp={false}
+      >
+        <h2 className="text-xl font-bold mb-4">Edit Product</h2>
+        <form className="space-y-4">
+          <input name="name" value={editForm.name || ''} onChange={handleEditChange} className="w-full p-2 border rounded" placeholder="Name" />
+          <input name="category" value={editForm.category || ''} onChange={handleEditChange} className="w-full p-2 border rounded" placeholder="Category" />
+          <input name="price" type="number" value={editForm.price || ''} onChange={handleEditChange} className="w-full p-2 border rounded" placeholder="Price" />
+          <input name="stockQuantity" type="number" value={editForm.stockQuantity || ''} onChange={handleEditChange} className="w-full p-2 border rounded" placeholder="Stock" />
+          <textarea name="description" value={editForm.description || ''} onChange={handleEditChange} className="w-full p-2 border rounded" placeholder="Description" />
+          <div className="flex gap-2">
+            <button type="button" onClick={handleEditSave} className="bg-green-600 text-white px-4 py-2 rounded">Save</button>
+            <button type="button" onClick={() => setEditingProduct(null)} className="bg-gray-400 text-white px-4 py-2 rounded">Cancel</button>
+          </div>
+        </form>
+      </Modal>
     </div>
   );
 };

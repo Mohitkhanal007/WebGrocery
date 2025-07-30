@@ -11,6 +11,9 @@ router.get("/user/:userId", OrderController.getUserOrders);
 // Update order status (admin)
 router.put('/:orderId/status', OrderController.updateOrderStatus);
 
+// Update full order (admin)
+router.put('/:orderId', OrderController.updateOrder);
+
 // Analytics endpoint
 router.get('/analytics', OrderController.getAnalytics);
 

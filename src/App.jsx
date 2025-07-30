@@ -1,5 +1,6 @@
 import React, { lazy, Suspense } from "react";
 import { createBrowserRouter, redirect, RouterProvider } from "react-router-dom";
+import { WishlistProvider } from "./components/common/customer/WishlistContext";
 
 // Lazy Imports
 const Home = lazy(() => import("./components/public/Home"));
@@ -137,7 +138,11 @@ function App() {
     { path: "*", element: <div>404: Page Not Found</div> },
   ]);
 
-  return <RouterProvider router={router} />;
+  return (
+    <WishlistProvider>
+      <RouterProvider router={router} />
+    </WishlistProvider>
+  );
 }
 
 export default App;

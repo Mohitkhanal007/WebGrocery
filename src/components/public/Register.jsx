@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import React, { useState } from "react";
-import { FaApple, FaFacebook, FaGoogle, FaLeaf, FaShoppingBasket } from "react-icons/fa";
+import { FaShoppingBasket } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 const Register = () => {
@@ -230,23 +230,7 @@ const Register = () => {
             </button>
           </form>
 
-          <div className="flex items-center justify-center my-6">
-            <span className="w-16 h-px bg-gray-300"></span>
-            <span className="mx-2 text-sm text-gray-500">OR</span>
-            <span className="w-16 h-px bg-gray-300"></span>
-          </div>
 
-          <div className="flex justify-center space-x-4">
-            <button className="p-3 text-gray-600 bg-white border border-gray-300 rounded-full hover:bg-gray-100">
-              <FaGoogle size={20} />
-            </button>
-            <button className="p-3 text-gray-600 bg-white border border-gray-300 rounded-full hover:bg-gray-100">
-              <FaFacebook size={20} />
-            </button>
-            <button className="p-3 text-gray-600 bg-white border border-gray-300 rounded-full hover:bg-gray-100">
-              <FaApple size={20} />
-            </button>
-          </div>
 
           <p className="mt-6 text-sm text-center text-gray-500">
             Already have an account?{" "}

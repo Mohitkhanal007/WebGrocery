@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import { FaBars, FaHeart, FaTimes, FaShoppingBasket, FaShoppingCart } from "react-icons/fa";
 import { Link, useLocation } from "react-router-dom";
 import { useCart } from "./CartContext";
+import { useWishlist } from "./WishlistContext";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [user, setUser] = useState(null);
   const location = useLocation();
   const { cart } = useCart();
+  const { wishlistCount } = useWishlist();
 
   useEffect(() => {
     // Get token from local storage
@@ -68,7 +70,11 @@ const Navbar = () => {
         <div className="flex items-center space-x-4">
           <Link to="/favorite" className="relative text-black hover:text-purple-700 transition duration-300">
             <FaHeart size={22} />
-            {/* <span className="absolute -top-2 -right-2 bg-blue-500 text-white text-xs px-1.5 py-0.5 rounded-full">3</span> */}
+            {wishlistCount > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-1.5 py-0.5 rounded-full font-bold">
+                {wishlistCount}
+              </span>
+            )}
           </Link>
 
           {/* If user is logged in */}

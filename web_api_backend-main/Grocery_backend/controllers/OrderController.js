@@ -48,6 +48,19 @@ exports.updateOrderStatus = async (req, res) => {
   }
 };
 
+// Update full order (admin)
+exports.updateOrder = async (req, res) => {
+  try {
+    const { orderId } = req.params;
+    const update = req.body;
+    const order = await Order.findByIdAndUpdate(orderId, update, { new: true });
+    if (!order) return res.status(404).json({ success: false, message: "Order not found" });
+    res.json({ success: true, order });
+  } catch (err) {
+    res.status(500).json({ success: false, message: "Failed to update order", error: err.message });
+  }
+};
+
 // Analytics endpoint
 exports.getAnalytics = async (req, res) => {
   try {
