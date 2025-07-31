@@ -129,7 +129,7 @@ const AboutUs = () => {
             </div>
             <div className="relative overflow-hidden rounded-lg shadow-lg">
               <img 
-                src="https://images.unsplash.com/photo-1567306226416-28f0efdc88ce?auto=format&fit=crop&w=400&q=80" 
+                src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=400&q=80" 
                 alt="Dairy Products"
                 className="w-full h-48 object-cover hover:scale-110 transition-transform duration-300"
               />
