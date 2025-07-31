@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useCart } from "./CartContext";
 import { Link, useNavigate } from "react-router-dom";
-import KhaltiCheckout from "khalti-checkout-web";
 import axios from "axios";
 import { toast } from 'react-toastify';
 
@@ -12,7 +11,7 @@ const CartCheckout = () => {
     email: "",
     phone: "",
     address: "",
-    paymentMethod: "khalti",
+    paymentMethod: "cod",
   });
   const [processing, setProcessing] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -25,55 +24,38 @@ const CartCheckout = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleKhaltiPayment = (e) => {
+  const handlePlaceOrder = async (e) => {
     e.preventDefault();
     setProcessing(true);
     setError("");
-    const config = {
-      publicKey: "test_public_key_dc74e0fd57cb46cd93832aee0a390234",
-      productIdentity: "cart-checkout",
-      productName: "Grocery Cart Order",
-      productUrl: window.location.href,
-      eventHandler: {
-        async onSuccess(payload) {
-          try {
-            // Save order to backend
-            const userId = localStorage.getItem("userId");
-            await axios.post("/api/v1/orders", {
-              userId,
-              items: cart.map(item => ({
-                productId: item._id,
-                title: item.title,
-                price: item.price,
-                quantity: item.quantity,
-                image: item.image
-              })),
-              address: formData,
-              total,
-              paymentMethod: "khalti",
-              paymentId: payload.idx
-            });
-            setProcessing(false);
-            setSuccess(true);
-            clearCart();
-            toast.success('Order placed successfully!');
-          } catch (err) {
-            setProcessing(false);
-            setError("Order saving failed, but payment was successful.");
-          }
-        },
-        onError(error) {
-          setProcessing(false);
-          setError("Payment failed. Please try again.");
-        },
-        onClose() {
-          setProcessing(false);
-        },
-      },
-      paymentPreference: ["KHALTI"],
-    };
-    const checkout = new KhaltiCheckout(config);
-    checkout.show({ amount: total * 100 }); // Khalti expects paisa
+    
+    try {
+      // Save order to backend
+      const userId = localStorage.getItem("userId");
+      const orderData = {
+        userId,
+        items: cart.map(item => ({
+          productId: item._id,
+          title: item.title,
+          price: item.price,
+          quantity: item.quantity,
+          image: item.image
+        })),
+        address: formData,
+        total,
+        paymentMethod: formData.paymentMethod,
+        paymentId: formData.paymentMethod === "cod" ? "cod-" + Date.now() : "card-" + Date.now()
+      };
+
+      await axios.post("/api/v1/orders", orderData);
+      setProcessing(false);
+      setSuccess(true);
+      clearCart();
+      toast.success('Order placed successfully!');
+    } catch (err) {
+      setProcessing(false);
+      setError("Failed to place order. Please try again.");
+    }
   };
 
   if (cart.length === 0 && !success) {
@@ -116,7 +98,7 @@ const CartCheckout = () => {
           <div className="text-xl font-bold mt-6">Total: Rs.{total}</div>
         </div>
         {/* Checkout Form */}
-        <form className="bg-white shadow-lg rounded-lg p-6" onSubmit={handleKhaltiPayment}>
+        <form className="bg-white shadow-lg rounded-lg p-6" onSubmit={handlePlaceOrder}>
           <h3 className="text-2xl font-bold mb-4">Shipping Details</h3>
           <div className="mb-4">
             <label className="block text-gray-800 font-semibold mb-2">Full Name</label>
@@ -137,13 +119,13 @@ const CartCheckout = () => {
           <div className="mb-6">
             <label className="block text-gray-800 font-semibold mb-2">Payment Method</label>
             <select name="paymentMethod" value={formData.paymentMethod} onChange={handleChange} className="w-full px-4 py-2 border rounded-md">
-              <option value="khalti">Khalti</option>
               <option value="cod">Cash on Delivery</option>
+              <option value="card">Credit/Debit Card</option>
             </select>
           </div>
           {error && <div className="text-red-600 mb-4">{error}</div>}
           <button type="submit" disabled={processing} className="w-full bg-green-700 text-white py-3 rounded-lg text-lg font-semibold hover:bg-green-800 transition duration-300">
-            {processing ? "Processing..." : "Pay with Khalti"}
+            {processing ? "Processing..." : formData.paymentMethod === "cod" ? "Place Order (Cash on Delivery)" : "Pay with Card"}
           </button>
         </form>
       </div>

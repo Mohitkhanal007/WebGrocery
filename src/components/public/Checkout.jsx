@@ -1,5 +1,4 @@
 import axios from "axios";
-import KhaltiCheckout from "khalti-checkout-web";
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Footer from "../../components/common/customer/Footer";
@@ -21,7 +20,7 @@ const Checkout = () => {
       zip: "",
       country: "Nepal"
     },
-    paymentMethod: "khalti",
+    paymentMethod: "cod",
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -65,64 +64,50 @@ const Checkout = () => {
     }
   };
 
-  // Khalti Payment Configuration
-  const khaltiConfig = {
-    publicKey: "test_public_key_dc74e0fd57cb46cd93832aee0a390234",
-    productIdentity: productData?._id,
-    productName: productData?.name || productData?.title || "Grocery Product",
-    productUrl: `http://localhost:5173/products/${productData?._id}`,
-    eventHandler: {
-      async onSuccess(payload) {
-        try {
-          console.log("Payment Success:", payload);
-          
-          // Get user ID from localStorage
-          const userId = localStorage.getItem("userId");
-          if (!userId) {
-            alert("Please login to place an order");
-            return;
-          }
+  // Place Order Function
+  const placeOrder = async () => {
+    try {
+      console.log("Placing order...");
+      
+      // Get user ID from localStorage
+      const userId = localStorage.getItem("userId");
+      if (!userId) {
+        alert("Please login to place an order");
+        return;
+      }
 
-          // Create order data
-          const orderData = {
-            userId,
-            items: [{
-              productId: productData._id,
-              title: productData.name || productData.title,
-              price: productData.price,
-              quantity: parseInt(formData.quantity),
-              image: productData.image
-            }],
-            address: formData.address,
-            total: productData.price * parseInt(formData.quantity),
-            paymentMethod: "khalti",
-            paymentId: payload.idx
-          };
+      // Create order data
+      const orderData = {
+        userId,
+        items: [{
+          productId: productData._id,
+          title: productData.name || productData.title,
+          price: productData.price,
+          quantity: parseInt(formData.quantity),
+          image: productData.image
+        }],
+        address: formData.address,
+        total: productData.price * parseInt(formData.quantity),
+        paymentMethod: formData.paymentMethod,
+        paymentId: formData.paymentMethod === "cod" ? "cod-" + Date.now() : "card-" + Date.now()
+      };
 
-          // Save order to backend
-          const orderResponse = await axios.post("/api/v1/orders", orderData);
-          
-          if (orderResponse.data.success) {
-            alert("Order placed successfully! 🎉");
-            navigate("/mybooking");
-          } else {
-            console.error("Order creation failed:", orderResponse.data);
-            alert("Order saved failed, but payment was successful. Please contact support.");
-          }
-        } catch (err) {
-          console.error("Error creating order:", err);
-          alert("Order creation failed, but payment was successful. Please contact support.");
-        }
-      },
-      onError(error) {
-        console.log("Payment Error:", error);
-        alert("Payment Failed. Please try again.");
-      },
-      onClose() {
-        console.log("Khalti popup closed.");
-      },
-    },
-    paymentPreference: ["KHALTI"],
+      console.log("Order data:", orderData);
+
+      // Save order to backend
+      const orderResponse = await axios.post("/api/v1/orders", orderData);
+      
+      if (orderResponse.data.success) {
+        alert("Order placed successfully! 🎉");
+        navigate("/mybooking");
+      } else {
+        console.error("Order creation failed:", orderResponse.data);
+        alert("Failed to place order. Please try again.");
+      }
+    } catch (err) {
+      console.error("Error creating order:", err);
+      alert("Failed to place order. Please try again.");
+    }
   };
 
   const handlePayment = () => {
@@ -137,9 +122,7 @@ const Checkout = () => {
       return;
     }
 
-    const totalAmount = productData.price * parseInt(formData.quantity) * 100; // Convert to paisa
-    const khaltiCheckout = new KhaltiCheckout(khaltiConfig);
-    khaltiCheckout.show({ amount: totalAmount });
+    placeOrder();
   };
 
   if (loading) return (
@@ -317,13 +300,31 @@ const Checkout = () => {
                 />
               </div>
 
+              {/* Payment Method */}
+              <div>
+                <label className="block text-gray-800 font-semibold mb-2">Payment Method *</label>
+                <select
+                  name="paymentMethod"
+                  value={formData.paymentMethod}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 border rounded-md focus:ring-2 focus:ring-blue-400"
+                  required
+                >
+                  <option value="cod">Cash on Delivery</option>
+                  <option value="card">Credit/Debit Card</option>
+                </select>
+              </div>
+
               {/* Payment Button */}
               <button
                 type="button"
                 onClick={handlePayment}
                 className="w-full bg-blue-800 text-white py-3 rounded-lg text-lg hover:bg-blue-700 transition duration-300"
               >
-                Pay with Khalti - ₹{productData.price * parseInt(formData.quantity)}
+                {formData.paymentMethod === "cod" 
+                  ? `Place Order (Cash on Delivery) - ₹${productData.price * parseInt(formData.quantity)}`
+                  : `Pay with Card - ₹${productData.price * parseInt(formData.quantity)}`
+                }
               </button>
             </form>
           </div>
