@@ -25,8 +25,29 @@ const ManageProducts = () => {
     fetchProducts();
   }, []);
 
-  const handleDelete = (id) => {
-    alert("Delete functionality is not available in Demo Mode.");
+  const handleDelete = async (id) => {
+    if (window.confirm("Are you sure you want to delete this product? This action cannot be undone.")) {
+      try {
+        setLoading(true);
+        await axios.delete(`/api/v1/products/${id}`);
+        setMessage("Product deleted successfully!");
+        
+        // Refresh the products list
+        const res = await axios.get("/api/v1/products");
+        setProducts(res.data || []);
+        
+        // Clear message after 3 seconds
+        setTimeout(() => setMessage(""), 3000);
+      } catch (error) {
+        console.error("Error deleting product:", error);
+        setError("Failed to delete product. Please try again.");
+        
+        // Clear error after 3 seconds
+        setTimeout(() => setError(""), 3000);
+      } finally {
+        setLoading(false);
+      }
+    }
   };
 
   const handleEdit = (product) => {
@@ -69,11 +90,14 @@ const ManageProducts = () => {
         </div>
       </div>
       
-      {error && <p className="text-purple-600 bg-purple-50 p-3 rounded-lg mb-4">{error}</p>}
+      {error && <p className="text-red-600 bg-red-50 p-3 rounded-lg mb-4">{error}</p>}
       {message && <p className="text-green-600 bg-green-50 p-3 rounded-lg mb-4">{message}</p>}
 
       {loading ? (
-        <div className="text-center py-10"><div className="dairy-spinner mx-auto"></div></div>
+        <div className="text-center py-10">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto"></div>
+          <p className="text-gray-600 mt-2">Loading products...</p>
+        </div>
       ) : (
         <table className="w-full border-collapse border border-gray-200">
           <thead className="bg-gray-100">
@@ -99,13 +123,21 @@ const ManageProducts = () => {
                   </td>
                   <td className="p-3 text-gray-800 font-medium">{product.name || product.title}</td>
                   <td className="p-3 text-gray-600">{product.category}</td>
-                  <td className="p-3 text-gray-600">{product.price}</td>
+                  <td className="p-3 text-gray-600">₹{product.price}</td>
                   <td className="p-3 text-gray-600">{product.stockQuantity}</td>
                   <td className="p-3">
-                    <button onClick={() => handleEdit(product)} className="bg-blue-500 text-white px-4 py-2 rounded-lg mr-2 hover:bg-blue-600">
+                    <button 
+                      onClick={() => handleEdit(product)} 
+                      className="bg-blue-500 text-white px-4 py-2 rounded-lg mr-2 hover:bg-blue-600 transition-colors"
+                      disabled={loading}
+                    >
                       Edit
                     </button>
-                    <button onClick={() => handleDelete(product._id)} className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">
+                    <button 
+                      onClick={() => handleDelete(product._id)} 
+                      className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors"
+                      disabled={loading}
+                    >
                       Delete
                     </button>
                   </td>
@@ -124,19 +156,91 @@ const ManageProducts = () => {
         onRequestClose={() => setEditingProduct(null)}
         contentLabel="Edit Product"
         ariaHideApp={false}
+        className="fixed inset-0 flex items-center justify-center p-4"
+        overlayClassName="fixed inset-0 bg-black bg-opacity-50"
       >
-        <h2 className="text-xl font-bold mb-4">Edit Product</h2>
-        <form className="space-y-4">
-          <input name="name" value={editForm.name || ''} onChange={handleEditChange} className="w-full p-2 border rounded" placeholder="Name" />
-          <input name="category" value={editForm.category || ''} onChange={handleEditChange} className="w-full p-2 border rounded" placeholder="Category" />
-          <input name="price" type="number" value={editForm.price || ''} onChange={handleEditChange} className="w-full p-2 border rounded" placeholder="Price" />
-          <input name="stockQuantity" type="number" value={editForm.stockQuantity || ''} onChange={handleEditChange} className="w-full p-2 border rounded" placeholder="Stock" />
-          <textarea name="description" value={editForm.description || ''} onChange={handleEditChange} className="w-full p-2 border rounded" placeholder="Description" />
-          <div className="flex gap-2">
-            <button type="button" onClick={handleEditSave} className="bg-green-600 text-white px-4 py-2 rounded">Save</button>
-            <button type="button" onClick={() => setEditingProduct(null)} className="bg-gray-400 text-white px-4 py-2 rounded">Cancel</button>
-          </div>
-        </form>
+        <div className="bg-white rounded-lg p-6 w-full max-w-md">
+          <h2 className="text-xl font-bold mb-4">Edit Product</h2>
+          <form className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
+              <input 
+                name="name" 
+                value={editForm.name || ''} 
+                onChange={handleEditChange} 
+                className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-400" 
+                placeholder="Product Name" 
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+              <select 
+                name="category" 
+                value={editForm.category || ''} 
+                onChange={handleEditChange} 
+                className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-400"
+              >
+                <option value="">Select Category</option>
+                <option value="Milk">Milk</option>
+                <option value="Cheese">Cheese</option>
+                <option value="Yogurt">Yogurt</option>
+                <option value="Butter">Butter</option>
+                <option value="Cream">Cream</option>
+                <option value="Ice Cream">Ice Cream</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Price (₹)</label>
+              <input 
+                name="price" 
+                type="number" 
+                value={editForm.price || ''} 
+                onChange={handleEditChange} 
+                className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-400" 
+                placeholder="Price" 
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Stock Quantity</label>
+              <input 
+                name="stockQuantity" 
+                type="number" 
+                value={editForm.stockQuantity || ''} 
+                onChange={handleEditChange} 
+                className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-400" 
+                placeholder="Stock Quantity" 
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+              <textarea 
+                name="description" 
+                value={editForm.description || ''} 
+                onChange={handleEditChange} 
+                className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-400" 
+                placeholder="Product Description"
+                rows="3"
+              />
+            </div>
+            <div className="flex gap-2 pt-4">
+              <button 
+                type="button" 
+                onClick={handleEditSave} 
+                className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition-colors flex-1"
+              >
+                Save Changes
+              </button>
+              <button 
+                type="button" 
+                onClick={() => setEditingProduct(null)} 
+                className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500 transition-colors flex-1"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
       </Modal>
     </div>
   );
