@@ -32,7 +32,7 @@ const Contact = () => {
               <FaPhone className="text-blue-800 text-2xl" />
             </div>
             <h3 className="text-xl font-semibold text-blue-800">Phone</h3>
-            <p className="text-gray-700 mt-2">+1 (555) 123-4567</p>
+            <p className="text-gray-700 mt-2">+977 9847034098</p>
             <p className="text-sm text-gray-500 mt-1">24/7 Customer Support</p>
           </div>
           <div className="bg-blue-50 p-6 rounded-lg border border-blue-100">
@@ -40,16 +40,16 @@ const Contact = () => {
               <FaEnvelope className="text-blue-800 text-2xl" />
             </div>
             <h3 className="text-xl font-semibold text-blue-800">Email</h3>
-            <p className="text-gray-700 mt-2">info@dairygo.com</p>
-            <p className="text-sm text-gray-500 mt-1">support@dairygo.com</p>
+            <p className="text-gray-700 mt-2">mohitkhanal567@gmail.com</p>
+            <p className="text-sm text-gray-500 mt-1">Primary Contact</p>
           </div>
           <div className="bg-blue-50 p-6 rounded-lg border border-blue-100">
             <div className="flex justify-center mb-4">
               <FaMapMarkerAlt className="text-blue-800 text-2xl" />
             </div>
             <h3 className="text-xl font-semibold text-blue-800">Address</h3>
-            <p className="text-gray-700 mt-2">123 Dairy Farm Road</p>
-            <p className="text-sm text-gray-500 mt-1">Fresh Valley, CA 90210</p>
+            <p className="text-gray-700 mt-2">Kathmandu</p>
+            <p className="text-sm text-gray-500 mt-1">Nepal</p>
           </div>
         </div>
 

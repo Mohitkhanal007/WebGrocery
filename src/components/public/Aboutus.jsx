@@ -28,7 +28,7 @@ const AboutUs = () => {
         <div className="flex flex-col md:flex-row items-center gap-12">
           <div className="md:w-1/2">
             <img 
-              src="https://images.unsplash.com/photo-1464306076886-debca5e8a6b0?auto=format&fit=crop&w=800&q=80" 
+              src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=800&q=80" 
               alt="Fresh Groceries"
               className="w-full h-auto rounded-lg shadow-lg"
             />
@@ -84,19 +84,19 @@ const AboutUs = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Team Member 1 */}
             <div className="bg-white p-6 rounded-lg shadow-md border border-gray-100">
-              <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80" alt="Team Member 1" className="w-32 h-32 rounded-full mx-auto mb-4 object-cover" />
+              <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=400&q=80" alt="Sarah Johnson" className="w-32 h-32 rounded-full mx-auto mb-4 object-cover" />
               <h4 className="text-xl font-semibold text-blue-800">Sarah Johnson</h4>
               <p className="text-gray-600">Quality Control Manager</p>
             </div>
             {/* Team Member 2 */}
             <div className="bg-white p-6 rounded-lg shadow-md border border-gray-100">
-              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80" alt="Team Member 2" className="w-32 h-32 rounded-full mx-auto mb-4 object-cover" />
+              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80" alt="Michael Chen" className="w-32 h-32 rounded-full mx-auto mb-4 object-cover" />
               <h4 className="text-xl font-semibold text-blue-800">Michael Chen</h4>
               <p className="text-gray-600">Operations Director</p>
             </div>
             {/* Team Member 3 */}
             <div className="bg-white p-6 rounded-lg shadow-md border border-gray-100">
-              <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=400&q=80" alt="Team Member 3" className="w-32 h-32 rounded-full mx-auto mb-4 object-cover" />
+              <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=400&q=80" alt="Emily Rodriguez" className="w-32 h-32 rounded-full mx-auto mb-4 object-cover" />
               <h4 className="text-xl font-semibold text-blue-800">Emily Rodriguez</h4>
               <p className="text-gray-600">Customer Relations</p>
             </div>
@@ -129,7 +129,7 @@ const AboutUs = () => {
             </div>
             <div className="relative overflow-hidden rounded-lg shadow-lg">
               <img 
-                src="https://images.unsplash.com/photo-1464306076886-debca5e8a6b0?auto=format&fit=crop&w=400&q=80" 
+                src="https://images.unsplash.com/photo-1567306226416-28f0efdc88ce?auto=format&fit=crop&w=400&q=80" 
                 alt="Dairy Products"
                 className="w-full h-48 object-cover hover:scale-110 transition-transform duration-300"
               />
