@@ -78,7 +78,7 @@ const Favorite = () => {
             {favorites.map((product) => (
               <div key={product._id} className="bg-white shadow-lg rounded-lg flex items-center p-4">
                 <img 
-                  src={product.image ? (product.image.startsWith('http') ? product.image : `http://localhost:3001/public/uploads/${product.image}`) : "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=400&q=80"} 
+                  src={product.image ? (product.image.startsWith('http') ? product.image : `http://localhost:3001/uploads/${product.image}`) : "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=400&q=80"} 
                   alt={product.name || product.title} 
                   className="w-32 h-32 object-cover rounded-md" 
                 />

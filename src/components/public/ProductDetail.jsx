@@ -50,7 +50,7 @@ const ProductDetail = () => {
             {/* Hero Section */}
             <div className="relative w-full h-[400px] rounded-lg overflow-hidden shadow-lg">
               <img
-                src={productData.image ? (productData.image.startsWith('http') ? productData.image : `http://localhost:3001/public/uploads/${productData.image}`) : "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=400&q=80"}
+                src={productData.image ? (productData.image.startsWith('http') ? productData.image : `http://localhost:3001/uploads/${productData.image}`) : "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=400&q=80"}
                 alt={productData.name || productData.title}
                 className="w-full h-full object-cover"
               />

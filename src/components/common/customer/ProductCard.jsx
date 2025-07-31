@@ -14,7 +14,7 @@ const ProductCard = ({ packageData }) => {
 
   // Use a default grocery product image if none is provided
   const imageUrl = image 
-    ? (image.startsWith('http') ? image : `http://localhost:3001/public/uploads/${image}`)
+    ? (image.startsWith('http') ? image : `http://localhost:3001/uploads/${image}`)
     : "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=400&q=80";
 
   const handleWishlistToggle = async () => {

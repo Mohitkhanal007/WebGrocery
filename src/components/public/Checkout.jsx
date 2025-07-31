@@ -174,7 +174,7 @@ const Checkout = () => {
             <h3 className="text-2xl font-bold text-gray-800 mb-4">📦 Order Summary</h3>
             <div className="flex flex-col items-center">
               <img 
-                src={productData.image ? (productData.image.startsWith('http') ? productData.image : `http://localhost:3001/public/uploads/${productData.image}`) : "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=400&q=80"} 
+                src={productData.image ? (productData.image.startsWith('http') ? productData.image : `http://localhost:3001/uploads/${productData.image}`) : "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=400&q=80"} 
                 alt={productData.name || productData.title} 
                 className="w-full h-64 object-cover rounded-lg shadow-md"
               />
