@@ -110,7 +110,7 @@ const Home = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="text-center p-6 bg-white rounded-lg shadow-md">
               <img 
-                src="https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=400&q=80" 
+                src="https://images.unsplash.com/photo-1567306226416-28f0efdc88ce?auto=format&fit=crop&w=400&q=80" 
                 alt="Fresh Products"
                 className="w-24 h-24 mx-auto mb-4 rounded-full object-cover"
               />
@@ -176,8 +176,8 @@ const Home = () => {
             <div className="bg-white p-6 rounded-lg shadow-md">
               <div className="flex items-center mb-4">
                 <img 
-                  src="https://images.unsplash.com/photo-1494790108755-2616b612b786?auto=format&fit=crop&w=100&q=80" 
-                  alt="Customer 1"
+                  src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=100&q=80" 
+                  alt="Sarah Johnson"
                   className="w-12 h-12 rounded-full object-cover mr-4"
                 />
                 <div>
