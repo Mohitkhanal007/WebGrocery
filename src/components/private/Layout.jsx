@@ -1,13 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { Outlet, useNavigate } from "react-router-dom";
 import Navbar from "../../components/common/admin/Navbar";
 import Sidebar from "../../components/common/admin/Sidebar";
 
-
-import { Outlet } from "react-router-dom";
-
-
 const Layout = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Check if user is logged in and is admin
+    const token = localStorage.getItem("token");
+    const role = localStorage.getItem("role");
+    
+    if (!token) {
+      alert("Please login to access admin dashboard");
+      navigate("/login");
+      return;
+    }
+    
+    if (role !== "admin") {
+      alert("Access denied. Admin privileges required.");
+      navigate("/");
+      return;
+    }
+  }, [navigate]);
 
   return (
     <div className="flex h-screen bg-gray-100">
