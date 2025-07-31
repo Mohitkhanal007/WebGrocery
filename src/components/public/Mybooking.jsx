@@ -64,7 +64,8 @@ const MyOrders = () => {
         setLoading(true);
         setError(null);
         
-        // Fetch orders from backend
+        // Always try to fetch from backend first
+        console.log("Fetching orders for user:", userId);
         const response = await axios.get(`/api/v1/orders/user/${userId}`, {
           headers: {
             Authorization: `Bearer ${token}`
@@ -73,6 +74,7 @@ const MyOrders = () => {
         
         if (response.data && response.data.success) {
           const fetchedOrders = response.data.orders || [];
+          console.log("Fetched orders:", fetchedOrders);
           
           // Show toast if any order status changed
           if (prevOrders.length > 0) {
@@ -91,10 +93,18 @@ const MyOrders = () => {
           setError("No orders found.");
         }
       } catch (err) {
-        console.log("Backend not available, using placeholder data for my orders page");
-        setOrders(placeholderOrders);
-        setError("Demo Mode: Showing sample orders.");
-        toast.info("Demo Mode: Showing sample orders.");
+        console.error("Error fetching orders:", err);
+        
+        // If backend is not available, show placeholder data
+        if (err.code === 'ERR_NETWORK' || err.response?.status >= 500) {
+          console.log("Backend not available, showing placeholder data");
+          setOrders(placeholderOrders);
+          setError("Demo Mode: Showing sample orders (Backend unavailable).");
+          toast.info("Demo Mode: Showing sample orders (Backend unavailable).");
+        } else {
+          setError("Failed to fetch orders. Please try again.");
+          toast.error("Failed to fetch orders. Please try again.");
+        }
       } finally {
         setLoading(false);
       }

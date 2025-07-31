@@ -18,6 +18,7 @@ const AddressSchema = new mongoose.Schema({
 
 const OrderSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: "Customer", required: true },
+  originalUserId: { type: String }, // For demo users
   items: [OrderItemSchema],
   address: AddressSchema,
   total: Number,

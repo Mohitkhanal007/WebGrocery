@@ -6,14 +6,25 @@ const Product = require("../models/Product");
 exports.createOrder = async (req, res) => {
   try {
     const { userId, items, address, total, paymentMethod, paymentId } = req.body;
+    
+    // Handle demo users - create a special userId for them
+    let actualUserId = userId;
+    if (userId && (userId.includes('demo-user') || userId.includes('demo'))) {
+      // For demo users, create a special MongoDB ObjectId
+      actualUserId = new require('mongoose').Types.ObjectId();
+      console.log(`Demo user order: ${userId} -> ${actualUserId}`);
+    }
+    
     const order = new Order({
-      userId,
+      userId: actualUserId,
       items,
       address,
       total,
       paymentMethod,
       paymentId,
-      status: paymentMethod === "cod" ? "Pending" : "Paid"
+      status: paymentMethod === "cod" ? "Pending" : "Paid",
+      // Store original userId for demo users
+      originalUserId: userId.includes('demo') ? userId : undefined
     });
     await order.save();
     res.status(201).json({ success: true, order });
@@ -26,8 +37,19 @@ exports.createOrder = async (req, res) => {
 exports.getUserOrders = async (req, res) => {
   try {
     const { userId } = req.params;
-    const orders = await Order.find({ userId }).sort({ createdAt: -1 });
-    res.json({ success: true, orders });
+    
+    // Handle demo users
+    if (userId && (userId.includes('demo-user') || userId.includes('demo'))) {
+      // For demo users, find orders by originalUserId
+      const orders = await Order.find({ originalUserId: userId }).sort({ createdAt: -1 });
+      console.log(`Found ${orders.length} orders for demo user: ${userId}`);
+      res.json({ success: true, orders });
+    } else {
+      // For real users, find by userId
+      const orders = await Order.find({ userId }).sort({ createdAt: -1 });
+      console.log(`Found ${orders.length} orders for real user: ${userId}`);
+      res.json({ success: true, orders });
+    }
   } catch (err) {
     res.status(500).json({ success: false, message: "Failed to fetch orders", error: err.message });
   }
