@@ -116,9 +116,12 @@ const ManageProducts = () => {
                 <tr key={product._id} className="border-b hover:bg-gray-50">
                   <td className="p-3">
                     <img 
-                      src={product.image ? (product.image.startsWith('http') ? product.image : `http://localhost:3001/public/uploads/${product.image}`) : "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=400&q=80"} 
+                      src={product.image ? (product.image.startsWith('http') ? product.image : `http://localhost:3001/uploads/${product.image}`) : "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=400&q=80"} 
                       alt={product.name || product.title} 
                       className="w-16 h-16 object-cover rounded-md" 
+                      onError={(e) => {
+                        e.target.src = "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=400&q=80";
+                      }}
                     />
                   </td>
                   <td className="p-3 text-gray-800 font-medium">{product.name || product.title}</td>
