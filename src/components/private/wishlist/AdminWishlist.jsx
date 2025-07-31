@@ -29,46 +29,39 @@ const AdminWishlist = () => {
     try {
       setLoading(true);
       const response = await axios.get("/api/v1/wishlist/all");
-      setWishlists(response.data.wishlists || []);
       
-      // Calculate stats
-      const totalItems = response.data.wishlists?.reduce((sum, wishlist) => sum + (wishlist.products?.length || 0), 0) || 0;
-      const totalWishlists = response.data.wishlists?.length || 0;
-      
-      setStats({
-        totalWishlists,
-        totalItems,
-        mostWishedProduct: "Fresh Milk", // This would be calculated from actual data
-        averageItemsPerUser: totalWishlists > 0 ? (totalItems / totalWishlists).toFixed(1) : 0
-      });
+      if (response.data && response.data.wishlists) {
+        const fetchedWishlists = response.data.wishlists;
+        setWishlists(fetchedWishlists);
+        
+        // Calculate stats from real data
+        const totalItems = fetchedWishlists.reduce((sum, wishlist) => sum + (wishlist.products?.length || 0), 0);
+        const totalWishlists = fetchedWishlists.length;
+        
+        setStats({
+          totalWishlists,
+          totalItems,
+          mostWishedProduct: totalWishlists > 0 ? "Calculated from data" : "No data",
+          averageItemsPerUser: totalWishlists > 0 ? (totalItems / totalWishlists).toFixed(1) : 0
+        });
+      } else {
+        setWishlists([]);
+        setStats({
+          totalWishlists: 0,
+          totalItems: 0,
+          mostWishedProduct: "No data",
+          averageItemsPerUser: 0
+        });
+      }
     } catch (error) {
       console.error("Error fetching wishlists:", error);
-      // For demo purposes, create sample data
-      const sampleWishlists = [
-        {
-          _id: "1",
-          customer: "User 123456",
-          products: [
-            { _id: "1", name: "Fresh Milk", price: 120, image: "https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=400&q=80" },
-            { _id: "2", name: "Organic Yogurt", price: 85, image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=400&q=80" }
-          ],
-          createdAt: "2024-08-15"
-        },
-        {
-          _id: "2",
-          customer: "User 789012",
-          products: [
-            { _id: "3", name: "Aged Cheese", price: 200, image: "https://images.unsplash.com/photo-1567306226416-28f0efdc88ce?auto=format&fit=crop&w=400&q=80" }
-          ],
-          createdAt: "2024-08-14"
-        }
-      ];
-      setWishlists(sampleWishlists);
+      // Don't show demo data - just show empty state
+      setWishlists([]);
       setStats({
-        totalWishlists: 2,
-        totalItems: 3,
-        mostWishedProduct: "Fresh Milk",
-        averageItemsPerUser: 1.5
+        totalWishlists: 0,
+        totalItems: 0,
+        mostWishedProduct: "No data",
+        averageItemsPerUser: 0
       });
     } finally {
       setLoading(false);
@@ -180,9 +173,22 @@ const AdminWishlist = () => {
           <h3 className="text-xl font-bold text-gray-800 mb-6">Customer Wishlists</h3>
           
           {filteredWishlists.length === 0 ? (
-            <div className="text-center py-8">
-              <FaHeart className="text-4xl text-gray-300 mx-auto mb-4" />
-              <p className="text-gray-500">No wishlists found</p>
+            <div className="text-center py-12">
+              <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <FaHeart className="text-3xl text-gray-400" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-800 mb-2">No Wishlists Found</h3>
+              <p className="text-gray-600 mb-6">
+                {wishlists.length === 0 
+                  ? "No customers have added items to their wishlists yet."
+                  : "No wishlists match your search criteria."
+                }
+              </p>
+              {wishlists.length === 0 && (
+                <p className="text-sm text-gray-500">
+                  Wishlists will appear here when customers add products to their wishlists.
+                </p>
+              )}
             </div>
           ) : (
             <div className="space-y-6">

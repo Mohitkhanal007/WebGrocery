@@ -31,63 +31,46 @@ const AdminReviews = () => {
     try {
       setLoading(true);
       const response = await axios.get("/api/v1/reviews");
-      setReviews(response.data.reviews || []);
       
-      // Calculate stats
-      const totalReviews = response.data.reviews?.length || 0;
-      const totalRating = response.data.reviews?.reduce((sum, review) => sum + (review.rating || 0), 0) || 0;
-      const averageRating = totalReviews > 0 ? (totalRating / totalReviews).toFixed(1) : 0;
-      const positiveReviews = response.data.reviews?.filter(review => (review.rating || 0) >= 4).length || 0;
-      
-      setStats({
-        totalReviews,
-        averageRating,
-        positiveReviews,
-        recentReviews: response.data.reviews?.filter(review => {
-          const reviewDate = new Date(review.createdAt);
-          const weekAgo = new Date();
-          weekAgo.setDate(weekAgo.getDate() - 7);
-          return reviewDate >= weekAgo;
-        }).length || 0
-      });
+      if (response.data && response.data.reviews) {
+        const fetchedReviews = response.data.reviews;
+        setReviews(fetchedReviews);
+        
+        // Calculate stats from real data
+        const totalReviews = fetchedReviews.length;
+        const totalRating = fetchedReviews.reduce((sum, review) => sum + (review.rating || 0), 0);
+        const averageRating = totalReviews > 0 ? (totalRating / totalReviews).toFixed(1) : 0;
+        const positiveReviews = fetchedReviews.filter(review => (review.rating || 0) >= 4).length;
+        
+        setStats({
+          totalReviews,
+          averageRating,
+          positiveReviews,
+          recentReviews: fetchedReviews.filter(review => {
+            const reviewDate = new Date(review.createdAt);
+            const weekAgo = new Date();
+            weekAgo.setDate(weekAgo.getDate() - 7);
+            return reviewDate >= weekAgo;
+          }).length
+        });
+      } else {
+        setReviews([]);
+        setStats({
+          totalReviews: 0,
+          averageRating: 0,
+          positiveReviews: 0,
+          recentReviews: 0
+        });
+      }
     } catch (error) {
       console.error("Error fetching reviews:", error);
-      // For demo purposes, create sample data
-      const sampleReviews = [
-        {
-          _id: "1",
-          customer: "John Doe",
-          product: "Fresh Milk",
-          rating: 5,
-          comment: "Excellent quality! The milk is fresh and creamy. Highly recommended!",
-          createdAt: "2024-08-15",
-          status: "approved"
-        },
-        {
-          _id: "2",
-          customer: "Jane Smith",
-          product: "Organic Yogurt",
-          rating: 4,
-          comment: "Great taste and good for health. Will buy again.",
-          createdAt: "2024-08-14",
-          status: "approved"
-        },
-        {
-          _id: "3",
-          customer: "Mike Johnson",
-          product: "Aged Cheese",
-          rating: 3,
-          comment: "Good quality but a bit expensive for the quantity.",
-          createdAt: "2024-08-13",
-          status: "pending"
-        }
-      ];
-      setReviews(sampleReviews);
+      // Don't show demo data - just show empty state
+      setReviews([]);
       setStats({
-        totalReviews: 3,
-        averageRating: 4.0,
-        positiveReviews: 2,
-        recentReviews: 3
+        totalReviews: 0,
+        averageRating: 0,
+        positiveReviews: 0,
+        recentReviews: 0
       });
     } finally {
       setLoading(false);
@@ -232,9 +215,22 @@ const AdminReviews = () => {
           <h3 className="text-xl font-bold text-gray-800 mb-6">Customer Reviews</h3>
           
           {filteredReviews.length === 0 ? (
-            <div className="text-center py-8">
-              <FaStar className="text-4xl text-gray-300 mx-auto mb-4" />
-              <p className="text-gray-500">No reviews found</p>
+            <div className="text-center py-12">
+              <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <FaStar className="text-3xl text-gray-400" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-800 mb-2">No Reviews Found</h3>
+              <p className="text-gray-600 mb-6">
+                {reviews.length === 0 
+                  ? "No customers have left reviews yet."
+                  : "No reviews match your search criteria."
+                }
+              </p>
+              {reviews.length === 0 && (
+                <p className="text-sm text-gray-500">
+                  Reviews will appear here when customers leave feedback on products.
+                </p>
+              )}
             </div>
           ) : (
             <div className="space-y-6">
