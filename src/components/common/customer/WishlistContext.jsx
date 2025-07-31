@@ -49,14 +49,20 @@ export const WishlistProvider = ({ children }) => {
   const addToWishlist = async (productId) => {
     try {
       const token = localStorage.getItem('token');
+      console.log('WishlistContext - Token available:', !!token);
+      console.log('WishlistContext - Product ID:', productId);
+      
       if (!token) {
         return { success: false, message: 'Please login to add items to wishlist' };
       }
 
+      console.log('WishlistContext - Making API call...');
       const response = await axios.post('/api/v1/wishlist/add', 
         { productId },
         { headers: { Authorization: `Bearer ${token}` } }
       );
+
+      console.log('WishlistContext - API response:', response.data);
 
       if (response.data && response.data.success) {
         // Refresh wishlist
@@ -67,6 +73,7 @@ export const WishlistProvider = ({ children }) => {
       }
     } catch (error) {
       console.error('Error adding to wishlist:', error);
+      console.error('Error response:', error.response?.data);
       return { success: false, message: error.response?.data?.message || 'Failed to add to wishlist' };
     }
   };

@@ -18,7 +18,11 @@ const ProductCard = ({ packageData }) => {
     : "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=400&q=80";
 
   const handleWishlistToggle = async () => {
-    if (!localStorage.getItem('token')) {
+    const token = localStorage.getItem('token');
+    console.log('Token available:', !!token);
+    console.log('Product ID:', _id);
+    
+    if (!token) {
       alert('Please login to add items to wishlist');
       return;
     }
@@ -26,14 +30,18 @@ const ProductCard = ({ packageData }) => {
     setWishlistLoading(true);
     try {
       if (isInWishlist(_id)) {
+        console.log('Removing from wishlist...');
         const result = await removeFromWishlist(_id);
+        console.log('Remove result:', result);
         if (result.success) {
           alert('Removed from wishlist ❤️');
         } else {
           alert(result.message || 'Failed to remove from wishlist');
         }
       } else {
+        console.log('Adding to wishlist...');
         const result = await addToWishlist(_id);
+        console.log('Add result:', result);
         if (result.success) {
           alert('Added to wishlist ❤️');
         } else {
