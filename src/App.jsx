@@ -33,6 +33,8 @@ const Payments = lazy(() => import("./components/private/payments/Payments"));
 const Users = lazy(() => import("./components/private/users/Users"));
 const Profile = lazy(() => import("./components/private/profile/profile"));
 const Settings = lazy(() => import("./components/private/setting/settings"));
+const AdminWishlist = lazy(() => import("./components/private/wishlist/AdminWishlist"));
+const AdminReviews = lazy(() => import("./components/private/reviews/AdminReviews"));
 
 function App() {
   const router = createBrowserRouter([
@@ -122,8 +124,9 @@ function App() {
         { path: "pending", element: <Suspense><PendingOrders /></Suspense> },
         { path: "confirmed", element: <Suspense><ConfirmedOrders /></Suspense> },
         { path: "payments", element: <Suspense><Payments /></Suspense> },
-                  { path: "customers", element: <Suspense><Users /></Suspense> },
-
+        { path: "customers", element: <Suspense><Users /></Suspense> },
+        { path: "wishlist", element: <Suspense><AdminWishlist /></Suspense> },
+        { path: "reviews", element: <Suspense><AdminReviews /></Suspense> },
         { path: "profile", element: <Suspense><Profile /></Suspense> },
         { path: "settings", element: <Suspense><Settings /></Suspense> },
       ],

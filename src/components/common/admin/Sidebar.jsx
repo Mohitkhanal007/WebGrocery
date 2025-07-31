@@ -8,14 +8,16 @@ import {
   LogOut,
   Menu,
   Package,
-  Users
+  Users,
+  Heart,
+  Star
 } from "lucide-react";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [openMenus, setOpenMenus] = useState({ products: true, orders: true });
+  const [openMenus, setOpenMenus] = useState({ products: true, orders: true, wishlist: false, reviews: false });
   const navigate = useNavigate();
 
   const toggleSidebar = () => {
@@ -89,6 +91,38 @@ const Sidebar = () => {
           <Users size={20} />
           {!isCollapsed && <span>Users</span>}
         </Link>
+
+        <div className="group">
+          <button onClick={() => toggleMenu("wishlist")} className="flex items-center justify-between w-full p-2 rounded-lg hover:bg-gray-700 transition-colors duration-200">
+            <div className="flex items-center gap-3">
+              <Heart size={20} />
+              {!isCollapsed && <span>Wishlist</span>}
+            </div>
+            {!isCollapsed && (openMenus.wishlist ? <ChevronDown size={18} /> : <ChevronRight size={18} />)}
+          </button>
+          {!isCollapsed && openMenus.wishlist && (
+            <div className="ml-6 space-y-1 mt-1 transition-all duration-300 ease-in-out">
+              <Link to="/admin/wishlist" className="block p-2 rounded hover:bg-gray-700 transition-colors duration-200">View All</Link>
+              <Link to="/admin/wishlist/analytics" className="block p-2 rounded hover:bg-gray-700 transition-colors duration-200">Analytics</Link>
+            </div>
+          )}
+        </div>
+
+        <div className="group">
+          <button onClick={() => toggleMenu("reviews")} className="flex items-center justify-between w-full p-2 rounded-lg hover:bg-gray-700 transition-colors duration-200">
+            <div className="flex items-center gap-3">
+              <Star size={20} />
+              {!isCollapsed && <span>Reviews</span>}
+            </div>
+            {!isCollapsed && (openMenus.reviews ? <ChevronDown size={18} /> : <ChevronRight size={18} />)}
+          </button>
+          {!isCollapsed && openMenus.reviews && (
+            <div className="ml-6 space-y-1 mt-1 transition-all duration-300 ease-in-out">
+              <Link to="/admin/reviews" className="block p-2 rounded hover:bg-gray-700 transition-colors duration-200">View All</Link>
+              <Link to="/admin/reviews/analytics" className="block p-2 rounded hover:bg-gray-700 transition-colors duration-200">Analytics</Link>
+            </div>
+          )}
+        </div>
 
       </nav>
 
