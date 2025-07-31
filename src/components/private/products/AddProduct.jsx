@@ -5,7 +5,7 @@ const AddProduct = () => {
   const [formData, setFormData] = useState({
     name: "",
     description: "",
-    category: "Fruits",
+    category: "Milk",
     price: "",
     stockQuantity: "",
     unit: "kg",
@@ -67,7 +67,10 @@ const AddProduct = () => {
     setLoading(true);
     setMessage("");
     setError("");
+    
     try {
+      console.log("Submitting product data:", formData);
+      
       const form = new FormData();
       Object.entries(formData).forEach(([key, value]) => {
         if (key === "nutritionalInfo") {
@@ -76,15 +79,24 @@ const AddProduct = () => {
           form.append(key, value);
         }
       });
-      await axios.post('/api/v1/products', form, {
-        headers: { 'Content-Type': 'multipart/form-data' }
-      });
+      
+      // Add authorization header
+      const token = localStorage.getItem('token');
+      const headers = { 
+        'Content-Type': 'multipart/form-data',
+        'Authorization': `Bearer ${token}`
+      };
+      
+      console.log("Making API call to add product...");
+      const response = await axios.post('/api/v1/products', form, { headers });
+      console.log("Product added successfully:", response.data);
+      
       setMessage("Product added successfully!");
       setError("");
       setFormData({
         name: "",
         description: "",
-        category: "Fruits",
+        category: "Milk",
         price: "",
         stockQuantity: "",
         unit: "kg",
@@ -101,7 +113,9 @@ const AddProduct = () => {
         }
       });
     } catch (error) {
-      setError("Failed to add product. Please try again.");
+      console.error("Error adding product:", error);
+      console.error("Error response:", error.response?.data);
+      setError(error.response?.data?.message || "Failed to add product. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -137,12 +151,12 @@ const AddProduct = () => {
           <div>
             <label className="block text-gray-700 font-semibold mb-2">Category</label>
             <select name="category" value={formData.category} onChange={handleChange} className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-purple-400">
-              <option value="Fruits">Fruits</option>
-              <option value="Vegetables">Vegetables</option>
-              <option value="Bakery">Bakery</option>
-              <option value="Eggs">Eggs</option>
-              <option value="Beverages">Beverages</option>
-              <option value="Snacks">Snacks</option>
+              <option value="Milk">Milk</option>
+              <option value="Cheese">Cheese</option>
+              <option value="Yogurt">Yogurt</option>
+              <option value="Butter">Butter</option>
+              <option value="Cream">Cream</option>
+              <option value="Ice Cream">Ice Cream</option>
               <option value="Other">Other</option>
             </select>
           </div>
