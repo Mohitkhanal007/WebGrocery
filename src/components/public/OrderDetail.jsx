@@ -13,7 +13,7 @@ const OrderDetail = () => {
   useEffect(() => {
     const fetchOrder = async () => {
       try {
-        const res = await axios.get(`http://localhost:3001/api/v1/orders/${orderId}`);
+        const res = await axios.get(`/api/v1/orders/${orderId}`);
         setOrder(res.data.order);
         setError("");
       } catch (err) {

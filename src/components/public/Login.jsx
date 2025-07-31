@@ -12,18 +12,14 @@ const Login = () => {
 
   const loginUser = async (userData) => {
     try {
+      console.log("Attempting login with:", userData);
       const response = await axios.post("/api/v1/auth/login", userData);
+      console.log("Login response:", response.data);
       return response.data;
     } catch (error) {
-      // Demo mode - simulate successful login
-      if (error.code === 'ECONNREFUSED' || error.message.includes('Network Error')) {
-        console.log("Backend not available, using demo mode");
-        return {
-          userId: "demo-user-123",
-          token: "demo-token-456",
-          role: "customer"
-        };
-      }
+      console.error("Login error details:", error);
+      console.error("Error response:", error.response?.data);
+      console.error("Error status:", error.response?.status);
       throw error;
     }
   };
@@ -31,11 +27,7 @@ const Login = () => {
   const mutation = useMutation({
     mutationFn: loginUser,
     onSuccess: (data) => {
-      if (data.token === "demo-token-456") {
-        alert("Demo Mode: Login successful! 🎉\n(Backend not connected - using demo data)");
-      } else {
-        alert("Login successful! 🎉");
-      }
+      alert("Login successful! 🎉");
       console.log("User logged in:", data);
       localStorage.setItem("userId", data.userId);
       localStorage.setItem("token", data.token);
@@ -48,11 +40,7 @@ const Login = () => {
       }
     },
     onError: (error) => {
-      if (error.code === 'ECONNREFUSED' || error.message.includes('Network Error')) {
-        alert("Demo Mode: Backend not connected.\nUse any email/password to login.");
-      } else {
-        alert("Login failed. Please check your credentials.");
-      }
+      alert("Login failed. Please check your credentials.");
       console.error("Login error:", error.response?.data || error.message);
     },
   });
@@ -88,10 +76,10 @@ const Login = () => {
             Welcome back! Please enter your details.
           </p>
 
-          {/* Demo Mode Notice */}
-          <div className="mb-6 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-            <p className="text-blue-800 text-sm text-center">
-              <strong>Demo Mode:</strong> Backend not connected. Use any email/password to login.
+          {/* Backend Connected Notice */}
+          <div className="mb-6 p-3 bg-green-50 border border-green-200 rounded-lg">
+            <p className="text-green-800 text-sm text-center">
+              <strong>✅ Backend Connected:</strong> Login with your credentials.
             </p>
           </div>
 

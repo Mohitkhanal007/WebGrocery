@@ -8,10 +8,22 @@ const Contact = () => {
     <>
       <Navbar />
       <div className="container mx-auto px-6 py-20">
-        <h1 className="text-4xl font-bold text-blue-800 text-center mb-6">Contact Us</h1>
-        <p className="text-lg text-gray-600 text-center mb-12">
-          Have questions about our dairy products? We'd love to hear from you.
-        </p>
+        {/* Hero Section */}
+        <div className="relative w-full h-[300px] rounded-lg overflow-hidden shadow-lg mb-12">
+          <img
+            src="https://images.unsplash.com/photo-1502741338009-cac2772e18bc?auto=format&fit=crop&w=1200&q=80"
+            alt="Contact Us"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black opacity-70 flex items-center justify-center">
+            <div className="text-center text-white">
+              <h1 className="text-5xl font-bold mb-4">Contact Us</h1>
+              <p className="text-xl">
+                Have questions about our grocery products? We'd love to hear from you.
+              </p>
+            </div>
+          </div>
+        </div>
 
         {/* Contact Info */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center mb-12">

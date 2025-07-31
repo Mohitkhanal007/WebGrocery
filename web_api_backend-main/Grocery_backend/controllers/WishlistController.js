@@ -17,6 +17,7 @@ exports.addToWishlist = async (req, res) => {
         let wishlist = await Wishlist.findOne({ customer: customerId });
         if (!wishlist) {
             wishlist = new Wishlist({ customer: customerId, products: [] });
+            await wishlist.save();
         }
 
         // Check if the product is already in the wishlist
@@ -102,11 +103,17 @@ exports.getWishlist = async (req, res) => {
         const wishlist = await Wishlist.findOne({ customer: customerId }).populate("products");
 
         if (!wishlist) {
-            return res.status(404).json({ success: false, message: "Wishlist not found" });
+            // Return empty wishlist instead of 404
+            return res.status(200).json({ 
+                success: true, 
+                wishlist: { products: [] },
+                message: "Wishlist is empty" 
+            });
         }
 
         res.status(200).json({ success: true, wishlist });
     } catch (error) {
+        console.error("Error fetching wishlist:", error);
         res.status(500).json({ success: false, message: "Server Error", error: error.message });
     }
 };

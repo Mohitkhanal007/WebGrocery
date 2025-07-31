@@ -19,8 +19,9 @@ const Favorite = () => {
 
         console.log("API Response:", response.data); // Debug API response
 
-        if (response.data && response.data.success && response.data.wishlist && Array.isArray(response.data.wishlist.products)) {
-          setFavorites(response.data.wishlist.products);
+        if (response.data && response.data.success) {
+          const products = response.data.wishlist?.products || [];
+          setFavorites(products);
         } else {
           console.error("Unexpected API response format:", response.data);
           setFavorites([]); 

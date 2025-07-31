@@ -39,7 +39,7 @@ const CartCheckout = () => {
           try {
             // Save order to backend
             const userId = localStorage.getItem("userId");
-            await axios.post("http://localhost:3001/api/v1/orders", {
+            await axios.post("/api/v1/orders", {
               userId,
               items: cart.map(item => ({
                 productId: item._id,

@@ -7,7 +7,7 @@ const Profile = () => {
     email: "dipak.gc@example.com",
     phone: "+1234567890",
     address: "123 Main Street, Anytown, USA",
-    profilePic: "https://via.placeholder.com/150", // Current profile picture URL
+    profilePic: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80", // Professional profile picture
   };
 
   const [isEditing, setIsEditing] = useState(false);

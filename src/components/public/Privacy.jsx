@@ -7,7 +7,22 @@ const Privacy = () => {
     <>
       <Navbar />
       <div className="container mx-auto px-6 py-25">
-        <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">🔒 Privacy Policy</h2>
+        {/* Hero Section */}
+        <div className="relative w-full h-[300px] rounded-lg overflow-hidden shadow-lg mb-12">
+          <img
+            src="https://images.unsplash.com/photo-1502741338009-cac2772e18bc?auto=format&fit=crop&w=1200&q=80"
+            alt="Privacy Policy"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black opacity-70 flex items-center justify-center">
+            <div className="text-center text-white">
+              <h2 className="text-5xl font-bold mb-4">🔒 Privacy Policy</h2>
+              <p className="text-xl">
+                How we protect and handle your personal information
+              </p>
+            </div>
+          </div>
+        </div>
 
         <div className="bg-white p-6 shadow-md rounded-md max-w-3xl mx-auto">
           <h3 className="text-xl font-semibold text-gray-700 mb-3">1. Introduction</h3>

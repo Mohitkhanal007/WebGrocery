@@ -7,7 +7,22 @@ const Terms = () => {
     <>
       <Navbar />
       <div className="container mx-auto px-6 py-20">
-        <h2 className="text-4xl font-bold text-center text-blue-800 mb-6">Terms and Conditions</h2>
+        {/* Hero Section */}
+        <div className="relative w-full h-[300px] rounded-lg overflow-hidden shadow-lg mb-12">
+          <img
+            src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1200&q=80"
+            alt="Terms and Conditions"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black opacity-70 flex items-center justify-center">
+            <div className="text-center text-white">
+              <h2 className="text-5xl font-bold mb-4">Terms and Conditions</h2>
+              <p className="text-xl">
+                Please read our terms carefully before using our services
+              </p>
+            </div>
+          </div>
+        </div>
         <div className="bg-white p-8 rounded-lg shadow-md space-y-6 text-gray-700 max-w-4xl mx-auto border border-gray-100">
           <p className="text-lg">
             Welcome to Dairy Go! By using our website and purchasing our products, you agree to the following terms and conditions. Please read them carefully.

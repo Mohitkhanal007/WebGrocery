@@ -35,8 +35,16 @@ const Register = () => {
     mutationFn: registerUser,
     onSuccess: (data) => {
       if (data.userId && data.userId.includes('demo-user')) {
-        
+        // Store demo user ID
+        localStorage.setItem("userId", data.userId);
+        localStorage.setItem("token", "demo-token");
+        localStorage.setItem("role", "customer");
+        alert("Demo registration successful! 🎉");
       } else {
+        // Store real user data
+        localStorage.setItem("userId", data.userId);
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("role", data.role || "customer");
         alert("Registration successful! 🎉");
       }
       console.log("User registered:", data);

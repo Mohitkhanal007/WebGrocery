@@ -9,7 +9,7 @@ const EditProfile = () => {
     email: "dipakgc@example.com",
     phone: "+977 9812345678",
     address: "Kathmandu, Nepal",
-    profilePic: "https://via.placeholder.com/100", // Replace with actual image
+    profilePic: "https://images.unsplash.com/photo-1494790108755-2616b612b786?auto=format&fit=crop&w=400&q=80", // Professional profile picture
   });
 
   const [newProfilePic, setNewProfilePic] = useState(null);

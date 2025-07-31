@@ -1,16 +1,16 @@
-# Dairy Go - Fresh Dairy Products E-commerce
+# Grocery Store - Fresh Grocery Products E-commerce
 
-A modern, responsive e-commerce website for selling fresh dairy products. Built with React, Vite, and Tailwind CSS.
+A modern, responsive e-commerce website for selling fresh grocery products. Built with React, Vite, and Tailwind CSS.
 
 ## Features
 
-- 🥛 **Fresh Dairy Products**: Browse and order fresh milk, cheese, yogurt, and other dairy products
+- 🥛 **Fresh Grocery Products**: Browse and order fresh fruits, vegetables, dairy, and other grocery products
 - 🛒 **Shopping Cart**: Add products to cart and manage your orders
 - 👤 **User Authentication**: Secure login and registration system
 - 📱 **Responsive Design**: Works perfectly on desktop, tablet, and mobile devices
 - ⭐ **Product Reviews**: Customer reviews and ratings system
 - 💳 **Payment Integration**: Secure payment processing
-- 🚚 **Order Tracking**: Track your dairy product deliveries
+- 🚚 **Order Tracking**: Track your grocery product deliveries
 - 👨‍💼 **Admin Dashboard**: Manage products, orders, and customers
 
 ## Tech Stack
@@ -34,7 +34,7 @@ A modern, responsive e-commerce website for selling fresh dairy products. Built 
 1. Clone the repository:
 ```bash
 git clone <repository-url>
-cd dairy-go
+cd grocery-store
 ```
 
 2. Install dependencies:
@@ -67,7 +67,7 @@ src/
 ## Features Overview
 
 ### For Customers
-- Browse dairy products by category
+- Browse grocery products by category
 - Add products to favorites
 - Place orders with secure checkout
 - Track order status
@@ -103,4 +103,4 @@ This project is licensed under the MIT License.
 
 ## Contact
 
-For support or inquiries, please contact us at support@dairygo.com
+For support or inquiries, please contact us at support@grocerystore.com

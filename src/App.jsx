@@ -13,7 +13,6 @@ const Terms = lazy(() => import("./components/public/Terms"));
 const Privacy = lazy(() => import("./components/public/Privacy"));
 const Aboutus = lazy(() => import("./components/public/Aboutus"));
 const Contact = lazy(() => import("./components/public/Contact"));
-const Review = lazy(() => import("./components/public/Review"));
 
 const Favorite = lazy(() => import("./components/public/Favorite"));
 const Myprofile = lazy(() => import("./components/public/Myprofile"));
@@ -31,8 +30,7 @@ const ManageProducts = lazy(() => import("./components/private/products/ManagePr
 const PendingOrders = lazy(() => import("./components/private/orders/PendingOrders"));
 const ConfirmedOrders = lazy(() => import("./components/private/orders/ConfirmedOrders"));
 const Payments = lazy(() => import("./components/private/payments/Payments"));
-const Customers = lazy(() => import("./components/private/users/Users"));
-const CustomerReviews = lazy(() => import("./components/private/reviews/Reviews"));
+const Users = lazy(() => import("./components/private/users/Users"));
 const Profile = lazy(() => import("./components/private/profile/profile"));
 const Settings = lazy(() => import("./components/private/setting/settings"));
 
@@ -79,10 +77,7 @@ function App() {
       path: "/contact",
       element: <Suspense><Contact /></Suspense>,
     },
-    {
-      path: "/review",
-      element: <Suspense><Review /></Suspense>,
-    },
+
     {
       path: "/favorite",
       element: <Suspense><Favorite /></Suspense>,
@@ -127,8 +122,8 @@ function App() {
         { path: "pending", element: <Suspense><PendingOrders /></Suspense> },
         { path: "confirmed", element: <Suspense><ConfirmedOrders /></Suspense> },
         { path: "payments", element: <Suspense><Payments /></Suspense> },
-        { path: "customers", element: <Suspense><Customers /></Suspense> },
-        { path: "reviews", element: <Suspense><CustomerReviews /></Suspense> },
+                  { path: "customers", element: <Suspense><Users /></Suspense> },
+
         { path: "profile", element: <Suspense><Profile /></Suspense> },
         { path: "settings", element: <Suspense><Settings /></Suspense> },
       ],

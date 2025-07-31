@@ -26,12 +26,19 @@ const ProductCard = ({ packageData }) => {
     setWishlistLoading(true);
     try {
       if (isInWishlist(_id)) {
-        await removeFromWishlist(_id);
+        const result = await removeFromWishlist(_id);
+        if (result.success) {
+          console.log('Removed from wishlist');
+        }
       } else {
-        await addToWishlist(_id);
+        const result = await addToWishlist(_id);
+        if (result.success) {
+          console.log('Added to wishlist');
+        }
       }
     } catch (error) {
       console.error('Wishlist error:', error);
+      alert('Failed to update wishlist. Please try again.');
     } finally {
       setWishlistLoading(false);
     }

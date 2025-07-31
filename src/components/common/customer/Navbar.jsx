@@ -49,7 +49,7 @@ const Navbar = () => {
         <div className="hidden md:flex space-x-6 items-center">
           <Link to="/" className="bg-transparent text-black hover:text-purple-700 transition duration-300">Home</Link>
           <Link to="/products" className="bg-transparent text-black hover:text-purple-700 transition duration-300">Products</Link>
-          <Link to="/review" className="bg-transparent text-black hover:text-purple-700 transition duration-300">Reviews</Link>
+          
           {user && (
             <Link to="/mybooking" className="bg-transparent text-black hover:text-purple-700 transition duration-300">My Orders</Link>
           )}
@@ -104,7 +104,7 @@ const Navbar = () => {
         <div className="md:hidden bg-white shadow-md absolute top-full left-0 w-full py-4">
           <Link to="/" className="block px-6 py-2 bg-transparent text-black hover:text-purple-700 transition duration-200">Home</Link>
           <Link to="/products" className="block px-6 py-2 bg-transparent text-black hover:text-purple-700 transition duration-200">Products</Link>
-          <Link to="/review" className="block px-6 py-2 bg-transparent text-black hover:text-purple-700 transition duration-200">Reviews</Link>
+          
           {user && (
             <Link to="/mybooking" className="block px-6 py-2 bg-transparent text-black hover:text-purple-700 transition duration-200">My Orders</Link>
           )}

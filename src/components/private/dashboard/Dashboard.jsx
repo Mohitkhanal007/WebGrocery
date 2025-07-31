@@ -12,7 +12,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchAnalytics = async () => {
       try {
-        const res = await axios.get("http://localhost:3001/api/v1/orders/analytics");
+        const res = await axios.get("/api/v1/orders/analytics");
         setAnalytics(res.data);
         setError("");
       } catch (err) {
@@ -29,7 +29,20 @@ const Dashboard = () => {
 
   return (
     <div className="p-8 bg-gray-100 min-h-screen">
-      <h1 className="text-3xl font-bold text-gray-800 mb-8">Admin Analytics Dashboard</h1>
+      {/* Hero Section */}
+      <div className="relative w-full h-[200px] rounded-lg overflow-hidden shadow-lg mb-8">
+        <img
+          src="https://images.unsplash.com/photo-1464306076886-debca5e8a6b0?auto=format&fit=crop&w=1200&q=80"
+          alt="Admin Dashboard"
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black opacity-70 flex items-center justify-center">
+          <div className="text-center text-white">
+            <h1 className="text-4xl font-bold mb-2">Admin Analytics Dashboard</h1>
+            <p className="text-lg">Monitor your grocery store performance</p>
+          </div>
+        </div>
+      </div>
       {/* Summary Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <div className="bg-white p-6 rounded-lg shadow text-center">

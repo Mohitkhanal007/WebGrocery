@@ -32,9 +32,10 @@ export const WishlistProvider = ({ children }) => {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      if (response.data && response.data.success && response.data.wishlist) {
-        setWishlist(response.data.wishlist.products || []);
-        setWishlistCount(response.data.wishlist.products?.length || 0);
+      if (response.data && response.data.success) {
+        const products = response.data.wishlist?.products || [];
+        setWishlist(products);
+        setWishlistCount(products.length);
       }
     } catch (error) {
       console.error('Error fetching wishlist:', error);

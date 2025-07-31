@@ -8,10 +8,22 @@ const AboutUs = () => {
     <>
       <Navbar />
       <div className="container mx-auto px-6 py-20">
-        <h1 className="text-4xl font-bold text-center text-purple-800 mb-6">About Grocery Store</h1>
-        <p className="text-lg text-center text-gray-600 mb-12">
-          Your trusted partner for fresh, high-quality groceries delivered right to your doorstep.
-        </p>
+        {/* Hero Section */}
+        <div className="relative w-full h-[400px] rounded-lg overflow-hidden shadow-lg mb-12">
+          <img
+            src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1200&q=80"
+            alt="About Grocery Store"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black opacity-70 flex items-center justify-center">
+            <div className="text-center text-white">
+              <h1 className="text-5xl font-bold mb-4">About Grocery Store</h1>
+              <p className="text-xl">
+                Your trusted partner for fresh, high-quality groceries delivered right to your doorstep.
+              </p>
+            </div>
+          </div>
+        </div>
 
         <div className="flex flex-col md:flex-row items-center gap-12">
           <div className="md:w-1/2">
@@ -84,9 +96,56 @@ const AboutUs = () => {
             </div>
             {/* Team Member 3 */}
             <div className="bg-white p-6 rounded-lg shadow-md border border-gray-100">
-              <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Team Member 3" className="w-32 h-32 rounded-full mx-auto mb-4 object-cover" />
+              <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=400&q=80" alt="Team Member 3" className="w-32 h-32 rounded-full mx-auto mb-4 object-cover" />
               <h4 className="text-xl font-semibold text-blue-800">Emily Rodriguez</h4>
               <p className="text-gray-600">Customer Relations</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Gallery Section */}
+        <div className="mt-20">
+          <h2 className="text-3xl font-bold text-center text-blue-800 mb-12">Our Grocery Collection</h2>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="relative overflow-hidden rounded-lg shadow-lg">
+              <img 
+                src="https://images.unsplash.com/photo-1567306226416-28f0efdc88ce?auto=format&fit=crop&w=400&q=80" 
+                alt="Fresh Fruits"
+                className="w-full h-48 object-cover hover:scale-110 transition-transform duration-300"
+              />
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
+                <h3 className="text-white font-semibold">Fresh Fruits</h3>
+              </div>
+            </div>
+            <div className="relative overflow-hidden rounded-lg shadow-lg">
+              <img 
+                src="https://images.unsplash.com/photo-1502741338009-cac2772e18bc?auto=format&fit=crop&w=400&q=80" 
+                alt="Fresh Vegetables"
+                className="w-full h-48 object-cover hover:scale-110 transition-transform duration-300"
+              />
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
+                <h3 className="text-white font-semibold">Fresh Vegetables</h3>
+              </div>
+            </div>
+            <div className="relative overflow-hidden rounded-lg shadow-lg">
+              <img 
+                src="https://images.unsplash.com/photo-1464306076886-debca5e8a6b0?auto=format&fit=crop&w=400&q=80" 
+                alt="Dairy Products"
+                className="w-full h-48 object-cover hover:scale-110 transition-transform duration-300"
+              />
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
+                <h3 className="text-white font-semibold">Dairy Products</h3>
+              </div>
+            </div>
+            <div className="relative overflow-hidden rounded-lg shadow-lg">
+              <img 
+                src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=400&q=80" 
+                alt="Organic Products"
+                className="w-full h-48 object-cover hover:scale-110 transition-transform duration-300"
+              />
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
+                <h3 className="text-white font-semibold">Organic Products</h3>
+              </div>
             </div>
           </div>
         </div>

@@ -32,7 +32,7 @@ const Myprofile = () => {
     const userId = localStorage.getItem("userId");
     if (userId) {
       // Fetch addresses from backend
-      axios.get(`http://localhost:3001/api/v1/customer/addresses/${userId}`)
+              axios.get(`/api/v1/customer/addresses/${userId}`)
         .then(res => {
           if (res.data && res.data.success) setAddresses(res.data.addresses);
         })
@@ -47,14 +47,14 @@ const Myprofile = () => {
       if (editingIndex !== null) {
         // Update address via API
         const addressId = addresses[editingIndex]._id;
-        await axios.put("http://localhost:3001/api/v1/customer/address", {
+        await axios.put("/api/v1/customer/address", {
           userId,
           addressId,
           address: addressForm
         });
       } else {
         // Add address via API
-        await axios.post("http://localhost:3001/api/v1/customer/address", {
+        await axios.post("/api/v1/customer/address", {
           userId,
           address: addressForm
         });
@@ -83,10 +83,10 @@ const Myprofile = () => {
   const handleDeleteAddress = async (idx) => {
     const userId = localStorage.getItem("userId");
     if (userId && addresses[idx]._id) {
-      await axios.delete("http://localhost:3001/api/v1/customer/address", {
+      await axios.delete("/api/v1/customer/address", {
         data: { userId, addressId: addresses[idx]._id }
       });
-      const res = await axios.get(`http://localhost:3001/api/v1/customer/addresses/${userId}`);
+      const res = await axios.get(`/api/v1/customer/addresses/${userId}`);
       setAddresses(res.data.addresses);
       setEditingIndex(null);
     } else {

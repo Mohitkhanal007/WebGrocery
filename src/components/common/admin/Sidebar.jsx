@@ -8,7 +8,6 @@ import {
   LogOut,
   Menu,
   Package,
-  Star,
   Users
 } from "lucide-react";
 import React, { useState } from "react";
@@ -44,13 +43,13 @@ const Sidebar = () => {
       </div>
 
       <nav className="flex-1 space-y-2">
-        <Link to="/admin/dashboard" className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-700">
+        <Link to="/admin/dashboard" className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-700 transition-colors duration-200">
           <Home size={20} />
           {!isCollapsed && <span>Dashboard</span>}
         </Link>
 
-        <div>
-          <button onClick={() => toggleMenu("products")} className="flex items-center justify-between w-full p-2 rounded-lg hover:bg-gray-700">
+        <div className="group">
+          <button onClick={() => toggleMenu("products")} className="flex items-center justify-between w-full p-2 rounded-lg hover:bg-gray-700 transition-colors duration-200">
             <div className="flex items-center gap-3">
               <Package size={20} />
               {!isCollapsed && <span>Product Catalog</span>}
@@ -58,15 +57,15 @@ const Sidebar = () => {
             {!isCollapsed && (openMenus.products ? <ChevronDown size={18} /> : <ChevronRight size={18} />)}
           </button>
           {!isCollapsed && openMenus.products && (
-            <div className="ml-6 space-y-1 mt-1">
-              <Link to="/admin/addproducts" className="block p-2 rounded hover:bg-gray-700">Add New</Link>
-              <Link to="/admin/manageproducts" className="block p-2 rounded hover:bg-gray-700">Manage Products</Link>
+            <div className="ml-6 space-y-1 mt-1 transition-all duration-300 ease-in-out">
+              <Link to="/admin/addproducts" className="block p-2 rounded hover:bg-gray-700 transition-colors duration-200">Add New</Link>
+              <Link to="/admin/manageproducts" className="block p-2 rounded hover:bg-gray-700 transition-colors duration-200">Manage Products</Link>
             </div>
           )}
         </div>
 
-        <div>
-          <button onClick={() => toggleMenu("orders")} className="flex items-center justify-between w-full p-2 rounded-lg hover:bg-gray-700">
+        <div className="group">
+          <button onClick={() => toggleMenu("orders")} className="flex items-center justify-between w-full p-2 rounded-lg hover:bg-gray-700 transition-colors duration-200">
             <div className="flex items-center gap-3">
               <Calendar size={20} />
               {!isCollapsed && <span>Orders</span>}
@@ -74,31 +73,27 @@ const Sidebar = () => {
             {!isCollapsed && (openMenus.orders ? <ChevronDown size={18} /> : <ChevronRight size={18} />)}
           </button>
           {!isCollapsed && openMenus.orders && (
-            <div className="ml-6 space-y-1 mt-1">
-              <Link to="/admin/pending" className="block p-2 rounded hover:bg-gray-700">Pending</Link>
-              <Link to="/admin/confirmed" className="block p-2 rounded hover:bg-gray-700">Confirmed</Link>
+            <div className="ml-6 space-y-1 mt-1 transition-all duration-300 ease-in-out">
+              <Link to="/admin/pending" className="block p-2 rounded hover:bg-gray-700 transition-colors duration-200">Pending</Link>
+              <Link to="/admin/confirmed" className="block p-2 rounded hover:bg-gray-700 transition-colors duration-200">Confirmed</Link>
             </div>
           )}
         </div>
 
-        <Link to="/admin/payments" className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-700">
+        <Link to="/admin/payments" className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-700 transition-colors duration-200">
           <CreditCard size={20} />
           {!isCollapsed && <span>Payments</span>}
         </Link>
 
-        <Link to="/admin/customers" className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-700">
+        <Link to="/admin/customers" className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-700 transition-colors duration-200">
           <Users size={20} />
-          {!isCollapsed && <span>Customers</span>}
+          {!isCollapsed && <span>Users</span>}
         </Link>
 
-        <Link to="/admin/reviews" className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-700">
-          <Star size={20} />
-          {!isCollapsed && <span>Customer Reviews</span>}
-        </Link>
       </nav>
 
       <div className="pt-4 border-t border-gray-700">
-        <button onClick={handleLogout} className="flex items-center w-full gap-3 p-2 rounded-lg hover:bg-red-800">
+        <button onClick={handleLogout} className="flex items-center w-full gap-3 p-2 rounded-lg hover:bg-red-800 transition-colors duration-200">
           <LogOut size={20} />
           {!isCollapsed && <span>Logout</span>}
         </button>

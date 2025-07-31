@@ -41,7 +41,7 @@ const MyOrders = () => {
           return;
         }
         // Fetch orders from backend
-        const response = await axios.get(`http://localhost:3001/api/v1/orders/user/${userId}`);
+        const response = await axios.get(`/api/v1/orders/user/${userId}`);
         if (response.data && response.data.success) {
           // Show toast if any order status changed
           if (prevOrders.length > 0) {
@@ -111,7 +111,7 @@ const MyOrders = () => {
                 className="w-full max-w-4xl p-6 bg-white shadow-lg rounded-lg flex items-start space-x-6 border border-gray-100"
               >
                 <img
-                  src={order.items?.[0]?.image || order.product?.imageUrl || "https://via.placeholder.com/150"}
+                  src={order.items?.[0]?.image || order.product?.imageUrl || "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=400&q=80"}
                   alt={order.items?.[0]?.title || order.product?.name}
                   className="w-32 h-32 object-cover rounded-lg"
                 />

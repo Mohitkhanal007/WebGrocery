@@ -52,10 +52,22 @@ const Faq = () => {
     <>
       <Navbar />
       <div className="container mx-auto px-6 py-20">
-        <h2 className="text-4xl font-bold text-blue-800 mb-6 text-center">Frequently Asked Questions</h2>
-        <p className="text-lg text-gray-600 text-center mb-12">
-          Find answers to common questions about our grocery products and services
-        </p>
+        {/* Hero Section */}
+        <div className="relative w-full h-[300px] rounded-lg overflow-hidden shadow-lg mb-12">
+          <img
+            src="https://images.unsplash.com/photo-1464306076886-debca5e8a6b0?auto=format&fit=crop&w=1200&q=80"
+            alt="FAQ"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black opacity-70 flex items-center justify-center">
+            <div className="text-center text-white">
+              <h2 className="text-5xl font-bold mb-4">Frequently Asked Questions</h2>
+              <p className="text-xl">
+                Find answers to common questions about our grocery products and services
+              </p>
+            </div>
+          </div>
+        </div>
 
         {/* Quick Info Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">

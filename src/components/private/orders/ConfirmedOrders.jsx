@@ -11,7 +11,7 @@ const ConfirmedOrders = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const res = await axios.get("http://localhost:3001/api/v1/orders");
+        const res = await axios.get("/api/v1/orders");
         setOrders(res.data.orders || []);
         setError("");
       } catch (err) {
@@ -25,7 +25,7 @@ const ConfirmedOrders = () => {
 
   const handleStatusChange = async (orderId, newStatus) => {
     try {
-      await axios.put(`http://localhost:3001/api/v1/orders/${orderId}/status`, { status: newStatus });
+                await axios.put(`/api/v1/orders/${orderId}/status`, { status: newStatus });
       setOrders(orders.map(order => order._id === orderId ? { ...order, status: newStatus } : order));
     } catch (err) {
       alert("Failed to update status");

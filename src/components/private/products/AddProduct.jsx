@@ -109,7 +109,20 @@ const AddProduct = () => {
 
   return (
     <div className="p-8 bg-white rounded-lg shadow-md">
-      <h2 className="text-3xl font-bold text-purple-800 mb-6">Add New Grocery Product</h2>
+      {/* Hero Section */}
+      <div className="relative w-full h-[200px] rounded-lg overflow-hidden shadow-lg mb-8">
+        <img
+          src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1200&q=80"
+          alt="Add Product"
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black opacity-70 flex items-center justify-center">
+          <div className="text-center text-white">
+            <h2 className="text-4xl font-bold mb-2">Add New Grocery Product</h2>
+            <p className="text-lg">Add fresh products to your inventory</p>
+          </div>
+        </div>
+      </div>
       {message && <p className="text-green-600 bg-green-50 p-3 rounded-lg">{message}</p>}
       {error && <p className="text-red-600 bg-red-50 p-3 rounded-lg">{error}</p>}
       
