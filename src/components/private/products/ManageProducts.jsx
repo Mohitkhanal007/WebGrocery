@@ -26,7 +26,7 @@ const ManageProducts = () => {
   }, []);
 
   const handleDelete = async (id) => {
-    if (window.confirm("Are you sure you want to delete this product? This action cannot be undone.")) {
+    if (window.confirm("Are you sure you want to delete this product?")) {
       try {
         setLoading(true);
         await axios.delete(`/api/v1/products/${id}`);
