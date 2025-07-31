@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { 
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
   PieChart, Pie, Cell, Legend, BarChart, Bar 
 } from 'recharts';
 import { 
   FaShoppingCart, FaUsers, FaBox, FaDollarSign, FaChartLine, 
-  FaStar, FaPlus, FaEye, FaClock, FaTrophy, FaArrowUp 
+  FaStar, FaPlus, FaEye, FaClock, FaTrophy, FaArrowUp, FaArrowRight,
+  FaShoppingBag, FaClipboardList, FaChartBar
 } from "react-icons/fa";
 
 const COLORS = ["#8B5CF6", "#A78BFA", "#C4B5FD", "#DDD6FE", "#EDE9FE"];
@@ -15,6 +17,7 @@ const Dashboard = () => {
   const [analytics, setAnalytics] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchAnalytics = async () => {
@@ -30,6 +33,26 @@ const Dashboard = () => {
     };
     fetchAnalytics();
   }, []);
+
+  const handleQuickAction = (action) => {
+    switch (action) {
+      case 'addProduct':
+        navigate('/admin/addproducts');
+        break;
+      case 'viewOrders':
+        navigate('/admin/pending');
+        break;
+      case 'viewReviews':
+        navigate('/admin/reviews');
+        break;
+      case 'viewAnalytics':
+        // Analytics is already on this page, but we can scroll to charts
+        document.querySelector('.charts-section')?.scrollIntoView({ behavior: 'smooth' });
+        break;
+      default:
+        break;
+    }
+  };
 
   if (loading) return (
     <div className="flex items-center justify-center h-64">
@@ -58,58 +81,86 @@ const Dashboard = () => {
 
       {/* Quick Action Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <div className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-purple-100">
+        <button 
+          onClick={() => handleQuickAction('addProduct')}
+          className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-purple-100 hover:border-purple-300 group cursor-pointer"
+        >
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Add New Product</p>
+              <p className="text-sm font-medium text-gray-600 group-hover:text-purple-600 transition-colors">Add New Product</p>
               <p className="text-xs text-gray-500 mt-1">Quick action</p>
             </div>
-            <div className="p-3 bg-purple-100 rounded-lg">
+            <div className="p-3 bg-purple-100 rounded-lg group-hover:bg-purple-200 transition-colors">
               <FaPlus className="text-purple-600 text-xl" />
             </div>
           </div>
-        </div>
+          <div className="flex items-center mt-3 text-xs text-purple-600 font-medium">
+            <span>Click to add</span>
+            <FaArrowRight className="ml-1" size={10} />
+          </div>
+        </button>
 
-        <div className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-purple-100">
+        <button 
+          onClick={() => handleQuickAction('viewOrders')}
+          className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-purple-100 hover:border-purple-300 group cursor-pointer"
+        >
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">View Orders</p>
+              <p className="text-sm font-medium text-gray-600 group-hover:text-blue-600 transition-colors">View Orders</p>
               <p className="text-xs text-gray-500 mt-1">Manage orders</p>
             </div>
-            <div className="p-3 bg-blue-100 rounded-lg">
+            <div className="p-3 bg-blue-100 rounded-lg group-hover:bg-blue-200 transition-colors">
               <FaShoppingCart className="text-blue-600 text-xl" />
             </div>
           </div>
-        </div>
+          <div className="flex items-center mt-3 text-xs text-blue-600 font-medium">
+            <span>View all orders</span>
+            <FaArrowRight className="ml-1" size={10} />
+          </div>
+        </button>
 
-        <div className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-purple-100">
+        <button 
+          onClick={() => handleQuickAction('viewAnalytics')}
+          className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-purple-100 hover:border-purple-300 group cursor-pointer"
+        >
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Analytics</p>
+              <p className="text-sm font-medium text-gray-600 group-hover:text-green-600 transition-colors">Analytics</p>
               <p className="text-xs text-gray-500 mt-1">View insights</p>
             </div>
-            <div className="p-3 bg-green-100 rounded-lg">
-              <FaChartLine className="text-green-600 text-xl" />
+            <div className="p-3 bg-green-100 rounded-lg group-hover:bg-green-200 transition-colors">
+              <FaChartBar className="text-green-600 text-xl" />
             </div>
           </div>
-        </div>
+          <div className="flex items-center mt-3 text-xs text-green-600 font-medium">
+            <span>View charts</span>
+            <FaArrowRight className="ml-1" size={10} />
+          </div>
+        </button>
 
-        <div className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-purple-100">
+        <button 
+          onClick={() => handleQuickAction('viewReviews')}
+          className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-purple-100 hover:border-purple-300 group cursor-pointer"
+        >
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Reviews</p>
+              <p className="text-sm font-medium text-gray-600 group-hover:text-yellow-600 transition-colors">Reviews</p>
               <p className="text-xs text-gray-500 mt-1">Customer feedback</p>
             </div>
-            <div className="p-3 bg-yellow-100 rounded-lg">
+            <div className="p-3 bg-yellow-100 rounded-lg group-hover:bg-yellow-200 transition-colors">
               <FaStar className="text-yellow-600 text-xl" />
             </div>
           </div>
-        </div>
+          <div className="flex items-center mt-3 text-xs text-yellow-600 font-medium">
+            <span>View reviews</span>
+            <FaArrowRight className="ml-1" size={10} />
+          </div>
+        </button>
       </div>
 
       {/* Statistics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <div className="bg-gradient-to-r from-purple-500 to-purple-600 p-6 rounded-xl shadow-lg text-white">
+        <div className="bg-gradient-to-r from-purple-500 to-purple-600 p-6 rounded-xl shadow-lg text-white hover:shadow-xl transition-all duration-300">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm font-medium opacity-90">Total Users</p>
@@ -125,7 +176,7 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-6 rounded-xl shadow-lg text-white">
+        <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-6 rounded-xl shadow-lg text-white hover:shadow-xl transition-all duration-300">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm font-medium opacity-90">Total Products</p>
@@ -141,7 +192,7 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className="bg-gradient-to-r from-green-500 to-green-600 p-6 rounded-xl shadow-lg text-white">
+        <div className="bg-gradient-to-r from-green-500 to-green-600 p-6 rounded-xl shadow-lg text-white hover:shadow-xl transition-all duration-300">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm font-medium opacity-90">Total Orders</p>
@@ -157,7 +208,7 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className="bg-gradient-to-r from-orange-500 to-orange-600 p-6 rounded-xl shadow-lg text-white">
+        <div className="bg-gradient-to-r from-orange-500 to-orange-600 p-6 rounded-xl shadow-lg text-white hover:shadow-xl transition-all duration-300">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm font-medium opacity-90">Total Revenue</p>
@@ -175,9 +226,9 @@ const Dashboard = () => {
       </div>
 
       {/* Charts and Data Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+      <div className="charts-section grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
         {/* User Growth Chart */}
-        <div className="bg-white p-6 rounded-xl shadow-lg border border-purple-100">
+        <div className="bg-white p-6 rounded-xl shadow-lg border border-purple-100 hover:shadow-xl transition-all duration-300">
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-xl font-semibold text-gray-800">User Growth</h3>
             <div className="flex items-center text-sm text-gray-500">
@@ -210,7 +261,7 @@ const Dashboard = () => {
         </div>
 
         {/* Order Status Pie Chart */}
-        <div className="bg-white p-6 rounded-xl shadow-lg border border-purple-100">
+        <div className="bg-white p-6 rounded-xl shadow-lg border border-purple-100 hover:shadow-xl transition-all duration-300">
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-xl font-semibold text-gray-800">Order Status</h3>
             <div className="flex items-center text-sm text-gray-500">
@@ -250,19 +301,22 @@ const Dashboard = () => {
       {/* Recent Orders and Top Products */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Recent Orders */}
-        <div className="bg-white p-6 rounded-xl shadow-lg border border-purple-100">
+        <div className="bg-white p-6 rounded-xl shadow-lg border border-purple-100 hover:shadow-xl transition-all duration-300">
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-xl font-semibold text-gray-800 flex items-center">
               <FaClock className="mr-2 text-purple-600" />
               Recent Orders
             </h3>
-            <a href="/admin/pending" className="text-sm text-purple-600 hover:text-purple-700 font-medium">
+            <button 
+              onClick={() => navigate('/admin/pending')}
+              className="text-sm text-purple-600 hover:text-purple-700 font-medium hover:underline"
+            >
               View All
-            </a>
+            </button>
           </div>
           <div className="space-y-4">
             {analytics?.recentOrders?.slice(0, 5).map((order, index) => (
-              <div key={order._id || index} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+              <div key={order._id || index} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
                 <div className="flex items-center">
                   <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center mr-3">
                     <FaShoppingCart className="text-purple-600" />
@@ -284,23 +338,32 @@ const Dashboard = () => {
                 </div>
               </div>
             ))}
+            {(!analytics?.recentOrders || analytics.recentOrders.length === 0) && (
+              <div className="text-center py-8 text-gray-500">
+                <FaClipboardList className="mx-auto text-4xl mb-2 text-gray-300" />
+                <p>No recent orders</p>
+              </div>
+            )}
           </div>
         </div>
 
         {/* Top Products */}
-        <div className="bg-white p-6 rounded-xl shadow-lg border border-purple-100">
+        <div className="bg-white p-6 rounded-xl shadow-lg border border-purple-100 hover:shadow-xl transition-all duration-300">
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-xl font-semibold text-gray-800 flex items-center">
               <FaTrophy className="mr-2 text-purple-600" />
               Top Products
             </h3>
-            <a href="/admin/manageproducts" className="text-sm text-purple-600 hover:text-purple-700 font-medium">
+            <button 
+              onClick={() => navigate('/admin/manageproducts')}
+              className="text-sm text-purple-600 hover:text-purple-700 font-medium hover:underline"
+            >
               View All
-            </a>
+            </button>
           </div>
           <div className="space-y-4">
             {analytics?.topProducts?.slice(0, 5).map((product, index) => (
-              <div key={product._id || index} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+              <div key={product._id || index} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
                 <div className="flex items-center">
                   <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center mr-3">
                     <span className="text-purple-600 font-bold">{index + 1}</span>
@@ -316,6 +379,12 @@ const Dashboard = () => {
                 </div>
               </div>
             ))}
+            {(!analytics?.topProducts || analytics.topProducts.length === 0) && (
+              <div className="text-center py-8 text-gray-500">
+                <FaShoppingBag className="mx-auto text-4xl mb-2 text-gray-300" />
+                <p>No products data</p>
+              </div>
+            )}
           </div>
         </div>
       </div>

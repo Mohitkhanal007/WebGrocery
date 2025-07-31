@@ -10,8 +10,6 @@ import {
   Package,
   Star,
   Users,
-  Settings,
-  BarChart3,
   ShoppingBag
 } from "lucide-react";
 import React, { useState } from "react";
@@ -211,31 +209,7 @@ const Sidebar = () => {
           {!isCollapsed && <span className="font-medium">Reviews</span>}
         </Link>
 
-        {/* Analytics */}
-        <Link 
-          to="/admin/analytics" 
-          className={`flex items-center gap-3 p-3 rounded-xl transition-all duration-200 ${
-            isActive('/admin/analytics') 
-              ? 'bg-purple-600 text-white shadow-lg' 
-              : 'hover:bg-purple-700 text-purple-100'
-          }`}
-        >
-          <BarChart3 size={20} />
-          {!isCollapsed && <span className="font-medium">Analytics</span>}
-        </Link>
 
-        {/* Settings */}
-        <Link 
-          to="/admin/settings" 
-          className={`flex items-center gap-3 p-3 rounded-xl transition-all duration-200 ${
-            isActive('/admin/settings') 
-              ? 'bg-purple-600 text-white shadow-lg' 
-              : 'hover:bg-purple-700 text-purple-100'
-          }`}
-        >
-          <Settings size={20} />
-          {!isCollapsed && <span className="font-medium">Settings</span>}
-        </Link>
       </nav>
 
       {/* Logout Section */}
