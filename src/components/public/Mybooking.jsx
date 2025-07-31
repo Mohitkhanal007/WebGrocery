@@ -52,6 +52,9 @@ const MyOrders = () => {
     const token = localStorage.getItem("token");
     const userId = localStorage.getItem("userId");
     
+    console.log("MyOrders - Token:", token ? "Present" : "Missing");
+    console.log("MyOrders - UserID:", userId);
+    
     if (!token || !userId) {
       setError("Please login to view your orders.");
       setLoading(false);
@@ -66,12 +69,16 @@ const MyOrders = () => {
         
         // Always try to fetch from backend first
         console.log("Fetching orders for user:", userId);
+        console.log("Request URL:", `/api/v1/orders/user/${userId}`);
+        console.log("Authorization header:", `Bearer ${token}`);
+        
         const response = await axios.get(`/api/v1/orders/user/${userId}`, {
           headers: {
             Authorization: `Bearer ${token}`
           }
         });
         
+        console.log("Response received:", response.data);
         if (response.data && response.data.success) {
           const fetchedOrders = response.data.orders || [];
           console.log("Fetched orders:", fetchedOrders);
