@@ -21,7 +21,7 @@ const Products = () => {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
   const [sort, setSort] = useState("default");
-  const [priceRange, setPriceRange] = useState([0, 200]);
+  const [priceRange, setPriceRange] = useState([0, 500]);
   const [showScroll, setShowScroll] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -40,10 +40,13 @@ const Products = () => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
+        console.log("Fetching products from backend...");
         const response = await axios.get("/api/v1/products");
+        console.log("Products fetched:", response.data);
         setProducts(response.data);
         setError("");
       } catch (err) {
+        console.error("Error fetching products:", err);
         console.log("Backend not available, using placeholder data");
         setProducts(placeholderProducts);
         setError("Demo Mode: Showing sample products");
@@ -129,10 +132,11 @@ const Products = () => {
             ))}
           </select>
         </div>
-        <div className="text-center mb-10 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-          <p className="text-blue-800 font-medium">Demo Mode: Showing sample grocery products</p>
-          <p className="text-blue-600 text-sm mt-1">Connect your backend to see real products</p>
-        </div>
+        {error && (
+          <div className="text-center mb-10 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <p className="text-blue-800 font-medium">{error}</p>
+          </div>
+        )}
         {loading ? (
           <div className="py-20"><Spinner size={60} /></div>
         ) : error ? (
