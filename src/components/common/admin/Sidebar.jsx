@@ -9,15 +9,19 @@ import {
   Menu,
   Package,
   Star,
-  Users
+  Users,
+  Settings,
+  BarChart3,
+  ShoppingBag
 } from "lucide-react";
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [openMenus, setOpenMenus] = useState({ products: true, orders: true });
   const navigate = useNavigate();
+  const location = useLocation();
 
   const toggleSidebar = () => {
     setIsCollapsed(!isCollapsed);
@@ -33,74 +37,215 @@ const Sidebar = () => {
     window.location.href = "/login";
   };
 
+  const isActive = (path) => {
+    return location.pathname === path;
+  };
+
+  const isMenuActive = (paths) => {
+    return paths.some(path => location.pathname.includes(path));
+  };
+
   return (
-    <div className={`h-screen ${isCollapsed ? "w-20" : "w-64"} bg-gray-900 text-white flex flex-col p-4 transition-all duration-300`}>
+    <div className={`h-screen ${isCollapsed ? "w-20" : "w-64"} bg-gradient-to-b from-purple-900 to-purple-800 text-white flex flex-col transition-all duration-300 shadow-xl`}>
       
-      <div className="flex items-center justify-between mb-6">
-        {!isCollapsed && <h2 className="text-xl font-bold">Grocery Store Admin</h2>}
-        <button onClick={toggleSidebar} className="p-1 rounded-full hover:bg-gray-700">
-          {isCollapsed ? <Menu size={24} /> : <ChevronLeft size={24} />}
+      {/* Header */}
+      <div className="flex items-center justify-between p-6 border-b border-purple-700">
+        {!isCollapsed && (
+          <div className="flex items-center">
+            <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center mr-3">
+              <ShoppingBag className="text-purple-600 w-5 h-5" />
+            </div>
+            <div>
+              <h2 className="text-lg font-bold">Grocery Store</h2>
+              <p className="text-xs text-purple-300">Admin Panel</p>
+            </div>
+          </div>
+        )}
+        <button 
+          onClick={toggleSidebar} 
+          className="p-2 rounded-lg hover:bg-purple-700 transition-colors duration-200"
+        >
+          {isCollapsed ? <Menu size={20} /> : <ChevronLeft size={20} />}
         </button>
       </div>
 
-      <nav className="flex-1 space-y-2">
-        <Link to="/admin/dashboard" className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-700">
+      {/* Navigation */}
+      <nav className="flex-1 p-4 space-y-2">
+        {/* Dashboard */}
+        <Link 
+          to="/admin/dashboard" 
+          className={`flex items-center gap-3 p-3 rounded-xl transition-all duration-200 ${
+            isActive('/admin/dashboard') 
+              ? 'bg-purple-600 text-white shadow-lg' 
+              : 'hover:bg-purple-700 text-purple-100'
+          }`}
+        >
           <Home size={20} />
-          {!isCollapsed && <span>Dashboard</span>}
+          {!isCollapsed && <span className="font-medium">Dashboard</span>}
         </Link>
 
+        {/* Products */}
         <div>
-          <button onClick={() => toggleMenu("products")} className="flex items-center justify-between w-full p-2 rounded-lg hover:bg-gray-700">
+          <button 
+            onClick={() => toggleMenu("products")} 
+            className={`flex items-center justify-between w-full p-3 rounded-xl transition-all duration-200 ${
+              isMenuActive(['/admin/addproducts', '/admin/manageproducts']) 
+                ? 'bg-purple-600 text-white shadow-lg' 
+                : 'hover:bg-purple-700 text-purple-100'
+            }`}
+          >
             <div className="flex items-center gap-3">
               <Package size={20} />
-              {!isCollapsed && <span>Product Catalog</span>}
+              {!isCollapsed && <span className="font-medium">Products</span>}
             </div>
-            {!isCollapsed && (openMenus.products ? <ChevronDown size={18} /> : <ChevronRight size={18} />)}
+            {!isCollapsed && (
+              openMenus.products ? <ChevronDown size={18} /> : <ChevronRight size={18} />
+            )}
           </button>
           {!isCollapsed && openMenus.products && (
-            <div className="ml-6 space-y-1 mt-1">
-              <Link to="/admin/addproducts" className="block p-2 rounded hover:bg-gray-700">Add New</Link>
-              <Link to="/admin/manageproducts" className="block p-2 rounded hover:bg-gray-700">Manage Products</Link>
+            <div className="ml-6 space-y-1 mt-2">
+              <Link 
+                to="/admin/addproducts" 
+                className={`block p-2 rounded-lg transition-all duration-200 ${
+                  isActive('/admin/addproducts') 
+                    ? 'bg-purple-600 text-white' 
+                    : 'hover:bg-purple-700 text-purple-200'
+                }`}
+              >
+                Add New Product
+              </Link>
+              <Link 
+                to="/admin/manageproducts" 
+                className={`block p-2 rounded-lg transition-all duration-200 ${
+                  isActive('/admin/manageproducts') 
+                    ? 'bg-purple-600 text-white' 
+                    : 'hover:bg-purple-700 text-purple-200'
+                }`}
+              >
+                Manage Products
+              </Link>
             </div>
           )}
         </div>
 
+        {/* Orders */}
         <div>
-          <button onClick={() => toggleMenu("orders")} className="flex items-center justify-between w-full p-2 rounded-lg hover:bg-gray-700">
+          <button 
+            onClick={() => toggleMenu("orders")} 
+            className={`flex items-center justify-between w-full p-3 rounded-xl transition-all duration-200 ${
+              isMenuActive(['/admin/pending', '/admin/confirmed']) 
+                ? 'bg-purple-600 text-white shadow-lg' 
+                : 'hover:bg-purple-700 text-purple-100'
+            }`}
+          >
             <div className="flex items-center gap-3">
               <Calendar size={20} />
-              {!isCollapsed && <span>Orders</span>}
+              {!isCollapsed && <span className="font-medium">Orders</span>}
             </div>
-            {!isCollapsed && (openMenus.orders ? <ChevronDown size={18} /> : <ChevronRight size={18} />)}
+            {!isCollapsed && (
+              openMenus.orders ? <ChevronDown size={18} /> : <ChevronRight size={18} />
+            )}
           </button>
           {!isCollapsed && openMenus.orders && (
-            <div className="ml-6 space-y-1 mt-1">
-              <Link to="/admin/pending" className="block p-2 rounded hover:bg-gray-700">Pending</Link>
-              <Link to="/admin/confirmed" className="block p-2 rounded hover:bg-gray-700">Confirmed</Link>
+            <div className="ml-6 space-y-1 mt-2">
+              <Link 
+                to="/admin/pending" 
+                className={`block p-2 rounded-lg transition-all duration-200 ${
+                  isActive('/admin/pending') 
+                    ? 'bg-purple-600 text-white' 
+                    : 'hover:bg-purple-700 text-purple-200'
+                }`}
+              >
+                Pending Orders
+              </Link>
+              <Link 
+                to="/admin/confirmed" 
+                className={`block p-2 rounded-lg transition-all duration-200 ${
+                  isActive('/admin/confirmed') 
+                    ? 'bg-purple-600 text-white' 
+                    : 'hover:bg-purple-700 text-purple-200'
+                }`}
+              >
+                Confirmed Orders
+              </Link>
             </div>
           )}
         </div>
 
-        <Link to="/admin/payments" className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-700">
+        {/* Payments */}
+        <Link 
+          to="/admin/payments" 
+          className={`flex items-center gap-3 p-3 rounded-xl transition-all duration-200 ${
+            isActive('/admin/payments') 
+              ? 'bg-purple-600 text-white shadow-lg' 
+              : 'hover:bg-purple-700 text-purple-100'
+          }`}
+        >
           <CreditCard size={20} />
-          {!isCollapsed && <span>Payments</span>}
+          {!isCollapsed && <span className="font-medium">Payments</span>}
         </Link>
 
-        <Link to="/admin/customers" className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-700">
+        {/* Customers */}
+        <Link 
+          to="/admin/customers" 
+          className={`flex items-center gap-3 p-3 rounded-xl transition-all duration-200 ${
+            isActive('/admin/customers') 
+              ? 'bg-purple-600 text-white shadow-lg' 
+              : 'hover:bg-purple-700 text-purple-100'
+          }`}
+        >
           <Users size={20} />
-          {!isCollapsed && <span>Customers</span>}
+          {!isCollapsed && <span className="font-medium">Customers</span>}
         </Link>
 
-        <Link to="/admin/reviews" className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-700">
+        {/* Reviews */}
+        <Link 
+          to="/admin/reviews" 
+          className={`flex items-center gap-3 p-3 rounded-xl transition-all duration-200 ${
+            isActive('/admin/reviews') 
+              ? 'bg-purple-600 text-white shadow-lg' 
+              : 'hover:bg-purple-700 text-purple-100'
+          }`}
+        >
           <Star size={20} />
-          {!isCollapsed && <span>Customer Reviews</span>}
+          {!isCollapsed && <span className="font-medium">Reviews</span>}
+        </Link>
+
+        {/* Analytics */}
+        <Link 
+          to="/admin/analytics" 
+          className={`flex items-center gap-3 p-3 rounded-xl transition-all duration-200 ${
+            isActive('/admin/analytics') 
+              ? 'bg-purple-600 text-white shadow-lg' 
+              : 'hover:bg-purple-700 text-purple-100'
+          }`}
+        >
+          <BarChart3 size={20} />
+          {!isCollapsed && <span className="font-medium">Analytics</span>}
+        </Link>
+
+        {/* Settings */}
+        <Link 
+          to="/admin/settings" 
+          className={`flex items-center gap-3 p-3 rounded-xl transition-all duration-200 ${
+            isActive('/admin/settings') 
+              ? 'bg-purple-600 text-white shadow-lg' 
+              : 'hover:bg-purple-700 text-purple-100'
+          }`}
+        >
+          <Settings size={20} />
+          {!isCollapsed && <span className="font-medium">Settings</span>}
         </Link>
       </nav>
 
-      <div className="pt-4 border-t border-gray-700">
-        <button onClick={handleLogout} className="flex items-center w-full gap-3 p-2 rounded-lg hover:bg-red-800">
+      {/* Logout Section */}
+      <div className="p-4 border-t border-purple-700">
+        <button 
+          onClick={handleLogout} 
+          className="flex items-center w-full gap-3 p-3 rounded-xl hover:bg-red-600 transition-all duration-200 text-red-200 hover:text-white"
+        >
           <LogOut size={20} />
-          {!isCollapsed && <span>Logout</span>}
+          {!isCollapsed && <span className="font-medium">Logout</span>}
         </button>
       </div>
     </div>

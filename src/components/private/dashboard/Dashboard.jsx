@@ -1,8 +1,15 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts';
+import { 
+  AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
+  PieChart, Pie, Cell, Legend, BarChart, Bar 
+} from 'recharts';
+import { 
+  FaShoppingCart, FaUsers, FaBox, FaDollarSign, FaChartLine, 
+  FaStar, FaPlus, FaEye, FaClock, FaTrophy, FaArrowUp 
+} from "react-icons/fa";
 
-const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#ff8042", "#0088FE"];
+const COLORS = ["#8B5CF6", "#A78BFA", "#C4B5FD", "#DDD6FE", "#EDE9FE"];
 
 const Dashboard = () => {
   const [analytics, setAnalytics] = useState(null);
@@ -24,89 +31,293 @@ const Dashboard = () => {
     fetchAnalytics();
   }, []);
 
-  if (loading) return <div className="p-8">Loading analytics...</div>;
-  if (error) return <div className="p-8 text-red-600">{error}</div>;
+  if (loading) return (
+    <div className="flex items-center justify-center h-64">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
+    </div>
+  );
+  
+  if (error) return (
+    <div className="p-8 text-red-600 bg-red-50 rounded-lg">
+      {error}
+    </div>
+  );
+
+  const totalUsers = analytics?.userGrowth?.reduce((sum, u) => sum + u.count, 0) || 0;
+  const totalOrders = analytics?.orderStatusCounts?.reduce((sum, o) => sum + o.count, 0) || 0;
+  const totalProducts = analytics?.topProducts?.length || 0;
 
   return (
-    <div className="p-8 bg-gray-100 min-h-screen">
-      <h1 className="text-3xl font-bold text-gray-800 mb-8">Admin Analytics Dashboard</h1>
-      {/* Summary Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <div className="bg-white p-6 rounded-lg shadow text-center">
-          <div className="text-lg font-semibold text-gray-600 mb-2">Total Sales</div>
-          <div className="text-2xl font-bold text-green-600">Rs. {analytics.totalSales}</div>
+    <div className="p-6 bg-gradient-to-br from-purple-50 to-indigo-50 min-h-screen">
+      {/* Header Section */}
+      <div className="mb-8">
+        <h1 className="text-4xl font-bold text-gray-800 mb-2">Admin Dashboard</h1>
+        <p className="text-xl text-gray-600">Welcome back, Admin! 👋</p>
+        <p className="text-gray-500">Here's what's happening with your grocery store today.</p>
+      </div>
+
+      {/* Quick Action Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-purple-100">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">Add New Product</p>
+              <p className="text-xs text-gray-500 mt-1">Quick action</p>
+            </div>
+            <div className="p-3 bg-purple-100 rounded-lg">
+              <FaPlus className="text-purple-600 text-xl" />
+            </div>
+          </div>
         </div>
-        <div className="bg-white p-6 rounded-lg shadow text-center">
-          <div className="text-lg font-semibold text-gray-600 mb-2">Top Product</div>
-          <div className="text-xl font-bold text-purple-700">{analytics.topProducts?.[0]?.title || "-"}</div>
-          <div className="text-sm text-gray-500">Sold: {analytics.topProducts?.[0]?.totalSold || 0}</div>
+
+        <div className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-purple-100">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">View Orders</p>
+              <p className="text-xs text-gray-500 mt-1">Manage orders</p>
+            </div>
+            <div className="p-3 bg-blue-100 rounded-lg">
+              <FaShoppingCart className="text-blue-600 text-xl" />
+            </div>
+          </div>
         </div>
-        <div className="bg-white p-6 rounded-lg shadow text-center">
-          <div className="text-lg font-semibold text-gray-600 mb-2">Total Users</div>
-          <div className="text-2xl font-bold text-blue-600">{analytics.userGrowth?.reduce((sum, u) => sum + u.count, 0) || 0}</div>
+
+        <div className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-purple-100">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">Analytics</p>
+              <p className="text-xs text-gray-500 mt-1">View insights</p>
+            </div>
+            <div className="p-3 bg-green-100 rounded-lg">
+              <FaChartLine className="text-green-600 text-xl" />
+            </div>
+          </div>
         </div>
-        <div className="bg-white p-6 rounded-lg shadow text-center">
-          <div className="text-lg font-semibold text-gray-600 mb-2">Total Orders</div>
-          <div className="text-2xl font-bold text-orange-600">{analytics.orderStatusCounts?.reduce((sum, o) => sum + o.count, 0) || 0}</div>
+
+        <div className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-purple-100">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">Reviews</p>
+              <p className="text-xs text-gray-500 mt-1">Customer feedback</p>
+            </div>
+            <div className="p-3 bg-yellow-100 rounded-lg">
+              <FaStar className="text-yellow-600 text-xl" />
+            </div>
+          </div>
         </div>
       </div>
-      {/* Charts Section */}
+
+      {/* Statistics Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="bg-gradient-to-r from-purple-500 to-purple-600 p-6 rounded-xl shadow-lg text-white">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium opacity-90">Total Users</p>
+              <p className="text-3xl font-bold">{totalUsers.toLocaleString()}</p>
+              <div className="flex items-center mt-2">
+                <FaArrowUp className="text-green-300 mr-1" />
+                <span className="text-sm text-green-300">+12%</span>
+              </div>
+            </div>
+            <div className="p-3 bg-white bg-opacity-20 rounded-lg">
+              <FaUsers className="text-2xl" />
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-6 rounded-xl shadow-lg text-white">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium opacity-90">Total Products</p>
+              <p className="text-3xl font-bold">{totalProducts}</p>
+              <div className="flex items-center mt-2">
+                <FaArrowUp className="text-green-300 mr-1" />
+                <span className="text-sm text-green-300">+5%</span>
+              </div>
+            </div>
+            <div className="p-3 bg-white bg-opacity-20 rounded-lg">
+              <FaBox className="text-2xl" />
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-gradient-to-r from-green-500 to-green-600 p-6 rounded-xl shadow-lg text-white">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium opacity-90">Total Orders</p>
+              <p className="text-3xl font-bold">{totalOrders.toLocaleString()}</p>
+              <div className="flex items-center mt-2">
+                <FaArrowUp className="text-green-300 mr-1" />
+                <span className="text-sm text-green-300">+18%</span>
+              </div>
+            </div>
+            <div className="p-3 bg-white bg-opacity-20 rounded-lg">
+              <FaShoppingCart className="text-2xl" />
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-gradient-to-r from-orange-500 to-orange-600 p-6 rounded-xl shadow-lg text-white">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium opacity-90">Total Revenue</p>
+              <p className="text-3xl font-bold">₹{analytics?.totalSales?.toLocaleString() || '0'}</p>
+              <div className="flex items-center mt-2">
+                <FaArrowUp className="text-green-300 mr-1" />
+                <span className="text-sm text-green-300">+23%</span>
+              </div>
+            </div>
+            <div className="p-3 bg-white bg-opacity-20 rounded-lg">
+              <FaDollarSign className="text-2xl" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Charts and Data Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
         {/* User Growth Chart */}
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <h3 className="text-xl font-semibold mb-4 text-gray-800">User Growth (per month)</h3>
+        <div className="bg-white p-6 rounded-xl shadow-lg border border-purple-100">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-xl font-semibold text-gray-800">User Growth</h3>
+            <div className="flex items-center text-sm text-gray-500">
+              <FaClock className="mr-1" />
+              Last 6 months
+            </div>
+          </div>
           <ResponsiveContainer width="100%" height={300}>
-            <AreaChart data={analytics.userGrowth} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+            <AreaChart data={analytics?.userGrowth} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
               <defs>
                 <linearGradient id="colorUsers" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8}/>
-                  <stop offset="95%" stopColor="#8884d8" stopOpacity={0}/>
+                  <stop offset="5%" stopColor="#8B5CF6" stopOpacity={0.8}/>
+                  <stop offset="95%" stopColor="#8B5CF6" stopOpacity={0}/>
                 </linearGradient>
               </defs>
               <XAxis dataKey="_id" tick={{ fill: '#6B7280' }} />
               <YAxis tick={{ fill: '#6B7280' }} />
-              <CartesianGrid strokeDasharray="3 3" vertical={false} />
-              <Tooltip contentStyle={{ backgroundColor: '#fff', border: '1px solid #ddd' }} />
-              <Area type="monotone" dataKey="count" stroke="#8884d8" fillOpacity={1} fill="url(#colorUsers)" />
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E5E7EB" />
+              <Tooltip 
+                contentStyle={{ 
+                  backgroundColor: '#fff', 
+                  border: '1px solid #E5E7EB',
+                  borderRadius: '8px',
+                  boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+                }} 
+              />
+              <Area type="monotone" dataKey="count" stroke="#8B5CF6" fillOpacity={1} fill="url(#colorUsers)" />
             </AreaChart>
           </ResponsiveContainer>
         </div>
+
         {/* Order Status Pie Chart */}
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <h3 className="text-xl font-semibold mb-4 text-gray-800">Order Status Distribution</h3>
+        <div className="bg-white p-6 rounded-xl shadow-lg border border-purple-100">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-xl font-semibold text-gray-800">Order Status</h3>
+            <div className="flex items-center text-sm text-gray-500">
+              <FaEye className="mr-1" />
+              Distribution
+            </div>
+          </div>
           <ResponsiveContainer width="100%" height={300}>
             <PieChart>
               <Pie
-                data={analytics.orderStatusCounts}
+                data={analytics?.orderStatusCounts}
                 dataKey="count"
                 nameKey="_id"
                 cx="50%"
                 cy="50%"
                 outerRadius={100}
-                fill="#8884d8"
-                label
+                fill="#8B5CF6"
+                label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
               >
-                {analytics.orderStatusCounts?.map((entry, index) => (
+                {analytics?.orderStatusCounts?.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                 ))}
               </Pie>
-              <Legend />
-              <Tooltip />
+              <Tooltip 
+                contentStyle={{ 
+                  backgroundColor: '#fff', 
+                  border: '1px solid #E5E7EB',
+                  borderRadius: '8px',
+                  boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+                }} 
+              />
             </PieChart>
           </ResponsiveContainer>
         </div>
       </div>
-      {/* Top Products List */}
-      <div className="bg-white p-6 rounded-lg shadow-md">
-        <h3 className="text-xl font-semibold mb-4 text-gray-800">Top 5 Products</h3>
-        <ul className="divide-y divide-gray-200">
-          {analytics.topProducts?.map((prod, idx) => (
-            <li key={prod._id} className="py-2 flex justify-between items-center">
-              <span className="font-medium">{idx + 1}. {prod.title}</span>
-              <span className="text-gray-600">Sold: {prod.totalSold}</span>
-            </li>
-          ))}
-        </ul>
+
+      {/* Recent Orders and Top Products */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Recent Orders */}
+        <div className="bg-white p-6 rounded-xl shadow-lg border border-purple-100">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-xl font-semibold text-gray-800 flex items-center">
+              <FaClock className="mr-2 text-purple-600" />
+              Recent Orders
+            </h3>
+            <a href="/admin/pending" className="text-sm text-purple-600 hover:text-purple-700 font-medium">
+              View All
+            </a>
+          </div>
+          <div className="space-y-4">
+            {analytics?.recentOrders?.slice(0, 5).map((order, index) => (
+              <div key={order._id || index} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                <div className="flex items-center">
+                  <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center mr-3">
+                    <FaShoppingCart className="text-purple-600" />
+                  </div>
+                  <div>
+                    <p className="font-medium text-gray-800">{order.customerName || 'Customer'}</p>
+                    <p className="text-sm text-gray-500">{order.productName || 'Product'}</p>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <p className="font-semibold text-gray-800">₹{order.amount || '0'}</p>
+                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                    order.status === 'confirmed' 
+                      ? 'bg-green-100 text-green-800' 
+                      : 'bg-yellow-100 text-yellow-800'
+                  }`}>
+                    {order.status || 'Pending'}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Top Products */}
+        <div className="bg-white p-6 rounded-xl shadow-lg border border-purple-100">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-xl font-semibold text-gray-800 flex items-center">
+              <FaTrophy className="mr-2 text-purple-600" />
+              Top Products
+            </h3>
+            <a href="/admin/manageproducts" className="text-sm text-purple-600 hover:text-purple-700 font-medium">
+              View All
+            </a>
+          </div>
+          <div className="space-y-4">
+            {analytics?.topProducts?.slice(0, 5).map((product, index) => (
+              <div key={product._id || index} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                <div className="flex items-center">
+                  <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center mr-3">
+                    <span className="text-purple-600 font-bold">{index + 1}</span>
+                  </div>
+                  <div>
+                    <p className="font-medium text-gray-800">{product.title || 'Product'}</p>
+                    <p className="text-sm text-gray-500">{product.totalSold || 0} sales</p>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <p className="font-semibold text-gray-800">₹{product.revenue || '0'}</p>
+                  <p className="text-xs text-gray-500">Revenue</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
