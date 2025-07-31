@@ -1,4 +1,4 @@
-import { Bell, LogOut, User, Settings } from "lucide-react";
+import { Bell, LogOut, User } from "lucide-react";
 import React, { useState } from "react";
 
 const Navbar = () => {
@@ -53,10 +53,7 @@ const Navbar = () => {
           </span>
         </button>
 
-        {/* Settings */}
-        <button className="p-2 rounded-lg hover:bg-purple-50 transition-colors duration-200">
-          <Settings size={20} className="text-gray-600" />
-        </button>
+
 
         {/* User Profile */}
         <div className="relative group">
