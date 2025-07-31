@@ -1,13 +1,26 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { FaTag, FaStar, FaStore } from "react-icons/fa";
+import { FaTag, FaStar, FaStore, FaHeart } from "react-icons/fa";
 import { useCart } from "./CartContext";
+import { useWishlist } from "./WishlistContext";
 
 const ProductCard = ({ packageData }) => {
   const { _id, name, title, description, price, image } = packageData;
   // Use name from backend or fallback to title for compatibility
   const displayName = name || title;
   const { addToCart } = useCart();
+  const { addToWishlist, wishlistItems } = useWishlist();
+
+  const isInWishlist = wishlistItems.some(item => item._id === _id);
+
+  const handleAddToWishlist = async () => {
+    const result = await addToWishlist(_id);
+    if (result.success) {
+      console.log('Added to wishlist');
+    } else {
+      console.error('Failed to add to wishlist:', result.message);
+    }
+  };
 
   // Use a default grocery product image if none is provided
   const imageUrl = image 
@@ -37,12 +50,24 @@ const ProductCard = ({ packageData }) => {
             <span className="text-purple-800 font-bold text-xl">Rs.{price}</span>
           </div>
           <div className="flex flex-col gap-2">
-          <Link to={`/products/${_id}`} className="dairy-btn bg-blue-800 text-white px-5 py-2 rounded-lg text-sm font-semibold hover:bg-blue-700 transition duration-300">
-            View Product
-          </Link>
+            <div className="flex gap-2">
+              <Link to={`/products/${_id}`} className="dairy-btn bg-blue-800 text-white px-3 py-2 rounded-lg text-sm font-semibold hover:bg-blue-700 transition duration-300">
+                View
+              </Link>
+              <button
+                onClick={handleAddToWishlist}
+                className={`dairy-btn px-3 py-2 rounded-lg text-sm font-semibold transition duration-300 ${
+                  isInWishlist 
+                    ? 'bg-red-600 text-white hover:bg-red-700' 
+                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                }`}
+              >
+                <FaHeart className={`text-sm ${isInWishlist ? 'text-white' : 'text-gray-600'}`} />
+              </button>
+            </div>
             <button
               onClick={() => addToCart(packageData)}
-              className="dairy-btn bg-green-600 text-white px-5 py-2 rounded-lg text-sm font-semibold hover:bg-green-700 transition duration-300 mt-2"
+              className="dairy-btn bg-green-600 text-white px-5 py-2 rounded-lg text-sm font-semibold hover:bg-green-700 transition duration-300"
             >
               Add to Cart
             </button>

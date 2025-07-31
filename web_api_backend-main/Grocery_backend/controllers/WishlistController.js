@@ -82,7 +82,7 @@ exports.removeFromWishlist = async (req, res) => {
 
 exports.getWishlistCount = async (req, res) => {
   try {
-    const wishlist = await Wishlist.findOne({ user: req.user.id });
+    const wishlist = await Wishlist.findOne({ customer: req.user.id });
 
     if (!wishlist) {
       return res.status(200).json({ success: true, count: 0 });

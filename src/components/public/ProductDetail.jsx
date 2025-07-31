@@ -6,16 +6,32 @@ import Footer from "../common/customer/Footer";
 import Navbar from "../common/customer/Navbar";
 import { placeholderProducts } from "./demoProducts";
 import { useCart } from "../common/customer/CartContext";
+import { useWishlist } from "../common/customer/WishlistContext";
 
 const ProductDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { addToCart } = useCart();
+  const { addToWishlist, wishlistItems } = useWishlist();
   const [productData, setProductData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [isFavorite, setIsFavorite] = useState(false);
   const token = localStorage.getItem("token");
   const { addToCart } = useCart();
+
+  const handleAddToWishlist = async () => {
+    if (productData) {
+      const result = await addToWishlist(productData._id);
+      if (result.success) {
+        console.log('Added to wishlist');
+      } else {
+        console.error('Failed to add to wishlist:', result.message);
+      }
+    }
+  };
+
+  const isInWishlist = productData ? wishlistItems.some(item => item._id === productData._id) : false;
 
   useEffect(() => {
     const fetchProductDetails = async () => {
@@ -115,9 +131,16 @@ const ProductDetail = () => {
                     Add to Cart
                   </button>
                   {/* Wishlist Button */}
-                  <button className="flex items-center text-lg font-semibold text-gray-800 transition duration-300 hover:text-red-600">
-                    <FaHeart className="mr-2 text-2xl text-gray-400" />
-                    Add to Wishlist
+                  <button 
+                    onClick={handleAddToWishlist}
+                    className={`flex items-center text-lg font-semibold transition duration-300 ${
+                      isInWishlist 
+                        ? 'text-red-600' 
+                        : 'text-gray-800 hover:text-red-600'
+                    }`}
+                  >
+                    <FaHeart className={`mr-2 text-2xl ${isInWishlist ? 'text-red-600' : 'text-gray-400'}`} />
+                    {isInWishlist ? 'In Wishlist' : 'Add to Wishlist'}
                   </button>
                   {/* Order Button */}
                   <button
