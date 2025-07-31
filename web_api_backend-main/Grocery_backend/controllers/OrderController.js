@@ -1,6 +1,7 @@
 const Order = require("../models/Order");
 const Customer = require("../models/Customer");
 const Product = require("../models/Product");
+const mongoose = require("mongoose");
 
 // Create a new order
 exports.createOrder = async (req, res) => {
@@ -11,7 +12,7 @@ exports.createOrder = async (req, res) => {
     let actualUserId = userId;
     if (userId && (userId.includes('demo-user') || userId.includes('demo'))) {
       // For demo users, create a special MongoDB ObjectId
-      actualUserId = new require('mongoose').Types.ObjectId();
+      actualUserId = new mongoose.Types.ObjectId();
       console.log(`Demo user order: ${userId} -> ${actualUserId}`);
     }
     
