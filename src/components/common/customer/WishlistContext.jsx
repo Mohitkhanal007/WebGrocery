@@ -49,6 +49,10 @@ export const WishlistProvider = ({ children }) => {
   const addToWishlist = async (productId) => {
     try {
       const token = localStorage.getItem('token');
+      if (!token) {
+        return { success: false, message: 'Please login to add items to wishlist' };
+      }
+
       const response = await axios.post('/api/v1/wishlist/add', 
         { productId },
         { headers: { Authorization: `Bearer ${token}` } }
@@ -58,6 +62,8 @@ export const WishlistProvider = ({ children }) => {
         // Refresh wishlist
         await fetchWishlist();
         return { success: true, message: 'Added to wishlist' };
+      } else {
+        return { success: false, message: response.data?.message || 'Failed to add to wishlist' };
       }
     } catch (error) {
       console.error('Error adding to wishlist:', error);
@@ -68,6 +74,10 @@ export const WishlistProvider = ({ children }) => {
   const removeFromWishlist = async (productId) => {
     try {
       const token = localStorage.getItem('token');
+      if (!token) {
+        return { success: false, message: 'Please login to manage wishlist' };
+      }
+
       const response = await axios.delete(`/api/v1/wishlist/remove/${productId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -76,6 +86,8 @@ export const WishlistProvider = ({ children }) => {
         // Refresh wishlist
         await fetchWishlist();
         return { success: true, message: 'Removed from wishlist' };
+      } else {
+        return { success: false, message: response.data?.message || 'Failed to remove from wishlist' };
       }
     } catch (error) {
       console.error('Error removing from wishlist:', error);

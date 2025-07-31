@@ -28,12 +28,16 @@ const ProductCard = ({ packageData }) => {
       if (isInWishlist(_id)) {
         const result = await removeFromWishlist(_id);
         if (result.success) {
-          console.log('Removed from wishlist');
+          alert('Removed from wishlist ❤️');
+        } else {
+          alert(result.message || 'Failed to remove from wishlist');
         }
       } else {
         const result = await addToWishlist(_id);
         if (result.success) {
-          console.log('Added to wishlist');
+          alert('Added to wishlist ❤️');
+        } else {
+          alert(result.message || 'Failed to add to wishlist');
         }
       }
     } catch (error) {

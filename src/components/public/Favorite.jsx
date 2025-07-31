@@ -40,14 +40,25 @@ const Favorite = () => {
   const removeFavorite = async (id) => {
     try {
       const token = localStorage.getItem("token");
-      await axios.delete(`/api/v1/wishlist/remove/${id}`, {
+      if (!token) {
+        alert("Please login to manage your wishlist");
+        return;
+      }
+
+      const response = await axios.delete(`/api/v1/wishlist/remove/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
   
-      // Update UI by filtering out the removed product
-      setFavorites((prevFavorites) => prevFavorites.filter((product) => product._id !== id));
+      if (response.data && response.data.success) {
+        // Update UI by filtering out the removed product
+        setFavorites((prevFavorites) => prevFavorites.filter((product) => product._id !== id));
+        alert("Removed from wishlist ❤️");
+      } else {
+        alert(response.data?.message || "Failed to remove from wishlist");
+      }
     } catch (error) {
       console.error("Error removing wishlist item:", error);
+      alert("Failed to remove from wishlist. Please try again.");
     }
   };
   
