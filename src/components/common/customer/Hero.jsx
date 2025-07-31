@@ -54,14 +54,14 @@ const Hero = () => {
           title="Explore Our Groceries"
           description="From fresh fruits and vegetables to daily essentials, we offer a wide range of premium grocery items sourced from the finest farms and suppliers."
           buttonText="View All Products"
-          image="https://images.unsplash.com/photo-1464306076886-debca5e8a6b0?auto=format&fit=crop&w=800&q=80"
+          image="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=800&q=80"
           onButtonClick={() => navigate("/products")}
         />
         <Section
           title="Contact Us for Bulk Orders"
           description="Need groceries for your business or special events? Contact us for custom orders and bulk pricing."
           buttonText="Get in Touch"
-          image="https://images.unsplash.com/photo-1502741338009-cac2772e18bc?auto=format&fit=crop&w=800&q=80"
+          image="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=800&q=80"
           imagePosition="right"
           onButtonClick={() => navigate("/contact")}
         />
