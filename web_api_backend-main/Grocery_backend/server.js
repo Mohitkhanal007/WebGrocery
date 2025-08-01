@@ -28,7 +28,8 @@ dotenv.config({
 connectDB();
 
 // Route files
-const auth = require("./routes/customer");
+const auth = require("./routes/AuthRoute");
+const customer = require("./routes/customer");
 const product = require("./routes/ProductRoute");
 const wishlist = require("./routes/WishlistRoute");
 const khaltiRoutes = require("./routes/KhaltiRoute");
@@ -71,6 +72,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Mount routers
 app.use("/api/v1/auth", auth);
+app.use("/api/v1/customer", customer);
 app.use("/api/v1/products", product);
 app.use("/api/v1/wishlist", wishlist);
 app.use("/api/khalti", khaltiRoutes);

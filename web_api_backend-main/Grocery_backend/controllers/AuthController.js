@@ -20,7 +20,12 @@ const login = async (req, res) => {
     }
 
     const token = jwt.sign({ username: cred.username, role: cred.role }, SECRET_KEY, { expiresIn: '1h' });
-    res.json({ token });
+    res.json({ 
+        token,
+        username: cred.username,
+        role: cred.role,
+        userId: cred._id
+    });
 
 };
 module.exports = {
