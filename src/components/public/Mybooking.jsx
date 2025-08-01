@@ -52,9 +52,6 @@ const MyOrders = () => {
     const token = localStorage.getItem("token");
     const userId = localStorage.getItem("userId");
     
-    console.log("MyOrders - Token:", token ? "Present" : "Missing");
-    console.log("MyOrders - UserID:", userId);
-    
     if (!token || !userId) {
       setError("Please login to view your orders.");
       setLoading(false);
@@ -68,20 +65,14 @@ const MyOrders = () => {
         setError(null);
         
         // Always try to fetch from backend first
-        console.log("Fetching orders for user:", userId);
-        console.log("Request URL:", `/api/v1/orders/user/${userId}`);
-        console.log("Authorization header:", `Bearer ${token}`);
-        
         const response = await axios.get(`/api/v1/orders/user/${userId}`, {
           headers: {
             Authorization: `Bearer ${token}`
           }
         });
         
-        console.log("Response received:", response.data);
         if (response.data && response.data.success) {
           const fetchedOrders = response.data.orders || [];
-          console.log("Fetched orders:", fetchedOrders);
           
           // Show toast if any order status changed
           if (prevOrders.length > 0) {
@@ -97,17 +88,19 @@ const MyOrders = () => {
           setOrders(fetchedOrders);
         } else {
           setOrders([]);
-          setError("No orders found.");
+          setError("No orders found. Place your first order to see it here!");
         }
       } catch (err) {
         console.error("Error fetching orders:", err);
         
         // If backend is not available, show placeholder data
         if (err.code === 'ERR_NETWORK' || err.response?.status >= 500) {
-          console.log("Backend not available, showing placeholder data");
           setOrders(placeholderOrders);
           setError("Demo Mode: Showing sample orders (Backend unavailable).");
           toast.info("Demo Mode: Showing sample orders (Backend unavailable).");
+        } else if (err.response?.status === 401) {
+          setError("Please login again to view your orders.");
+          toast.error("Please login again to view your orders.");
         } else {
           setError("Failed to fetch orders. Please try again.");
           toast.error("Failed to fetch orders. Please try again.");

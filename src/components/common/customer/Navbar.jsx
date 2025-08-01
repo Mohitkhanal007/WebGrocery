@@ -49,6 +49,9 @@ const Navbar = () => {
         <div className="hidden md:flex space-x-6 items-center">
           <Link to="/" className="bg-transparent text-black hover:text-purple-700 transition duration-300">Home</Link>
           <Link to="/products" className="bg-transparent text-black hover:text-purple-700 transition duration-300">Products</Link>
+          {user && (
+            <Link to="/mybooking" className="bg-transparent text-black hover:text-purple-700 transition duration-300">My Orders</Link>
+          )}
           <Link to="/contact" className="bg-transparent text-black hover:text-purple-700 transition duration-300">Contact</Link>
           <Link to="/aboutus" className="bg-transparent text-black hover:text-purple-700 transition duration-300">About Us</Link>
           {/* Cart Icon */}
@@ -100,6 +103,9 @@ const Navbar = () => {
         <div className="md:hidden bg-white shadow-md absolute top-full left-0 w-full py-4">
           <Link to="/" className="block px-6 py-2 bg-transparent text-black hover:text-purple-700 transition duration-200">Home</Link>
           <Link to="/products" className="block px-6 py-2 bg-transparent text-black hover:text-purple-700 transition duration-200">Products</Link>
+          {user && (
+            <Link to="/mybooking" className="block px-6 py-2 bg-transparent text-black hover:text-purple-700 transition duration-200">My Orders</Link>
+          )}
           <Link to="/contact" className="block px-6 py-2 bg-transparent text-black hover:text-purple-700 transition duration-200">Contact</Link>
           <Link to="/aboutus" className="block px-6 py-2 bg-transparent text-black hover:text-purple-700 transition duration-200">About Us</Link>
 
