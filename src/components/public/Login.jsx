@@ -13,9 +13,23 @@ const Login = () => {
   const loginUser = async (userData) => {
     try {
       console.log("Attempting login with:", userData);
-      const response = await axios.post("/api/v1/auth/login", userData);
+      // Convert email to username for backend compatibility
+      const loginData = {
+        username: userData.email,
+        password: userData.password
+      };
+      const response = await axios.post("/api/v1/auth/login", loginData);
       console.log("Login response:", response.data);
-      return response.data;
+      
+      // Add missing fields that frontend expects
+      const userInfo = {
+        ...response.data,
+        userId: response.data.username, // Use username as userId
+        role: response.data.role || "user", // Default to user if role not provided
+        email: userData.email // Add email back for frontend
+      };
+      
+      return userInfo;
     } catch (error) {
       console.error("Login error details:", error);
       console.error("Error response:", error.response?.data);
