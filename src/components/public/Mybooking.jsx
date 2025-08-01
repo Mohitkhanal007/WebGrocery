@@ -68,7 +68,8 @@ const MyOrders = () => {
         const response = await axios.get(`/api/v1/orders/user/${userId}`, {
           headers: {
             Authorization: `Bearer ${token}`
-          }
+          },
+          timeout: 5000 // 5 second timeout
         });
         
         if (response.data && response.data.success) {
@@ -87,8 +88,9 @@ const MyOrders = () => {
           setPrevOrders(fetchedOrders);
           setOrders(fetchedOrders);
         } else {
-          setOrders([]);
-          setError("No orders found. Place your first order to see it here!");
+          // If no orders found but user is logged in, show demo orders
+          setOrders(placeholderOrders);
+          setError("Demo Mode: Showing sample orders. Place your first order to see real orders!");
         }
       } catch (err) {
         console.error("Error fetching orders:", err);
@@ -111,8 +113,8 @@ const MyOrders = () => {
     };
 
     fetchOrders();
-    // Poll for status updates every 30 seconds
-    const interval = setInterval(fetchOrders, 30000);
+    // Poll for status updates every 10 seconds
+    const interval = setInterval(fetchOrders, 10000);
     return () => clearInterval(interval);
   }, [prevOrders]);
 
